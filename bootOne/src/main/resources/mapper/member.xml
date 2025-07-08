@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ex.repository.MemberMapper"> <!-- 메서드 이름이 일치해야함 인터페이스에서의 메서드와 xml에서 id-->
+<!-- namespace = "자바의 Mapper 인터페이스 풀 네임"-->
+<!-- 
+	 각각의 태그
+	 id				: 모든 태그의 고유 이름
+	 				: 인터페이스의 "메서드명"으로 사용 
+	 resultType		: "메서드 실행 결과"
+	 				: 컬럼명과 DTO 변수명이 같아야 자동 매핑됨
+	 parameterType	: "파라미터의 클래스 경로"
+	 				: insert/update/delete를 할때 생략가능
+	 				
+	 <sql id="공통"> : 재사용하기 위해 만들어진 태그				
+	 공통으로 사용될 조건을 빼둔 것.
+	 <include refid="공통"> 태그로 적용.				
+-->
+	<sql id="whereUser">
+		where username=#{username}
+	</sql>
+
+
+
+	<insert id="memberInsert" parameterType="com.ex.data.MemberDTO">
+		insert into member values( #{username}, #{password}, #{birth}, #{email}, sysdate )
+	</insert>
+	
+	
+	<select id="loginCheck" resultType="int">
+		select count(*) from member where username=#{username} and password=#{password}
+	</select>
+	
+	<select id="myInfo" resultType="com.ex.data.MemberDTO">
+		select * from member 
+		<include refid="whereUser"></include>
+	</select>
+	
+	<select id="allInfo" resultType="com.ex.data.MemberDTO">
+		select * from member
+	</select>
+	
+	<delete id="memberDelete">
+		delete from member 
+		<include refid="whereUser"></include>
+	</delete>
+	
+	<update id="memberUpdate">
+		update member set password=#{password}, email=#{email}
+		<include refid="whereUser"></include>
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

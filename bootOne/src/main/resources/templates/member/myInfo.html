@@ -1,0 +1,6 @@
+<h1>내정보</h1>
+	<p th:text="'아이디 : '+${dto.username}"></p>
+	<p th:text="'비밀번호 : '+${dto.password}"></p>
+	<p th:text="'이메일 : '+${dto.email}"></p>
+	<p th:text="'생년월일 : '+${dto.birth}"></p>
+	<p th:text="'가입날짜 : '+${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></p>

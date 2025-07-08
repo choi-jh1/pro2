@@ -1,0 +1,12 @@
+<h1>main.html - 메인</h1>
+<span th:if="${session.sid} == null">
+	<a th:href="@{/mem/insert}">회원가입</a>
+	<a th:href="@{/mem/login}">로그인</a>	
+</span>
+<span th:if="${session.sid} != null">
+	<a th:href="@{/mem/myInfo}">내정보</a>
+	<a th:href="@{/mem/allInfo}">전체 회원 정보</a>
+	<a th:href="@{/mem/logout}">로그아웃</a>
+	<a th:href="@{/mem/delete}">회원탈퇴</a>
+	<a th:href="@{/mem/update}">정보수정</a>
+</span>

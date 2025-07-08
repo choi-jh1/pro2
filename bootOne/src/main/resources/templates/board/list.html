@@ -1,0 +1,49 @@
+<center><h1>글목록</h1></center>
+<div th:if="${count == 0}">
+<table width="600" cellspacing="0" cellpadding="0" border="1" align="center">
+	<tr align="center">
+		<td><h3>게시판에 저장된 글이 없습니다.</h3></td>
+	</tr>
+</table>
+</div>
+<div th:unless="${count == 0}">
+<table width="600" cellspacing="0" cellpadding="0" border="1" align="center">
+	<tr height="30" align="center">
+		<th width="100">글번호</th>
+		<th width="250">글제목</th>
+		<th width="100">작성자</th>
+		<th width="150">작성일</th>
+	</tr>
+	<tr th:each="i : ${list}" align="center">
+		<td>
+			<span th:text="${i.num}"></span>
+		</td>
+		<td>
+			<a th:href="@{|/board/content?pageNum=${pageNum}&num=${i.num}|}"><span th:text="${i.title}"></span></a>
+		</td>
+		<td>
+			<span th:text="${i.writer}"></span>
+		</td>
+		<td>
+			<span th:text="${#temporals.format(i.reg, 'yy-MM-dd HH:mm')}"></span>
+		</td>
+	</tr>
+</table>
+</div>
+
+<div align="center" th:if="${count > 0}">
+	<span th:if="${startPage > 10}">
+		<a th:href="@{|/board/list?pageNum=${startpage-10}|}">[이전]</a>
+	</span>
+	<span th:if="${endPage} < ${pageCount}">
+		<a th:href="@{|/board/list?pageNum=${startPage+10}|}">[다음]</a>
+	</span>
+	<span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+		<a th:href="@{|/board/list?pageNum=${i}|}" th:text="'['+${i}+']'"></a>
+	</span>
+</div>
+
+
+
+
+<a th:href="@{/board/write}">글쓰기</a>

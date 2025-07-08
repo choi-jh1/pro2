@@ -1,0 +1,47 @@
+
+// 프로젝트의 라이브러리, 빌드 관리, 실행 환경 설정 담당
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.3'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.ex'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+// 프로젝트에서 사용할 라이브러리 목록 
+dependencies { // devtools , lombok, thymeleaf, oracle, mybatis 추가 
+	// 컴파일 + 실행 시 모두 적용
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// 테스트 시 필요
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// 해당 라이브러리를 개발 환경에만 적용
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// 컴파일 단계에서만 적용 
+	compileOnly 'org.projectlombok:lombok'
+	// 어노테이션을 분석하고 처리할 때 사용 
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc17'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+
+
+
