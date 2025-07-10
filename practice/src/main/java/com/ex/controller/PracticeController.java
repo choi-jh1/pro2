@@ -25,4 +25,13 @@ public class PracticeController {
 	public String logi2n() {
 		return "login2";
 	}
+	@GetMapping("login2")
+	public String login2() {
+		return "login2";
+	}
+	
+	@GetMapping("login33")
+	public String login33() {
+		return "login33";
+	}
 }
