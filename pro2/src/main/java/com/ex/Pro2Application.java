@@ -9,5 +9,6 @@ public class Pro2Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Pro2Application.class, args);
 	}
+	
 
 }
