@@ -21,4 +21,8 @@ public class PracticeController {
 	public String logi1n() {
 		return "login1";
 	}
+	@GetMapping("login2")
+	public String logi2n() {
+		return "login2";
+	}
 }
