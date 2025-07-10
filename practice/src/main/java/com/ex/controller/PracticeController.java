@@ -17,4 +17,8 @@ public class PracticeController {
 	public String login() {
 		return "login";
 	}
+	@GetMapping("login1")
+	public String logi1n() {
+		return "login1";
+	}
 }
