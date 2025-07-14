@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class ReportService {
 	private final ReportMapper reportMapper;
 	
+	@Transactional 
 	public void insert(ReportBoardDTO dto) {
 		
 	}
