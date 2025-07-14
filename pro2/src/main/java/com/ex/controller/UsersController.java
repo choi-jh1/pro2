@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.ex.data.UsersDTO;
 import com.ex.service.UsersService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -16,19 +17,47 @@ import lombok.RequiredArgsConstructor;
 public class UsersController {
 	private final UsersService usersService;
 	
+	// 메인화면
 	@GetMapping("main")
 	public String main() {
 		return "user/main";
 	}
 	
+	// 로그인 창
+	@GetMapping("login")
+	public String login() {
+		return "user/login";
+	}
+	
+	// 로그인 확인
+	@PostMapping("login")
+	public String login(UsersDTO dto,HttpSession session) {
+		int lc = usersService.loginCheck(dto);
+		if(lc==1) {
+			session.setAttribute("sid",dto.getId());
+			session.setAttribute("role",dto.getRole());
+		}
+		
+		return "redirect:/user/main";
+	}
+
+	// 회원가입 창
 	@GetMapping("insert")
 	public String userInsert() {
 		return "user/insertForm";
 	}
 	
+	// 회원가입 DB
 	@PostMapping("insert")
 	public String userInsert(UsersDTO dto) {
 		usersService.userInsert(dto);
+		return "redirect:/user/main";
+	}
+	
+	// 로그아웃
+	@GetMapping("logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
 		return "redirect:/user/main";
 	}
 }
