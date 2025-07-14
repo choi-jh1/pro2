@@ -1,80 +1,6 @@
-<style>
-.site-header {
-  width: 100%;
-  border-bottom: 1px solid #ddd;
-  font-family: sans-serif;
-}
 
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 16px;
-  font-size: 14px;
-  background: #f5f5f5;
-}
+<link rel="stylesheet" th:href="@{/css/main.css}">
 
-.user-menu a {
-  margin-left: 15px;
-  text-decoration: none;
-  color: #333;
-}
-
-.logo {
-  text-align: center;
-  font-size: 32px;
-  font-weight: bold;
-  padding: 20px 0;
-}
-
-.main-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  padding: 10px 16px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-}
-
-.main-nav ul {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.main-nav li {
-  margin-right: 20px;
-}
-
-.search input {
-  padding: 6px;
-  font-size: 14px;
-}
-
-.sub-nav {
-  background: #f8f8f8;
-  border-top: 1px solid #ccc;
-  padding: 10px 16px;
-}
-
-.sub-nav ul {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sub-nav li {
-  margin-right: 20px;
-}
-.container {
-  max-width: 1200px;
-  margin: 0 auto;       /* 가운데 정렬 */
-  padding: 0 20px;       /* 좌우 공백 */
-}
-
-</style>
 
 <header class="site-header">
 	<div class="container">
@@ -83,10 +9,15 @@
   <div class="top-bar">
     <div class="date">2025.07.03</div>
     <div class="user-menu">
-      <a href="#">기사제보</a>
-      <a th:href="@{/user/login}">로그인</a>
-      <a th:href="@{/user/insert}">회원가입</a>
-    </div>
+      <a th:href="@{/report/write}">기사제보</a>
+	  <span th:if="${session.sid == null}">
+	      <a th:href="@{/user/login}">로그인</a>
+	      <a th:href="@{/user/insert}">회원가입</a>
+	  </span>
+	  <span th:if="${session.sid != null}">
+	  	      <a th:href="@{/user/logout}">로그아웃</a>
+	  </span>
+	</div>
   </div>
   <nav class="main-nav">
     <ul>
@@ -101,10 +32,12 @@
 
   <nav class="sub-nav">
     <ul>
-      <li><a href="#">종합a</a></li>
-      <li><a href="#">야구</a></li>
-      <li><a href="#">축구</a></li>
-      <li><a href="#">배구</a></li>
+
+      <li><a href="#">종합1</a></li>
+      <li><a href="#">야구2</a></li>
+      <li><a href="#">축구3</a></li>
+      <li><a href="#">배구4</a></li>
+
       <li><a href="#">농구</a></li>
     </ul>
   </nav>
