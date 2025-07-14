@@ -6,7 +6,7 @@
 
 	<!-- 메인 뉴스 1개 조회 -->
 	<!-- 인기 순으로 내림차순 정렬, 최신 순으로 정렬, 가장 상위 1개 뉴스만 조회 -->
-	<select id="mainNews" resultType="com.ex.data.NewsMapper">
+	<select id="mainNews" resultType="com.ex.data.NewsDTO">
 		select * from (select num, title, content, writer, reg, readCount, hot, category, thumbUrl from news order by hot desc, reg desc) where rownum = 1
 	</select>
 
