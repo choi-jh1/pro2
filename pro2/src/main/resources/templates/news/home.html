@@ -5,5 +5,12 @@
 </head>
 <body>
 	<h1>최신 뉴스 5개</h1>
-
+	<ul>
+		<li th:each="news : ${latestNews}">
+			<a th:href="@{'/news/content/' + ${news.num}}">
+				<img th:src="${news.thumbUrl}" alt="썸네일" style="width: 100px; height: auto;" />
+				<span th:text="${news.title}">뉴스 제목</span>
+			</a>
+		</li>
+	</ul>
 </body>
