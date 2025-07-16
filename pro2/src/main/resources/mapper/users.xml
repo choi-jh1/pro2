@@ -17,7 +17,7 @@
 		insert into users values(#{id},#{pw},#{nick},#{name},#{birth},#{phone},#{email},#{role},'active',sysdate)
 	</insert>
 	
-	<select id="loginCheck" resultType="int">
-		select count(*) from users where id=#{id} and pw=#{pw}
+	<select id="loginCheck" resultType="com.ex.data.UsersDTO" parameterType="com.ex.data.UsersDTO">
+		select * from users where id=#{id} and pw=#{pw}
 	</select>
 </mapper>

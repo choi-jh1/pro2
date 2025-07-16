@@ -19,7 +19,7 @@ public class UsersService {
 	}
 	
 	// 로그인 체크
-	public int loginCheck(UsersDTO dto) {
+	public UsersDTO loginCheck(UsersDTO dto) {
 		return usersMapper.loginCheck(dto);
 	}
 }

@@ -52,4 +52,8 @@ public class ReportController {
 		
 		return "redirect:/report/list";
 	}
+	@GetMapping("list")
+	public String list() {
+		return "report/list";
+	}
 }

@@ -11,5 +11,5 @@ public interface UsersMapper {
 	// 회원가입
 	public void userInsert(UsersDTO dto);
 	// 로그인
-	public int loginCheck(UsersDTO dto);
+	public UsersDTO loginCheck(UsersDTO dto);
 }
