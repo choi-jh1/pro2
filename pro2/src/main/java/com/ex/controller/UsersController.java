@@ -64,6 +64,12 @@ public class UsersController {
 	// 마이페이지
 	@GetMapping("myPage")
 	public String myPage() {
-		return "/user/myPage";
+		return "user/myPage";
+	}
+	
+	// 회원 정보 수정
+	@GetMapping("update")
+	public String update() {
+		return "user/update";
 	}
 }
