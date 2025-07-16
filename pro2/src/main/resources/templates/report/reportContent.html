@@ -1,0 +1,25 @@
+<center><h1>제보 내용</h1></center>
+<table align="center" border="1" cellsapcing="0" cellpadding="0" width="500">
+	<tr height="30" align="center">
+		<td width="125">글번호</td>
+		<td width="125"><span th:text="${dto.report_id}"></span></td>
+	</tr>
+	<tr height="30" align="center">
+		<td>작성자</td>
+		<td><span th:text="${dto.writerName}"></span></td>
+		
+	</tr>
+	<tr height="30" align="center">
+		<td>작성일</td>
+		<td><span th:text="${#temporals.format(dto.reg, 'yy-MM-dd HH:mm')}"></span></td>
+	</tr>
+	<tr height="30" align="center">
+		<td width="125">제보 글 제목</td>
+		<td><span th:text="${dto.title}"></span></td>
+	</tr>
+	<tr align="center">
+		<td width="125">제보 글 내용</td>
+		<td colpan="3"><span th:text="${dto.content}"></span></td>
+		
+	</tr>
+</table>

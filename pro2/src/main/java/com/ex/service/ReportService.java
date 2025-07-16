@@ -7,11 +7,13 @@ import com.ex.repository.ReportMapper;
 import lombok.RequiredArgsConstructor;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ReportService {
+	// 제보 글 작성
     private final ReportMapper reportMapper;
 
     public void insert(ReportBoardDTO dto, MultipartFile file) {
@@ -43,4 +45,20 @@ public class ReportService {
         }
         reportMapper.insertReport(dto);
     }
+    // 제보 글 목록
+    public List<ReportBoardDTO> reportList(int start, int end){
+    	return reportMapper.reportList(start, end);
+    }
+    
+    // 제보 글 개수
+    public int reportCount() {
+    	return reportMapper.reportCount();
+    }
+    
+    // 제보 글 내용
+    public ReportBoardDTO reportContent(int report_id) {
+    	ReportBoardDTO dto = reportMapper.reportContent(report_id);
+    	return dto;
+    }
+    
 }

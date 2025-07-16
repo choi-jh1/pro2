@@ -1,0 +1,37 @@
+<center><h1>제보 글 목록</h1></center>
+<div th:if="${reportCount==0}">
+	<table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
+		<tr align="center">
+			<a th:href="@{/report/write}">제보하기</a>
+			<td><h3>제보 글이 없습니다.</h3></td>
+		</tr>
+	</table>
+</div>
+<div th:unless="${reportCount==0}">
+	<center><a th:href="@{/report/write}">제보하기</a></center>
+	<table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
+		<tr height="30">
+			<th>제보 글 번호</th>
+			<th>제보 글 제목</th>
+			<th>작성일</th>
+		</tr>
+		<tr th:each="report:${list}">
+			<td th:text="${report.report_id}"></td>
+			<td>
+				<a th:href="@{|/report/content?pageNum=${pageNum}&report_id=${report.report_id}|}"><span th:text="${report.title}"></span></a>
+			</td>
+			<td th:text="${#temporals.format(report.reg, 'yy-MM-dd')}"></td>
+		</tr>
+	</table>
+</div>
+<div align="center" th:if="${reportCount > 0}">
+	<span th:if="${startPage>10}">
+		<a th:href="@{|/report/list?pageNum=${startPage-10}|}">[이전]</a>
+	</span>
+	<span th:if="${endPage < pageCount}">
+		<a th:href="@{|/report/list?pageNum=${startPage+10}|}">[다음]</a>
+	</span>
+	<span th:each="i : ${#numbers.sequence(startPage,endPage)}">
+		<a th:href="@{|/report/list?pageNum=${i}|}" th:text="'['+${i}+']'"></a>
+	</span>
+</div>
