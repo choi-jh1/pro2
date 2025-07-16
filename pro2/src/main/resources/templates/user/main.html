@@ -15,8 +15,8 @@
 	      <a th:href="@{/user/insert}">회원가입</a>
 	  </span>
 	  <span th:if="${session.sid != null}">
-	  	      <a th:href="@{/user/logout}">로그아웃</a>
 			  <a th:href="@{/user/myPage}">마이페이지</a>
+	  	      <a th:href="@{/user/logout}">로그아웃</a>
 	  </span>
 	</div>
   </div>
@@ -24,7 +24,7 @@
   <nav class="main-nav">
     <ul>
       <li><a href="#">뉴스</a></li>
-      <li><a href="#">스포츠</a></li>
+      <li><a th:href="@{/sports/list}">스포츠</a></li>
       <li><a href="#">엔터</a></li>
     </ul>
     <div class="search">
@@ -39,7 +39,6 @@
       <li><a href="#">야구2</a></li>
       <li><a href="#">축구3</a></li>
       <li><a href="#">배구4</a></li>
-
       <li><a href="#">농구</a></li>
     </ul>
   </nav>
