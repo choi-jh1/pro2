@@ -15,4 +15,8 @@
 	<select id="sportsList" resultType="com.ex.data.SportsDTO">
 		select * from sports
 	</select>
+	
+	<select id="sportsCateList" resultType="com.ex.data.SportsDTO">
+		select * from sports where cateId=#{cateId}
+	</select>
 </mapper>

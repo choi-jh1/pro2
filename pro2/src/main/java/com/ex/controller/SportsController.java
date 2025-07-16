@@ -74,9 +74,16 @@ public class SportsController {
         return "/upload/" + fileName; // 클라이언트가 사용할 URL
 	}
 	
-	@GetMapping("list")
-	public String list(Model model) {
+	// 스포츠 메인
+	@GetMapping("main")
+	public String main(Model model) {
 		model.addAttribute("list",sportsService.sportsList());
+		return "sports/main";
+	}
+	
+	// 스포츠 축구
+	@GetMapping("list")
+	public String list() {
 		return "sports/list";
 	}
 }
