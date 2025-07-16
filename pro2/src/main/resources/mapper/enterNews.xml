@@ -13,13 +13,13 @@
 		null as writer_nickname,
 		null as writer_email,
 		reg,
-		read_count,
+		readcount,
 		category,
 		hot
 		from enter_news
 		where status = 1
 		and to_char(reg, 'YYYY-MM-DD') = to_char(sysdate, 'YYYY-MM-DD')
-		order by read_count desc
+		order by readcount desc
 		fetch first 10 rows only
 	</select>
 
@@ -33,7 +33,7 @@
 		null as writer_nickname,
 		null as writer_email,
 		reg,
-		read_count,
+		readcount,
 		category,
 		hot
 		from enter_news
