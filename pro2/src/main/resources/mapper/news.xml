@@ -2,27 +2,70 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.ex.repository.NewsMapper">
 
-	<!-- 메인 최신 5개 기사 -->
-	<select id="selectLatest" parameterType="int" resultType="com.ex.data.NewsDTO">
-		select num, title, thumbUrl from news order by num desc fetch next #{limit} rows only
+  <!-- 1. 메인 최신 N개 -->
+  <select id="selectLatest"
+          parameterType="int"
+          resultType="com.ex.data.NewsDTO">
+    SELECT num,
+           title,
+           thumbUrl
+    FROM   news
+    ORDER BY num DESC
+    FETCH FIRST #{limit} ROWS ONLY
+  </select>
+
+  <!-- 2. 속보 N개 (옵션) -->
+	<select id="selectBreakingByTitle"
+	        parameterType="int"
+	        resultType="com.ex.data.NewsDTO">
+	  SELECT num,
+	         title,
+	         thumbUrl
+	  FROM   news
+	  WHERE  title LIKE '%[속보]%'
+	  ORDER BY reg DESC
+	  FETCH FIRST #{limit} ROWS ONLY
 	</select>
-	
-	<!-- 속보 3개 기사 -->
-	<select id="selectBreaking" parameterType="int" resultType="com.ex.data.NewsDTO">
-		select num, title, thumbUrl from news where is_breaking = 1 order by num desc fetch next #{limit} rows only
-	</select>
-	
-	<!-- 최신 기사 목록 -->
-	<select id="selectLatestPage" resultType="com.ex.data.NewsDTO">
-		select num, title, thumbUrl, reg from news order by num desc offset #{offset} rows fetch next #{limit} rows only
-	</select>
-	
-	<!-- 전체 글 수 -->
-	<select id="countAll" resultType="int">
-		select count(*) from news
-	</select>
-	
+
+
+  <!-- 3. 최신 목록 (페이징) -->
+  <select id="selectLatestPage"
+          parameterType="map"
+          resultType="com.ex.data.NewsDTO">
+    SELECT num,
+           title,
+           thumbUrl,
+           reg
+    FROM   news
+    ORDER BY num DESC
+    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+  </select>
+
+  <!-- 4. 전체 글 수 -->
+  <select id="countAll" resultType="int">
+    SELECT COUNT(*) FROM news
+  </select>
+
+  <!-- 5. 기사 INSERT -->
+<insert id="insertNews" parameterType="com.ex.data.NewsDTO">
+  INSERT INTO news
+    (num, title, writer, reg, readCount, hot, category, thumbUrl, is_breaking, content)
+  VALUES
+    (news_seq.NEXTVAL,
+     #{title},
+     #{writer},
+     SYSDATE,
+     0,
+     0,
+     #{category},
+     #{thumbUrl},
+     0,
+     #{content,jdbcType=CLOB})
+</insert>
+
+
 
 </mapper>
