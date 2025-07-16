@@ -22,17 +22,14 @@
 		<td colpan="3"><span th:text="${dto.content}"></span></td>
 	</tr>
 	<tr>
-		<td>첨부자료</td>
-		<td>
+		<td align="center">첨부자료</td>
+		<td align="center">
 		    <div th:if="${dto.file_Mime_Type != null and #strings.startsWith(dto.file_Mime_Type, 'image')}">
 		        <img th:src="@{/upload/{file}(file=${dto.file_Saved_Name})}" style="max-width:300px;">
 		    </div>
 		    <div th:unless="${dto.file_Mime_Type != null and #strings.startsWith(dto.file_Mime_Type, 'image')}">
-		        <a th:href="@{/report/download(file=${dto.file_Saved_Name})}"
-		           th:text="${dto.file_Original_Name}"></a>
+		        <span >없음</span>
 		    </div>
 		</td>
 	</tr>
 </table>
-<p>file_Saved_Name = [[${dto.file_Saved_Name}]]</p>
-<p>file_Mime_Type = [[${dto.file_Mime_Type}]]</p>
