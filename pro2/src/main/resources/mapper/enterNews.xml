@@ -5,21 +5,10 @@
 <mapper namespace="com.ex.repository.EnterNewsMapper">
 	<!-- 1. 일간 조회수 TOP10 뉴스 (상단 슬라이드용) -->
 	<select id="getTop10DailyNews" resultType="com.ex.data.EnterNewsDTO">
-		select
-		num,
-		title,
-		content,
-		writer_id,
-		null as writer_nickname,
-		null as writer_email,
-		reg,
-		read_count,
-		category,
-		hot
+		select num, title, content, writer_id, null as writer_nickname, null as writer_email, reg, readcount, category, hot
 		from enter_news
-		where status = 1
-		and to_char(reg, 'YYYY-MM-DD') = to_char(sysdate, 'YYYY-MM-DD')
-		order by read_count desc
+		where status = 1 and to_char(reg, 'YYYY-MM-DD') = to_char(sysdate, 'YYYY-MM-DD')
+		order by readcount desc
 		fetch first 10 rows only
 	</select>
 
@@ -33,7 +22,7 @@
 		null as writer_nickname,
 		null as writer_email,
 		reg,
-		read_count,
+		readcount,
 		category,
 		hot
 		from enter_news
@@ -42,5 +31,10 @@
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>
 
-	
+	<!-- 연예 기사 생성 -->
+	<insert id="insertNews" parameterType="com.ex.data.EnterNewsDTO">
+		INSERT INTO enter_news (num, title, content, writer_id, reg, readcount, category, hot, status, thumbnail) 
+		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writerId}, SYSDATE, 0, #{category}, 0, 1, #{thumbnail})
+	</insert>
+
 </mapper>

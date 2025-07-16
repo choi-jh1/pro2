@@ -30,4 +30,8 @@ public class SportsService {
 		return sportsMapper.sportsList();
 	}
 	
+	// 카테고리별 스포츠 기사 목록
+	public List<SportsDTO> sprotsCateList(int cate){
+		return sportsMapper.sportsCateList(cate);
+	}
 }

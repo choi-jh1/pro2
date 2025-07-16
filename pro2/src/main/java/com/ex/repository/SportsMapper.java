@@ -3,6 +3,7 @@ package com.ex.repository;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ex.data.SportsCateDTO;
@@ -17,4 +18,6 @@ public interface SportsMapper {
 	public List<SportsCateDTO> cate();
 	// 스포츠기사 목록
 	public List<SportsDTO> sportsList();
+	// 카테고리별 스포츠기사 목록
+	public List<SportsDTO> sportsCateList(@Param("cate") int cate);
 }

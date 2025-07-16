@@ -60,4 +60,10 @@ public class UsersController {
 		session.invalidate();
 		return "redirect:/user/main";
 	}
+	
+	// 마이페이지
+	@GetMapping("myPage")
+	public String myPage() {
+		return "/user/myPage";
+	}
 }
