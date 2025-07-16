@@ -20,7 +20,7 @@
 			<td>
 				<a th:href="@{|/report/content?pageNum=${pageNum}&report_id=${report.report_id}|}"><span th:text="${report.title}"></span></a>
 			</td>
-			<td th:text="${#temporals.format(report.reg, 'yy-MM-dd')}"></td>
+			<td th:text="${#temporals.format(report.reg, 'yy-MM-dd HH:mm')}"></td>
 		</tr>
 	</table>
 </div>

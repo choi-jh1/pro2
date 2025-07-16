@@ -35,9 +35,9 @@ public class ReportController {
 
     @GetMapping("list")
     public String list(Model model, @RequestParam(name="pageNum", defaultValue="1") int pageNum) {
-        int pageSize = 5;
+        int pageSize = 10;
         int currentPage = pageNum;
-        int start = (currentPage - 1)*pageSize;
+        int start = (currentPage - 1)*pageSize+1;
         int end = currentPage * pageSize;
         int reportCount = reportService.reportCount();
         

@@ -20,6 +20,17 @@
 	<tr align="center">
 		<td width="125">제보 글 내용</td>
 		<td colpan="3"><span th:text="${dto.content}"></span></td>
-		
+	</tr>
+	<tr>
+	    <td>첨부자료</td>
+	    <td>
+	        <div th:if="${dto.fileMimeType != null and dto.fileMimeType?.startsWith('image')}">
+	            <img th:src="@{/upload/{file}(file=${dto.fileSavedName})}" style="max-width:300px;">
+	        </div>
+	        <div th:unless="${dto.fileMimeType != null and dto.fileMimeType?.startsWith('image')}">
+	            <a th:href="@{/report/download(file=${dto.fileSavedName})}"
+	               th:text="${dto.fileOriginalName}"></a>
+	        </div>
+	    </td>
 	</tr>
 </table>
