@@ -15,6 +15,9 @@ public class ReportBoardDTO {
 	private LocalDate reg;		// 작성날짜
 	private String status;		// 상태
 	private String assigned;	// 담당기자
-	private String img;			// 첨부파일
+	private String fileOriginalName;
+	private String fileSavedName;
+	private String fileMimeType;
+	private Long fileSize;
 	private String email;		// 이메일
 }

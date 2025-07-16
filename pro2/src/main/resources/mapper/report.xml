@@ -1,10 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 제보 글 DB에 넣기 -->
 <mapper namespace="com.ex.repository.ReportMapper">
-
-
-
+	<insert id="insertReport">
+  insert into REPORTBOARD (
+    reportId,
+    title,
+    content,
+    writerId,
+    writerName,
+    writerPw,
+    status,
+    assigned,
+    fileOriginalName,
+    fileSavedName,
+    fileMimeType,
+    fileSize,
+    email
+  ) values (
+    reportId_seq.NEXTVAL,
+    #{title},
+    #{content},
+    #{writerId},
+    #{writerName},
+    #{writerPw},
+    '대기중',
+    #{assigned, jdbcType=VARCHAR},
+    #{fileOriginalName, jdbcType=VARCHAR},
+    #{fileSavedName, jdbcType=VARCHAR},
+    #{fileMimeType, jdbcType=VARCHAR},
+    #{fileSize, jdbcType=NUMERIC},
+    #{email}
+  )
+</insert>
 
 </mapper>

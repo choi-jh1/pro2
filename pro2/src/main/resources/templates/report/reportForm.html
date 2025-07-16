@@ -1,11 +1,11 @@
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" th:href="@{/report.css}">
+  <link rel="stylesheet" th:href="@{/css/report.css}">
 </head>
 
 <h2 style="text-align:center;">제보 게시판</h2>
 <hr><br><br>
-<form th:action="@{/report/write}" method="post" class="report-form">
+<form th:action="@{/report/writePro}" method="post" class="report-form" enctype="multipart/form-data">
 
   <div class="form-group">
     <label for="title">제목 *</label>
@@ -30,12 +30,12 @@
 
   <div class="form-group">
     <label for="file">첨부파일 *</label>
-    <input type="file" id="file" name="img" />
+    <input type="file" id="file" name="file" multiple/>
   </div>
   
 
   <div class="form-buttons">
     <button type="reset">취소</button>
-    <button type="submit">작성완료</button>
+    <button type="submit">제보하기</button>
   </div>
 </form>
