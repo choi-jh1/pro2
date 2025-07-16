@@ -24,4 +24,6 @@ public class EnterNewsDTO {
     private int hot;
     
     private int status;
+    
+    private String thumbnail;
 }
