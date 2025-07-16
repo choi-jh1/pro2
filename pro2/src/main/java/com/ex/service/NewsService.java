@@ -24,7 +24,7 @@ public class NewsService {
 	
 	// 속보 3개 기사
 	public List<NewsDTO> breakingThree(){
-		return mapper.selectBreaking(3);
+		return mapper.selectBreakingByTitle(3);
 	}
 	
 	// 최신 목록
@@ -40,6 +40,14 @@ public class NewsService {
 	public boolean isLastPage(int page) {
 		int total = mapper.countAll();
 		return page * page_size >= total;
+	}
+
+	public List<NewsDTO> getBreakingNews(int i) {
+		return null;
+	}
+
+	public void insert(NewsDTO dto) {
+		
 	}
 	
 }

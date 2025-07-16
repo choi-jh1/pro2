@@ -1,12 +1,34 @@
 package com.ex.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+
+import com.ex.data.NewsDTO;
 import com.ex.service.NewsService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -16,13 +38,73 @@ public class NewsController {
 
     private final NewsService newsService;
 
-    @GetMapping
+    @GetMapping("home")
     public String home(Model model) {
-        model.addAttribute("latestFive",    newsService.latestFive()); 
-        model.addAttribute("breakingThree", newsService.breakingThree());
-        model.addAttribute("latestPage1",   newsService.latestPage(1));
-        model.addAttribute("lastPage",      newsService.isLastPage(1));
-
-        return "news/home"; // templates/news/home.html로 이동
+    	// 최신 뉴스 5개
+        List<NewsDTO> latest = newsService.latestFive();
+        model.addAttribute("latestNews", latest);
+        
+        // 속보 3개
+        List<NewsDTO> breakingNews = newsService.getBreakingNews(3);
+        model.addAttribute("breakingNews", breakingNews);
+        
+        return "news/home"; // news/home.html로 이동
     }
+    
+    @GetMapping("write")
+    public String writeForm() {
+    	return "news/write";	// news/write.html 이동 
+    }
+ 
+    @PostMapping("writePro")
+    public String writePro(@ModelAttribute NewsDTO dto) {
+
+        // 본문에서 첫 이미지 src 추출
+        String thumbnail = extractFirstImageSrc(dto.getContent());
+        if (thumbnail != null) {
+            dto.setThumbUrl(thumbnail);
+        } else {
+            dto.setThumbUrl("/images/default.jpg"); // 이미지 없을 때 기본값
+        }
+        
+        // writer 누락 시 임시 지정
+        if (dto.getWriter() == null || dto.getWriter().isBlank()) {
+            dto.setWriter("관리자");
+        }
+
+        newsService.insert(dto);
+        return "redirect:/news/home";
+    }
+
+ // NewsController 클래스 안쪽 아무 곳 (writePro 아래 등) 에 넣어주세요
+    private String extractFirstImageSrc(String html) {
+        if (html == null || html.isBlank()) return null;
+
+        Document doc = Jsoup.parse(html);   // ① HTML 파싱
+        Element img  = doc.selectFirst("img[src]"); // ② 첫 <img src=""> 찾기
+
+        return img != null ? img.attr("src") : null; // ③ src 값 or null
+    }
+    
+    
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ex.repository.SportsMapper">
+	<insert id="boardWrite">
+		insert into sports(boardNum,title,cateId,thumbnail,content) values(sports_seq.nextval,#{title},#{cateId},#{thumbnail, jdbcType=VARCHAR},#{content})
+	</insert>
+	
+	<select id="cate" resultType="com.ex.data.SportsCateDTO">
+		select * from sportsCate
+	</select>
+	
+	<select id="sportsList" resultType="com.ex.data.SportsDTO">
+		select * from sports
+	</select>
+</mapper>
