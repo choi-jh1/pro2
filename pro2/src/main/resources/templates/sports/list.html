@@ -1,0 +1,7 @@
+<div th:each="dto:${list}">
+    <div class="article-box" >
+		
+        <img th:src="${dto.thumbnail}" alt="썸네일" style="width:150px; height:100px; object-fit:cover;">
+        <h3>[[${dto.title}]]</h3>
+	</div>
+</div>

@@ -32,10 +32,10 @@ public class UsersController {
 	// 로그인 확인
 	@PostMapping("login")
 	public String login(UsersDTO dto,HttpSession session) {
-		int lc = usersService.loginCheck(dto);
-		if(lc==1) {
-			session.setAttribute("sid",dto.getId());
-			session.setAttribute("role",dto.getRole());
+		UsersDTO user = usersService.loginCheck(dto);
+		if(user != null) {
+			session.setAttribute("sid",user.getId());
+			session.setAttribute("role",user.getRole());
 		}
 		
 		return "redirect:/user/main";

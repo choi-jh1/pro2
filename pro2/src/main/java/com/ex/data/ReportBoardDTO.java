@@ -1,20 +1,22 @@
 package com.ex.data;
 
 import java.time.LocalDate;
-
 import lombok.Data;
 
-@Data	
+@Data
 public class ReportBoardDTO {
-	private int reportId ; 		// 제보 번호
-	private String title;  		// 제목
-	private String content;		// 내용
-	private String writerId;	// 작성자ID
-	private String writerName;	// 작성자 닉네임
-	private String writerPw;	// 작성자 비밀번호
-	private LocalDate reg;		// 작성날짜
-	private String status;		// 상태
-	private String assigned;	// 담당기자
-	private String img;			// 첨부파일
-	private String email;		// 이메일
+    private int reportId;		// 제보 번호
+    private String title;		// 제보글 이름
+    private String content;		// 제보글 내용
+    private String writerId;	// 제보자 아이디
+    private String writerName;	// 제보자 닉네임
+    private String writerPw;	// 제보자 비밀번호
+    private LocalDate reg;		// 작성일
+    private String status;		// 상태(대기중)
+    private String assigned;	// 권한(기자)
+    private String fileOriginalName;	// 파일 원래이름
+    private String fileSavedName;		// db에 저장된이름
+    private String fileMimeType;		// ㄷ타입
+    private Long fileSize;				// 크기
+    private String email;
 }

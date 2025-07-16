@@ -9,16 +9,22 @@
   <div class="top-bar">
     <div class="date">2025.07.03</div>
     <div class="user-menu">
-      <a th:href="@{/report/write}">기사제보</a>
+      <a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
 	  <span th:if="${session.sid == null}">
 	      <a th:href="@{/user/login}">로그인</a>
 	      <a th:href="@{/user/insert}">회원가입</a>
 	  </span>
-	  <span th:if="${session.sid != null}">
+	  <span th:if="${session.sid != null and session.role == 'admin'}">
+			  <a th:href="@{/user/logout}">로그아웃</a>
+			  <a th:href="@{/admin/adminPage}">관리자페이지</a>
+	  </span>
+	  <span th:if="${session.sid != null and session.role != 'admin'}">
 	  	      <a th:href="@{/user/logout}">로그아웃</a>
+			  <a th:href="@{/user/myPage}">마이페이지</a>
 	  </span>
 	</div>
   </div>
+
   <nav class="main-nav">
     <ul>
       <li><a href="#">뉴스</a></li>
@@ -37,7 +43,6 @@
       <li><a href="#">야구2</a></li>
       <li><a href="#">축구3</a></li>
       <li><a href="#">배구4</a></li>
-
       <li><a href="#">농구</a></li>
     </ul>
   </nav>
