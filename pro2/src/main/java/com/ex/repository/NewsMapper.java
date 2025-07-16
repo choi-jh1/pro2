@@ -1,13 +1,23 @@
 package com.ex.repository;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import com.ex.data.NewsDTO;
 
 @Mapper
-@Repository
 public interface NewsMapper {
-	// 메인 뉴스
-	public NewsDTO mainNews();
+
+    /* 메인 최신 5개 */
+    List<NewsDTO> selectLatest(@Param("limit") int limit);
+
+    /* 글 저장 */
+    int insertNews(NewsDTO dto);
+
+    /* --------- 옵션(속보·페이징) --------- */
+    List<NewsDTO> selectBreakingByTitle(@Param("limit") int limit);
+    List<NewsDTO> selectLatestPage(Map<String, Object> param);
+    int countAll();
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>뉴스 홈</title>
+</head>
+<body>
+	<h1>최신 뉴스 5개 (좌우로 정렬해야함)</h1>
+	<ul>
+		<li th:each="news : ${latestNews}">
+			<a th:href="@{/news/content/{num}(num=${news.num})}">
+				<img th:src="${news.thumbUrl}" alt="썸네일" class="w-40 h-24 object-cover rounded" /><br>
+				<span th:text="${news.title}">뉴스 제목</span>
+			</a>
+			<div th:utext="${news.content}"></div>
+		</li>
+	</ul>
+	<h2>속보 뉴스 3개 (좌우로 정렬해야함)</h2>
+	<ul>
+	  <li th:each="news : ${breakingNews}">
+	    <a th:href="@{/news/content/{num}(num=${news.num})}">
+	      <img th:src="${news.thumbUrl}" alt="썸네일" />
+	      <span th:text="${news.title}"></span>
+	    </a>
+	  </li>
+	</ul>
+  
+</body>
+</html>

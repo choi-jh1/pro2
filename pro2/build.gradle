@@ -39,6 +39,9 @@ dependencies {
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
   	// 오라클
   	runtimeOnly 'com.oracle.database.jdbc:ojdbc17'
+  	
+  	implementation 'commons-io:commons-io:2.15.0'
+  	implementation 'org.jsoup:jsoup:1.17.2'
 }
 
 tasks.named('test') {
