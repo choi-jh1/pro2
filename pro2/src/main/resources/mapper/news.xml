@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	"https://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
 <mapper namespace="com.ex.repository.NewsMapper">
 
@@ -65,6 +65,11 @@
      0,
      #{content,jdbcType=CLOB})
 </insert>
+	
+	<!-- <정치> 기사 최신 순 -->
+	<select id="selectPolitics" resultType="com.ex.data.NewsDTO">
+		select num, title, thumbUrl from news where category = '정치' order by num desc
+	</select>
 
 
 

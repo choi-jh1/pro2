@@ -1,16 +1,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<<<<<<< HEAD
-<mapper namespace="com.ex.repository.ReportMapper ">
 
-
-
-=======
 <mapper namespace="com.ex.repository.ReportMapper">
 <insert id="insertReport" parameterType="com.ex.data.ReportBoardDTO">
  INSERT INTO report_board (report_id, title, content, writer_id, writer_name, writer_pw, status, assigned, file_original_name, file_saved_name, file_mime_type, file_size, reg, email)
  		           VALUES (report_id_seq.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=CLOB}, #{writerId, jdbcType=VARCHAR}, #{writerName, jdbcType=VARCHAR}, #{writerPw, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{assigned, jdbcType=VARCHAR}, #{fileOriginalName, jdbcType=VARCHAR}, #{fileSavedName, jdbcType=VARCHAR}, #{fileMimeType, jdbcType=VARCHAR}, #{fileSize, jdbcType=NUMERIC}, SYSDATE, #{email, jdbcType=VARCHAR})</insert>
->>>>>>> main
 
 </mapper>

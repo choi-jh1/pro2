@@ -23,7 +23,7 @@ public class NewsService {
 	}
 	
 	// 속보 3개 기사
-	public List<NewsDTO> breakingThree(){
+	public List<NewsDTO> getBreakingNews() {
 		return mapper.selectBreakingByTitle(3);
 	}
 	
@@ -42,12 +42,14 @@ public class NewsService {
 		return page * page_size >= total;
 	}
 
-	public List<NewsDTO> getBreakingNews(int i) {
-		return null;
-	}
 
 	public void insert(NewsDTO dto) {
 		
+	}
+	
+	// 정치 기사 페이지
+	public List<NewsDTO> getPoliticsNews(){
+		return mapper.selectPolitics();
 	}
 	
 }

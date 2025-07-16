@@ -20,4 +20,7 @@ public interface NewsMapper {
     List<NewsDTO> selectBreakingByTitle(@Param("limit") int limit);
     List<NewsDTO> selectLatestPage(Map<String, Object> param);
     int countAll();
+    
+    /* <정치> 기사 최신순 */
+    List<NewsDTO> selectPolitics();
 }
