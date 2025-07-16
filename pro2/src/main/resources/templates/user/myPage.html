@@ -1,6 +1,6 @@
 
 <link rel="stylesheet" th:href="@{/css/main.css}">
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 	.body_container {
 	  display: flex;
@@ -87,20 +87,24 @@
 </div>
 
 <script>
-  $(document).ready(function () {
-    $('.menu-item').click(function () {
-      const url = $(this).data('url');
-      $('#content-area').html('<p>로딩 중...</p>');
-      $.ajax({
-        url: url,
-        type: 'GET',
-        success: function (data) {
-          $('#content-area').html(data);
-        },
-        error: function () {
-          $('#content-area').html('<p>오류가 발생했습니다.</p>');
-        }
-      });
-    });
-  });
+	$(document).ready(function () {
+	  $('.menu-item').click(function () {
+	    const url = $(this).data('url');
+	    $('#content-area').html('<p>로딩 중...</p>');
+
+	    $.ajax({
+	      url: url,
+	      type: 'GET',
+	      dataType: 'html',
+	      success: function (data) {
+	        // 전체 HTML에서 원하는 부분만 추출 (예: .inner-content)
+			
+	        $('#content-area').html(data);
+	      },
+	      error: function () {
+	        $('#content-area').html('<p>오류 발생</p>');
+	      }
+	    });
+	  });
+	});
 </script>
