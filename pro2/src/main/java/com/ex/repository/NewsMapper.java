@@ -11,7 +11,7 @@ import com.ex.data.NewsDTO;
 public interface NewsMapper {
 
     /* 메인 최신 5개 */
-    List<NewsDTO> selectLatest(@Param("limit") int limit);
+	List<NewsDTO> selectLatest();
 
     /* 글 저장 */
     int insertNews(NewsDTO dto);

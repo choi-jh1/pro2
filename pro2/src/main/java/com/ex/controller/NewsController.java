@@ -26,7 +26,7 @@ public class NewsController {
     @GetMapping("home")
     public String home(Model model) {
     	// 최신 뉴스 5개
-        List<NewsDTO> latest = newsService.latestFive();
+    	List<NewsDTO> latest = newsService.latestFive();
         model.addAttribute("latestNews", latest);
         
         // 속보 3개
@@ -59,7 +59,7 @@ public class NewsController {
 
         newsService.insert(dto);
         return "redirect:/news/home";
-    }
+    } 
     
     @GetMapping("politics")
     public String politicsPage(Model model) {

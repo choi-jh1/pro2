@@ -18,8 +18,8 @@ public class NewsService {
 	private static final int page_size = 10;
 	
 	// 메인 최신 5개 기사
-	public List<NewsDTO> latestFive(){
-		return mapper.selectLatest(5); 
+	public List<NewsDTO> latestFive() {
+        return mapper.selectLatest();
 	}
 	
 	// 속보 3개 기사
