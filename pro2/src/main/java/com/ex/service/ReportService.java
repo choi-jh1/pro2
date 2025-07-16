@@ -27,15 +27,15 @@ public class ReportService {
             } catch (IOException e) {
                 throw new RuntimeException("파일 저장 실패", e);
             }
-            dto.setFileOriginalName(file.getOriginalFilename());
-            dto.setFileSavedName(savedName);
-            dto.setFileMimeType(file.getContentType());
-            dto.setFileSize(file.getSize());
+            dto.setFile_Original_Name(file.getOriginalFilename());
+            dto.setFile_Saved_Name(savedName);
+            dto.setFile_Mime_Type(file.getContentType());
+            dto.setFile_Size(file.getSize());
         } else {
-            dto.setFileOriginalName("없음");
-            dto.setFileSavedName("없음");
-            dto.setFileMimeType("없음");
-            dto.setFileSize(0L);
+            dto.setFile_Original_Name("없음");
+            dto.setFile_Saved_Name("없음");
+            dto.setFile_Mime_Type("없음");
+            dto.setFile_Size(0L);
         }
         if (dto.getAssigned() == null || dto.getAssigned().isBlank()) {
             dto.setAssigned("미지정");

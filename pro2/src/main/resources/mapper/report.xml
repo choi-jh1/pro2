@@ -1,18 +1,12 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<<<<<<< HEAD
-<mapper namespace="com.ex.repository.ReportMapper ">
 
-
-
-=======
 <mapper namespace="com.ex.repository.ReportMapper">
-<<<<<<< HEAD
 <!-- DB에 글 저장하기-->
 	<insert id="insertReport" parameterType="com.ex.data.ReportBoardDTO">
 	 	INSERT INTO report_board (report_id, title, content, writer_id, writer_name, writer_pw, status, assigned, file_original_name, file_saved_name, file_mime_type, file_size, reg, email)
-	 		           	  VALUES (report_id_seq.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=CLOB}, #{writerId, jdbcType=VARCHAR}, #{writerName, jdbcType=VARCHAR}, #{writerPw, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{assigned, jdbcType=VARCHAR}, #{fileOriginalName, jdbcType=VARCHAR}, #{fileSavedName, jdbcType=VARCHAR}, #{fileMimeType, jdbcType=VARCHAR}, #{fileSize, jdbcType=NUMERIC}, SYSDATE, #{email, jdbcType=VARCHAR})</insert>
+	 		           	  VALUES (report_id_seq.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=CLOB}, #{writer_Id, jdbcType=VARCHAR}, #{writer_Name, jdbcType=VARCHAR}, #{writer_Pw, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{assigned, jdbcType=VARCHAR}, #{file_Original_Name, jdbcType=VARCHAR}, #{file_Saved_Name, jdbcType=VARCHAR}, #{file_Mime_Type, jdbcType=VARCHAR}, #{file_Size, jdbcType=NUMERIC}, SYSDATE, #{email, jdbcType=VARCHAR})</insert>
 	
 	<!-- 제보글 목록 조회 -->
 	<select id="reportList" resultType="com.ex.data.ReportBoardDTO">
@@ -29,12 +23,5 @@
 	<!-- 글 내용 -->
 	<select id="reportContent" resultType="com.ex.data.ReportBoardDTO">
 		select * from report_board where report_id=#{report_id}
-	</select>
-=======
-<insert id="insertReport" parameterType="com.ex.data.ReportBoardDTO">
- INSERT INTO report_board (report_id, title, content, writer_id, writer_name, writer_pw, status, assigned, file_original_name, file_saved_name, file_mime_type, file_size, reg, email)
- 		           VALUES (report_id_seq.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=CLOB}, #{writerId, jdbcType=VARCHAR}, #{writerName, jdbcType=VARCHAR}, #{writerPw, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{assigned, jdbcType=VARCHAR}, #{fileOriginalName, jdbcType=VARCHAR}, #{fileSavedName, jdbcType=VARCHAR}, #{fileMimeType, jdbcType=VARCHAR}, #{fileSize, jdbcType=NUMERIC}, SYSDATE, #{email, jdbcType=VARCHAR})</insert>
->>>>>>> main
-
->>>>>>> main
+	</select> 
 </mapper>

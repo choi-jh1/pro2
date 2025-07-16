@@ -42,6 +42,7 @@ dependencies {
   	
   	implementation 'commons-io:commons-io:2.15.0'
   	implementation 'org.jsoup:jsoup:1.17.2'
+  	
 }
 
 tasks.named('test') {
