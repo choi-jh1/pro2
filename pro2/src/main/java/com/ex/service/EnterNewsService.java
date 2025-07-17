@@ -55,4 +55,12 @@ public class EnterNewsService {
 		int result=enterNewsMapper.insertNews(dto);
 		return result;
 	}
+	
+	public void increaseReadCount(int num) {
+		enterNewsMapper.increaseReadCount(num);
+	}
+	
+	public EnterNewsDTO readEnterNews(int num) {
+		return enterNewsMapper.readEnterNews(num);
+	}
 }
