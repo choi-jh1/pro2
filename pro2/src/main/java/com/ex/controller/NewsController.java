@@ -26,8 +26,8 @@ public class NewsController {
     @GetMapping("home")
     public String home(Model model) {
     	// 최신 뉴스 5개
-    	List<NewsDTO> latest = newsService.latestFive();
-        model.addAttribute("latestNews", latest);
+    	List<NewsDTO> latestNews = newsService.selectLatest();
+        model.addAttribute("latestNews", latestNews);
         
         // 속보 3개
         List<NewsDTO> breakingNews = newsService.getBreakingNews();
@@ -40,7 +40,6 @@ public class NewsController {
     public String writeForm() {
     	return "news/write";	// news/write.html 이동 
     }
- 
     @PostMapping("writePro")
     public String writePro(@ModelAttribute NewsDTO dto) {
 
@@ -61,15 +60,30 @@ public class NewsController {
         return "redirect:/news/home";
     } 
     
+    
+    // 정치 카테고리 페이지
     @GetMapping("politics")
     public String politicsPage(Model model) {
     	List<NewsDTO> politicsList = newsService.getPoliticsNews();
     	model.addAttribute("newsList", politicsList);
-    	
     	return "news/politics";
     }
     
+    // 경제 카테고리 페이지
+    @GetMapping("economy")
+    public String economyPage(Model model) {
+    	List<NewsDTO> economyList = newsService.getEconomyNews();
+    	model.addAttribute("newsList", economyList);
+    	return "news/economy";
+    }
     
+    // 사회 카테고리 페이지
+    @GetMapping("society")
+    public String societyPage(Model model) {
+    	List<NewsDTO> societyList = newsService.getSocietyNews();
+    	model.addAttribute("newsList", societyList);
+    	return "news/society";
+    }
     
     
     
@@ -81,10 +95,10 @@ public class NewsController {
     private String extractFirstImageSrc(String html) {
         if (html == null || html.isBlank()) return null;
 
-        Document doc = Jsoup.parse(html);   // ① HTML 파싱
-        Element img  = doc.selectFirst("img[src]"); // ② 첫 <img src=""> 찾기
+        Document doc = Jsoup.parse(html);   // 써머노트 HTML 파싱
+        Element img  = doc.selectFirst("img[src]"); // 첫번째 이미지
 
-        return img != null ? img.attr("src") : null; // ③ src 값 or null
+        return img != null ? img.attr("src") : null; // src 반환
     }
 }
 

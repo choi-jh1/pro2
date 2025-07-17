@@ -7,7 +7,7 @@
 
   <!-- 1. 메인 최신 5개 -->
 <select id="selectLatest" resultType="com.ex.data.NewsDTO">
-  SELECT num, title, thumbUrl, reg
+  SELECT num, title, category, reg, thumbUrl
   FROM news
   ORDER BY reg DESC
   FETCH FIRST 5 ROWS ONLY
@@ -22,9 +22,9 @@
 	         title,
 	         thumbUrl
 	  FROM   news
-	  WHERE  title LIKE '%[속보]%'
+	  WHERE  title LIKE '%속보%'
 	  ORDER BY reg DESC
-	  FETCH FIRST #{limit} ROWS ONLY
+	  FETCH FIRST 3 ROWS ONLY
 	</select>
 
 

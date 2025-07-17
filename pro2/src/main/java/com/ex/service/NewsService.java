@@ -18,7 +18,7 @@ public class NewsService {
 	private static final int page_size = 10;
 	
 	// 메인 최신 5개 기사
-	public List<NewsDTO> latestFive() {
+	public List<NewsDTO> selectLatest() {
         return mapper.selectLatest();
 	}
 	
@@ -30,7 +30,6 @@ public class NewsService {
 	// 최신 목록
 	public List<NewsDTO> latestPage(int page){
 		int offset = (page - 1) * page_size;
-		
 		Map<String, Object> param = new HashMap<>();
 		param.put("offset", offset);
 		param.put("limit", page_size);
@@ -43,13 +42,33 @@ public class NewsService {
 	}
 
 
-	public void insert(NewsDTO dto) {
-		
-	}
-	
 	// 정치 기사 페이지
 	public List<NewsDTO> getPoliticsNews(){
-		return mapper.selectPolitics();
+		return mapper.selectByCategory("politics");
+	}
+	// 경제 기사 페이지
+	public List<NewsDTO> getEconomyNews() {
+		return mapper.selectByCategory("economy");
+	}
+	// 사회 기사 페이지
+	public List<NewsDTO> getSocietyNews() {
+		return mapper.selectByCategory("society");
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 뉴스 저장
+	public void insert(NewsDTO dto) {
+		mapper.insertNews(dto);
+	}
 }
