@@ -14,10 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ex.data.ReportBoardDTO;
 import com.ex.service.ReportService;
 
-<<<<<<< HEAD
 import jakarta.servlet.http.HttpSession;
-=======
->>>>>>> ahn
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
