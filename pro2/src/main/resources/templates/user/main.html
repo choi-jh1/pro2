@@ -18,16 +18,9 @@
 			  <a th:href="@{/user/logout}">로그아웃</a>
 			  <a th:href="@{/admin/adminPage}">관리자 페이지</a>
 	  </span>
-<<<<<<< HEAD
 	  <span th:if="${session.sid != null and session.role == 'user'}">
-=======
-	  <span th:if="${session.sid != null and session.role != 'admin'}">
-
-	  	      <a th:href="@{/user/logout}">로그아웃</a>
-	  <span th:if="${session.sid != null}">
 
 
->>>>>>> cjh
 			  <a th:href="@{/user/myPage}">마이페이지</a>
 	  	      <a th:href="@{/user/logout}">로그아웃</a>
 	  </span>
