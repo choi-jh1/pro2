@@ -5,29 +5,98 @@
   <title>뉴스 홈</title>
 </head>
 	<body>
-		
+		<h1>헤더 넣어야 함</h1>
+		<h1>언론사 정보 해야 함</h1>
+	</body>
+	<body>
 		<nav>
-			<h2>카테고리</h2>
-		  <a th:href="@{/news/politics}">정치</a>
-		  <a th:href="@{/news/economy}">경제</a>
-		  <a th:href="@{/news/society}">사회</a>
+		<h2>카테고리</h2>
+		 	<a th:href="@{/news/politics}">정치</a>
+			<a th:href="@{/news/economy}">경제</a>
+		 	<a th:href="@{/news/society}">사회</a>
 		</nav>
 	
-		<h1>📰 최신 뉴스 5개</h1>
-			<div th:each="news : ${latestNews}">
-		  	<a th:href="@{/news/content/{num}(num=${news.num})}">
-		    	<img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
-		    	<strong th:text="${news.title}">뉴스 제목</strong>
-		 	 </a>
-			</div>
-	
-		<h2>⚡ 속보 뉴스 3개</h2>
-			<div th:each="news : ${breakingNews}">
-		 	 <a th:href="@{/news/content/{num}(num=${news.num})}">
-		    	<img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
+		<h1>최신 뉴스 (각 카테고리 별 5개)(조회수 순)</h1>
+		<h2>정치</h2>
+		<div th:each="news : ${politicsTop5}">
+		  <a th:href="@{/news/content/{num}(num=${news.num})}">
+		    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120" />
+		    <br>
+		    <span th:text="${news.title}">정치 뉴스 제목</span>
+		  </a>
+		  <br>
+		</div>
+
+		<h2>경제</h2>
+		<div th:each="news : ${economyTop5}">
+		  <a th:href="@{/news/content/{num}(num=${news.num})}">
+		    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120" />
+		    <br>
+		    <span th:text="${news.title}">경제 뉴스 제목</span>
+		  </a>
+		  <br>
+		</div>
+
+		<h2>사회</h2>
+		<div th:each="news : ${societyTop5}">
+		  <a th:href="@{/news/content/{num}(num=${news.num})}">
+		    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120" />
+		    <br>
+		    <span th:text="${news.title}">사회 뉴스 제목</span>
+		  </a>
+		  <br>
+		</div>
+
+		<h2>속보 뉴스 3개[나중에 좌우로 설정해야 함]</h2>
+		<div th:each="news : ${breakingNews}">
+		 	<a th:href="@{/news/content/{num}(num=${news.num})}">
+		   		<img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
 		    	<span th:text="${news.title}"></span>
-		 	 </a>
-			</div>
-	
+		 	</a>
+		</div>
+		
+		<h1>최신 뉴스 (더보기 ajax)</h1>
+		<div id="latest-news-list">
+		  <!-- 최신 뉴스 10개씩 여기 추가됨 -->
+		</div>
+
+		<button id="loadMoreBtn">더보기</button>
+
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<script>
+		  let page = 1;
+
+		  function loadLatestNews() {
+		    $.ajax({
+		      url: '/news/latestPage',
+		      method: 'get',
+		      data: { page: page },
+		      success: function(data) {
+		        if (data.length === 0) {
+		          $('#loadMoreBtn').hide(); // 더이상 뉴스 없으면 버튼 숨김
+		          return;
+		        }
+		        data.forEach(function(news) {
+		          $('#latest-news-list').append(`
+		            <div>
+		              <a href="/news/content/${news.num}">
+		                <img src="${news.thumbUrl}" alt="썸네일" width="200" height="120">
+		                <p>${news.title}</p>
+		              </a>
+		            </div>
+		          `);
+		        });
+		        page++;
+		      }
+		    });
+		  }
+
+		  $('#loadMoreBtn').on('click', loadLatestNews);
+
+		  // 페이지 로드 시 1페이지 먼저 로드
+		  $(document).ready(function() {
+		    loadLatestNews();
+		  });
+		</script>
 	</body>
 </html>

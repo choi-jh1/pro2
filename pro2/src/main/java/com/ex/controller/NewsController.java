@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,9 +27,13 @@ public class NewsController {
 
     @GetMapping("home")
     public String home(Model model) {
-    	// 최신 뉴스 5개
-    	List<NewsDTO> latestNews = newsService.selectLatest();
-        model.addAttribute("latestNews", latestNews);
+    	// 카테고리 별 조회수 상위 5개 뉴스
+    	List<NewsDTO> politicsTop5 = newsService.getTop5ByCategory("politics");
+    	List<NewsDTO> economyTop5 = newsService.getTop5ByCategory("economy");
+    	List<NewsDTO> secietyTop5 = newsService.getTop5ByCategory("society");
+        model.addAttribute("politicsTop5", politicsTop5);
+        model.addAttribute("economyTop5", economyTop5);
+        model.addAttribute("secietyTop5", secietyTop5);
         
         // 속보 3개
         List<NewsDTO> breakingNews = newsService.getBreakingNews();
@@ -36,6 +42,7 @@ public class NewsController {
         return "news/home"; // news/home.html로 이동
     }
     
+    // 기사 작성
     @GetMapping("write")
     public String writeForm() {
     	return "news/write";	// news/write.html 이동 
@@ -59,6 +66,15 @@ public class NewsController {
         newsService.insert(dto);
         return "redirect:/news/home";
     } 
+    // NewsController 클래스 안쪽 아무 곳 (writePro 아래 등) 에 넣어주세요
+    private String extractFirstImageSrc(String html) {
+    	if (html == null || html.isBlank()) return null;
+    	
+    	Document doc = Jsoup.parse(html);   // 써머노트 HTML 파싱
+    	Element img  = doc.selectFirst("img[src]"); // 첫번째 이미지
+    	
+    	return img != null ? img.attr("src") : null; // src 반환
+    }
     
     
     // 정치 카테고리 페이지
@@ -85,21 +101,16 @@ public class NewsController {
     	return "news/society";
     }
     
-    
-    
-    
-    
-    
-
- // NewsController 클래스 안쪽 아무 곳 (writePro 아래 등) 에 넣어주세요
-    private String extractFirstImageSrc(String html) {
-        if (html == null || html.isBlank()) return null;
-
-        Document doc = Jsoup.parse(html);   // 써머노트 HTML 파싱
-        Element img  = doc.selectFirst("img[src]"); // 첫번째 이미지
-
-        return img != null ? img.attr("src") : null; // src 반환
+    @GetMapping("latestPage")
+    @ResponseBody
+    public List<NewsDTO> latestPate(@RequestParam("page") int page){
+    	return newsService.latestPage(page);
     }
+    
+    
+    
+    
+
 }
 
 

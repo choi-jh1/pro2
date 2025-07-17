@@ -17,31 +17,7 @@ public class NewsService {
 	private final NewsMapper mapper;
 	private static final int page_size = 10;
 	
-	// 메인 최신 5개 기사
-	public List<NewsDTO> selectLatest() {
-        return mapper.selectLatest();
-	}
-	
-	// 속보 3개 기사
-	public List<NewsDTO> getBreakingNews() {
-		return mapper.selectBreakingByTitle(3);
-	}
-	
-	// 최신 목록
-	public List<NewsDTO> latestPage(int page){
-		int offset = (page - 1) * page_size;
-		Map<String, Object> param = new HashMap<>();
-		param.put("offset", offset);
-		param.put("limit", page_size);
-		return mapper.selectLatestPage(param);
-	}
-	
-	public boolean isLastPage(int page) {
-		int total = mapper.countAll();
-		return page * page_size >= total;
-	}
-
-
+	/*카테고리 <정치><경제><사회>*/
 	// 정치 기사 페이지
 	public List<NewsDTO> getPoliticsNews(){
 		return mapper.selectByCategory("politics");
@@ -54,6 +30,32 @@ public class NewsService {
 	public List<NewsDTO> getSocietyNews() {
 		return mapper.selectByCategory("society");
 	}
+	
+	// 카테고리 별 조회수 상위 5개 뉴스
+	public List<NewsDTO> getTop5ByCategory(String category) {
+        return mapper.selectTop5ByCategory(category);
+	}
+	
+	// 속보 3개 뉴스
+	public List<NewsDTO> getBreakingNews() {
+		return mapper.selectBreakingByTitle(3);
+	}
+	
+	// 최신 뉴스 페이지별 조회 (페이징 처리)
+	public List<NewsDTO> latestPage(int page){
+		int offset = (page - 1) * page_size;
+		Map<String, Object> param = new HashMap<>();
+		param.put("offset", offset);
+		param.put("limit", page_size);
+		return mapper.selectLatestPage(param);
+	}
+	
+	// 전체 글 수 기준 마지막 페이지 여부 체크
+	public boolean isLastPage(int page) {
+		int total = mapper.countAll();
+		return page * page_size >= total;
+	}
+
 	
 	
 	
