@@ -61,7 +61,7 @@ public class SportsController {
 	// 외부폴더에 이미지 생성
 	@PostMapping("uploadImage")
 	@ResponseBody
-	public String uploadImage(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
+	public String uploadImage(@RequestParam MultipartFile file,HttpServletRequest request) {
         String uploadPath = "D:/cjh/upload/";
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         File dest = new File(uploadPath + fileName);
@@ -74,9 +74,16 @@ public class SportsController {
         return "/upload/" + fileName; // 클라이언트가 사용할 URL
 	}
 	
-	@GetMapping("list")
-	public String list(Model model) {
+	// 스포츠 메인
+	@GetMapping("main")
+	public String main(Model model) {
 		model.addAttribute("list",sportsService.sportsList());
+		return "sports/main";
+	}
+	
+	// 스포츠 축구
+	@GetMapping("list")
+	public String list() {
 		return "sports/list";
 	}
 }

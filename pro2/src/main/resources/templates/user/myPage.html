@@ -1,0 +1,110 @@
+
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+	.body_container {
+	  display: flex;
+	  width: 1000px;
+	  margin: 0 auto;
+	}
+	
+	.sidebar {
+	  width: 200px;
+	  border-right: 1px solid #ccc;
+	}
+	.sidebar ul {
+	  list-style: none;
+	  padding: 0;
+	}
+	.sidebar li {
+	  padding: 12px;
+	  cursor: pointer;
+	}
+	.sidebar li:hover {
+	  background-color: #f1f1f1;
+	}
+	.content {
+	  flex-grow: 1;
+	  padding: 20px;
+	  min-height: 400px;
+	}
+</style>
+
+<header class="site-header">
+	<div class="container">
+  <div class="logo">로고</div>
+
+  <div class="top-bar">
+    <div class="date">2025.07.03</div>
+    <div class="user-menu">
+      <a th:href="@{/report/write}">기사제보</a>
+	  <span th:if="${session.sid == null}">
+	      <a th:href="@{/user/login}">로그인</a>
+	      <a th:href="@{/user/insert}">회원가입</a>
+	  </span>
+	  <span th:if="${session.sid != null}">
+	  	      <a th:href="@{/user/logout}">로그아웃</a>
+			  <a th:href="@{/user/myPage}">마이페이지</a>
+	  </span>
+	</div>
+  </div>
+
+  <nav class="main-nav">
+    <ul>
+      <li><a href="#">뉴스</a></li>
+      <li><a href="#">스포츠</a></li>
+      <li><a href="#">엔터</a></li>
+    </ul>
+    <div class="search">
+      <input type="text" placeholder="검색" />
+    </div>
+  </nav>
+
+  <nav class="sub-nav">
+    <ul>
+
+      <li><a href="#">종합1</a></li>
+      <li><a href="#">야구2</a></li>
+      <li><a href="#">축구3</a></li>
+      <li><a href="#">배구4</a></li>
+      <li><a href="#">농구</a></li>
+    </ul>
+  </nav>
+</div>
+</header>
+
+<div class="body_container">
+  <div class="sidebar">
+    <ul>
+      <li class="menu-item" data-url="/user/update">회원 정보 수정</li>
+      <li class="menu-item" data-url="/member/withdraw-form">회원 탈퇴</li>
+    </ul>
+  </div>
+  <div class="content" id="content-area">
+    <!-- 여기에 AJAX로 내용이 들어옴 -->
+    <h3>원하는 메뉴를 선택해주세요</h3>
+  </div>
+</div>
+
+<script>
+	$(document).ready(function () {
+	  $('.menu-item').click(function () {
+	    const url = $(this).data('url');
+	    $('#content-area').html('<p>로딩 중...</p>');
+
+	    $.ajax({
+	      url: url,
+	      type: 'GET',
+	      dataType: 'html',
+	      success: function (data) {
+	        // 전체 HTML에서 원하는 부분만 추출 (예: .inner-content)
+			
+	        $('#content-area').html(data);
+	      },
+	      error: function () {
+	        $('#content-area').html('<p>오류 발생</p>');
+	      }
+	    });
+	  });
+	});
+</script>

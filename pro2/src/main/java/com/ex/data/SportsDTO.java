@@ -8,8 +8,10 @@ public class SportsDTO {
 	private int boardNum;
 	private String title;
 	private String content;
+	private String writer;
 	private int cateId;
 	private String thumbnail;
 	private int readCount;
+	private String status;
 	private LocalDateTime reg;
 }

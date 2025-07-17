@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	"https://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
 <mapper namespace="com.ex.repository.NewsMapper">
 
-  <!-- 1. 메인 최신 N개 -->
-  <select id="selectLatest"
-          parameterType="int"
-          resultType="com.ex.data.NewsDTO">
-    SELECT num,
-           title,
-           thumbUrl
-    FROM   news
-    ORDER BY num DESC
-    FETCH FIRST #{limit} ROWS ONLY
-  </select>
+  <!-- 1. 메인 뉴스 (각 카테고리 별 5개씩)(조회수 순) -->
+	<select id="selectTop5ByCategory" parameterType="String" resultType="com.ex.data.NewsDTO">
+ 		select * from news where category = #{category} order by readCount desc
+ 		fetch first 5 rows only
+ 	</select>
+
 
   <!-- 2. 속보 N개 (옵션) -->
 	<select id="selectBreakingByTitle"
@@ -25,9 +20,9 @@
 	         title,
 	         thumbUrl
 	  FROM   news
-	  WHERE  title LIKE '%[속보]%'
+	  WHERE  title LIKE '%속보%'
 	  ORDER BY reg DESC
-	  FETCH FIRST #{limit} ROWS ONLY
+	  FETCH FIRST 3 ROWS ONLY
 	</select>
 
 
@@ -65,6 +60,11 @@
      0,
      #{content,jdbcType=CLOB})
 </insert>
+	
+	<!-- 카테고리 별 기사 최신 순 -->
+	<select id="selectByCategory" parameterType="string" resultType="com.ex.data.NewsDTO">
+		select * from news where category = #{category} order by reg desc
+	</select>
 
 
 
