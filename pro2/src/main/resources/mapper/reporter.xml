@@ -12,4 +12,8 @@
   	<select id="reporterList" resultType="com.ex.data.UsersDTO">
   		select * from users where role='reporter'
   	</select>
+  	
+  	<select id="selectById" parameterType="string" resultType="com.ex.data.ReporterDTO">
+  		select id, profile_img, category, intro from reporter where id = #{id}
+  	</select>
   </mapper>

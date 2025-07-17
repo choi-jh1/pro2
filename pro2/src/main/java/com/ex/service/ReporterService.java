@@ -12,21 +12,28 @@ import com.ex.repository.UsersMapper;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
-	private final ReporterMapper repoterMapper;
+	private final ReporterMapper reporterMapper;
 	@Autowired
 	private UsersMapper userMapper;
+	
+	// ID로 기자 정보 가져오기
+	public ReporterDTO getReporterById(String id) {
+		return reporterMapper.selectById(id);
+	}
+	
 	// 회원가입
 	public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
 		user.setRole("reporter");
 		userMapper.userInsert(user);
-		repoterMapper.reporterInsert(reporter);
+		reporterMapper.reporterInsert(reporter);
 		
 	}
 	// 기자 목록 조회
 	public List<UsersDTO> reporterList() {
-		return repoterMapper.reporterList();
+		return reporterMapper.reporterList();
 	}
 }
