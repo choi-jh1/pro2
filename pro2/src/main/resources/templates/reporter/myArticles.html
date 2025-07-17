@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>내가 쓴 기사 목록</title>
+</head>
+<body>
+  <h2>내가 쓴 기사 목록</h2>
+
+  <table border="1">
+    <tr>
+      <th>제목</th>
+      <th>작성일</th>
+      <th>조회수</th>
+    </tr>
+    <tr th:each="news : ${newsList}">
+      <td>
+        <a th:href="@{/news/content/{num}(num=${news.num})}" th:text="${news.title}">제목</a>
+      </td>
+      <td th:text="${#temporals.format(news.reg, 'yyyy-MM-dd')}">날짜</td>
+      <td th:text="${news.readCount}">조회수</td>
+    </tr>
+  </table>
+</body>
+</html>

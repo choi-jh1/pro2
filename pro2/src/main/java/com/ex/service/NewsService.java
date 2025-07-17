@@ -1,6 +1,7 @@
 package com.ex.service;
 
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,12 @@ public class NewsService {
 		
 	}
 	
-	
+	public List<NewsDTO> getNewsByWriter(String writer){	
+		if(writer == null || writer.isBlank()) {
+			return Collections.emptyList();
+		}
+		return mapper.selectByWriter(writer);
+	}
 	
 	
 	

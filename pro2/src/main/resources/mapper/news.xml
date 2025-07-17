@@ -5,118 +5,58 @@
 
 <mapper namespace="com.ex.repository.NewsMapper">
 
-  <!-- 1. 메인 뉴스 (각 카테고리 별 5개씩)(조회수 순) -->
+	<!-- 1. 메인 뉴스 (각 카테고리 별 5개씩)(조회수 순) -->
 	<select id="selectTop5ByCategory" parameterType="String" resultType="com.ex.data.NewsDTO">
-	  SELECT n.num,
-	         n.title,
-	         n.writer,
-	         r.WRITERNAME AS writerName,
-	         r.PROFILE_IMG AS profile_img,
-	         n.readCount,
-	         n.category,
-	         n.thumbUrl,
-	         n.reg,
-	         n.hot,
-	         n.is_breaking
-	  FROM news n
-	  LEFT JOIN reporter r ON n.writer = r.id
-	  WHERE n.category = #{category}
-	  ORDER BY n.readCount DESC
-	  FETCH FIRST 5 ROWS ONLY
+		SELECT n.num, n.title, n.writer, r.WRITERNAME AS writerName,
+		r.PROFILE_IMG AS profile_img, n.readCount, n.category, n.thumbUrl,
+		n.reg, n.hot, n.is_breaking from news n LEFT JOIN reporter r ON n.writer = r.id
+		WHERE n.category = #{category} ORDER BY n.readCount DESC FETCH FIRST 5 ROWS ONLY
+		</select>
+	
+	
+	<!-- 2. 속보 3개 -->
+	<select id="selectBreakingByTitle" parameterType="int" resultType="com.ex.data.NewsDTO">
+		SELECT n.num, n.title, n.thumbUrl, n.reg, r.writerName, r.profile_img
+	    FROM news n LEFT JOIN reporter r ON n.writer = r.id WHERE n.title LIKE '%속보%'
+	    ORDER BY n.reg DESC FETCH FIRST #{limit} ROWS ONLY
 	</select>
-
-
-  <!-- 2. 속보 3개 -->
-  <select id="selectBreakingByTitle"
-          parameterType="int"
-          resultType="com.ex.data.NewsDTO">
-    SELECT n.num,
-           n.title,
-           n.thumbUrl,
-           n.reg,
-           r.writerName,
-           r.profile_img
-    FROM news n
-    LEFT JOIN reporter r ON n.writer = r.id
-    WHERE n.title LIKE '%속보%'
-    ORDER BY n.reg DESC
-    FETCH FIRST #{limit} ROWS ONLY
-  </select>
-
-  <!-- 3. 최신 목록 (페이징) -->
-  <select id="selectLatestPage"
-          parameterType="map"
-          resultType="com.ex.data.NewsDTO">
-    SELECT n.num,
-           n.title,
-           n.thumbUrl,
-           n.reg,
-           n.writer,
-           r.writerName,
-           r.profile_img,
-           n.category
-    FROM news n
-    LEFT JOIN reporter r ON n.writer = r.id
-    ORDER BY n.num DESC
-    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
-  </select>
-
-  <!-- 4. 전체 글 수 -->
-  <select id="countAll" resultType="int">
-    SELECT COUNT(*) FROM news
-  </select>
-
-  <!-- 5. 기사 INSERT -->
-  <insert id="insertNews" parameterType="com.ex.data.NewsDTO">
-    INSERT INTO news
-      (num, title, writer, reg, readCount, hot, category, thumbUrl, is_breaking, content)
-    VALUES
-      (news_seq.NEXTVAL,
-       #{title},
-       #{writer},
-       SYSDATE,
-       0,
-       0,
-       #{category},
-       #{thumbUrl},
-       0,
-       #{content,jdbcType=CLOB})
-  </insert>
-
-  <!-- 카테고리 별 기사 최신 순 -->
-  <select id="selectByCategory" parameterType="string" resultType="com.ex.data.NewsDTO">
-    SELECT n.num,
-           n.title,
-           n.writer,
-           r.writerName,
-           r.profile_img,
-           n.reg,
-           n.thumbUrl,
-           n.hot,
-           n.category
-    FROM news n
-    LEFT JOIN reporter r ON n.writer = r.id
-    WHERE n.category = #{category} 
-    ORDER BY n.reg DESC
-  </select>
-
-  <select id="selectByNum" parameterType="int" resultType="com.ex.data.NewsDTO">
-    SELECT n.num, 
-           n.title, 
-           n.content, 
-           n.writer, 
-           r.writerName,
-           r.profile_img,
-           n.reg, 
-           n.hot, 
-           n.thumbUrl 
-    FROM news n
-    LEFT JOIN reporter r ON n.writer = r.id
-    WHERE n.num = #{num}
-  </select>
-
-  <update id="increaseHot" parameterType="int">
-    UPDATE news SET hot = hot + 1 WHERE num = #{num}
-  </update>
+	
+	<!-- 3. 최신 목록 (페이징) -->
+	<select id="selectLatestPage" parameterType="map" resultType="com.ex.data.NewsDTO">
+		SELECT n.num, n.title, n.thumbUrl, n.reg, n.writer, r.writerName, r.profile_img, n.category
+	    FROM news n LEFT JOIN reporter r ON n.writer = r.id ORDER BY n.num DESC OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+	</select>
+	
+	<!-- 4. 전체 글 수 -->
+	<select id="countAll" resultType="int">
+		SELECT COUNT(*) FROM news
+	</select>
+	
+	<!-- 5. 기사 INSERT -->
+	<insert id="insertNews" parameterType="com.ex.data.NewsDTO">
+		INSERT INTO news (num, title, writer, reg, readCount, hot, category, thumbUrl, is_breaking, content)
+	    VALUES (news_seq.NEXTVAL, #{title}, #{writer}, SYSDATE,  0,  0, #{category}, #{thumbUrl}, 0, #{content,jdbcType=CLOB})
+	</insert>
+	
+	<!-- 카테고리 별 기사 최신 순 -->
+	<select id="selectByCategory" parameterType="string" resultType="com.ex.data.NewsDTO">
+		SELECT n.num, n.title,  n.writer, r.writerName, r.profile_img,  n.reg, n.thumbUrl, n.hot, n.category FROM news n
+	    LEFT JOIN reporter r ON n.writer = r.id WHERE n.category = #{category} ORDER BY n.reg DESC
+	</select>
+	
+	<select id="selectByNum" parameterType="int" resultType="com.ex.data.NewsDTO">
+		SELECT n.num, n.title, n.content, n.writer, r.writerName, r.profile_img, n.reg, n.hot, n.thumbUrl 
+	    FROM news n LEFT JOIN reporter r ON n.writer = r.id WHERE n.num = #{num}
+	</select>
+	
+	<update id="increaseHot" parameterType="int">
+		UPDATE news SET hot = hot + 1 WHERE num = #{num}
+	</update>
+	
+	<select id="selectByWriter" parameterType="String" resultType="com.ex.data.NewsDTO">
+		select * from news where writer = #{writer, jdbcType=VARCHAR} order by reg desc
+	</select>
+  
+	
 
 </mapper>
