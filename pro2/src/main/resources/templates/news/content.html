@@ -10,15 +10,14 @@
 	<!-- 기사 제목 -->
 	<h1 th:text="${news.title}">기사 제목</h1>
 	
-	<!-- 작성일 , 수정일 -->
+	<!-- 작성일 -->
 	<p>
 		작성일 : <span th:text="${#temporals.format(news.reg, 'yyyy-MM-dd HH:mm')}"></span><br>
-		수정일 : <span th:text="${#temporals.format(news.mod, 'yyyy-MM-dd HH:mm')}"></span>
 	</p>
 	
 	<!-- 기자 정보 -->
 	<div>
-		<img th:src="${news.writerPhoto}" alt="기자 사진" width="60" height="60">
+		<img th:src="${news.profile_img}" alt="기자 사진" width="60" height="60">
 		<p th:text="${news.writerName}">기자 이름 나옴</p>
 	</div>
 	
