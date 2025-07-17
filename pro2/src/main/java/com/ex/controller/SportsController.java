@@ -45,13 +45,9 @@ public class SportsController {
 	// 외부폴더에 이미지 생성
 	@PostMapping("uploadImage")
 	@ResponseBody
-<<<<<<< HEAD
-	public String uploadImage(@RequestParam MultipartFile file,HttpServletRequest request) {
-        String uploadPath = "D:/cjh/upload/";
-=======
+
 	public String uploadImage(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
         String uploadPath = "C:/sports/upload/";
->>>>>>> cjh
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         File dest = new File(uploadPath + fileName);
         try {
