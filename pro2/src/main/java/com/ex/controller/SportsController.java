@@ -91,4 +91,10 @@ public class SportsController {
 	    int offset = (pageNum - 1) * pageSize;
 	    return sportsService.sportsCateList(category,offset,pageSize);
 	}
+	
+	// 스포츠기사 내용
+	@GetMapping("content")
+	public String content() {
+		return "sports/boardContent";
+	}
 }
