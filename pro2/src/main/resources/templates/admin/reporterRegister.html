@@ -1,18 +1,62 @@
+<link rel="stylesheet" th:href="@{/css/adminPage.css}">
+
 <form action="/admin/registerReporter" method="post" enctype="multipart/form-data">
-  <label>아이디 <input type="text" name="id" required /></label>
-  <label>비밀번호 <input type="password" name="pw" required /></label>
-  <label>닉네임 <input type="text" name="nick" required /></label>
-  <label>이름 <input type="text" name="name" required /></label>
-  <label>생년월일 <input type="date" name="birth" required /></label>
-  <label>전화번호 <input type="text" name="phone" required /></label>
-  <label>이메일 <input type="email" name="email" required /></label>
-  <label>프로필 이미지 <input type="file" name="profile" /></label>
-  <label>카테고리 
-    <select name="category">
-      <option value="일반뉴스">일반뉴스</option>
-      <option value="연애">연예</option>
-      <option value="스포츠">스포츠</option>
-    </select>
-  </label>
-  <button type="submit">기자 등록</button>
+  <div class="table-container"> 
+    <table class="member-table">
+      <thead>
+        <tr>
+          <th colspan="2">기자 등록</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>아이디</th>
+          <td><input type="text" name="id" required /></td>
+        </tr>
+        <tr>
+          <th>비밀번호</th>
+          <td><input type="password" name="pw" required /></td>
+        </tr>
+        <tr>
+          <th>닉네임</th>
+          <td><input type="text" name="nick" required /></td>
+        </tr>
+        <tr>
+          <th>이름</th>
+          <td><input type="text" name="name" required /></td>
+        </tr>
+        <tr>
+          <th>생년월일</th>
+          <td><input type="date" name="birth" required /></td>
+        </tr>
+        <tr>
+          <th>전화번호</th>
+          <td><input type="text" name="phone" required /></td>
+        </tr>
+        <tr>
+          <th>이메일</th>
+          <td><input type="email" name="email" required /></td>
+        </tr>
+        <tr>
+          <th>프로필 이미지</th>
+          <td><input type="file" name="profile" /></td>
+        </tr>
+        <tr>
+          <th>카테고리</th>
+          <td>
+            <select name="category" required>
+              <option value="일반뉴스">일반뉴스</option>
+              <option value="연예">연예</option>
+              <option value="스포츠">스포츠</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align:center;">
+            <input type="submit" value="기자 등록" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </form>

@@ -28,7 +28,7 @@ public class ReportController {
     }
 
     @PostMapping("writePro")
-    public String reportWrite(ReportBoardDTO dto, @RequestParam MultipartFile file) {
+    public String reportWrite(ReportBoardDTO dto, @RequestParam("file") MultipartFile file) {
         reportService.insert(dto, file);
         return "redirect:/report/list";
     }
