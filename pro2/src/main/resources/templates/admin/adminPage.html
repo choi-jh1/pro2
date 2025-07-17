@@ -1,32 +1,5 @@
-<link rel="stylesheet" th:href="@{/css/main.css}">
-<style>
-	.body_container {
-	  display: flex;
-	  width: 1000px;
-	  margin: 0 auto;
-	}
-	
-	.sidebar {
-	  width: 200px;
-	  border-right: 1px solid #ccc;
-	}
-	.sidebar ul {
-	  list-style: none;
-	  padding: 0;
-	}
-	.sidebar li {
-	  padding: 12px;
-	  cursor: pointer;
-	}
-	.sidebar li:hover {
-	  background-color: #f1f1f1;
-	}
-	.content {
-	  flex-grow: 1;
-	  padding: 20px;
-	  min-height: 400px;
-	}
-</style>
+<link rel="stylesheet" th:href="@{/css/adminPage.css}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <header class="site-header">
 	<div class="container">
   <div class="logo">로고</div>
@@ -35,8 +8,8 @@
     <div class="date">2025.07.03</div>
     <div class="user-menu">
 	  <span th:if="${session.sid != null and session.role == 'admin'}">
+			  <span>admin님, 반갑습니다.</span>
 	  	      <a th:href="@{/user/logout}">로그아웃</a>
-			  <a th:href="@{/admin/adminPage}">관리자페이지</a>
 	  </span>
 	</div>
   </div>
@@ -56,31 +29,37 @@
   <div class="sidebar">
     <ul>
       <li class="menu-item" data-url="/admin/userUpdate">회원 관리</li>
-      <li class="menu-item" data-url="/admin/reportUpdate">기자 관리</li>
+      <li class="menu-item" data-url="/admin/reporterUpdate">기자 관리</li>
 	  <li class="menu-item" data-url="/admin/reportManagement ">제보 관리</li>
 	  <li class="menu-item" data-url="/admin/reporterRegister ">기자 등록</li>
+	  <li class="menu-item" data-url="/admin/articleCheck">기사 관리</li>
     </ul>
   </div>
-  <div class="content" id="content-area">
-    <!-- 여기에 AJAX로 내용이 들어옴 -->
-    <h3>원하는 메뉴를 선택해주세요</h3>
+    <div class="content" id="content-area">
+      <!-- 여기에 AJAX로 내용이 들어옴 -->
+      <h3>원하는 메뉴를 선택해주세요</h3>
+    </div>
   </div>
-</div>
-<script>
-  $(document).ready(function () {
-    $('.menu-item').click(function () {
-      const url = $(this).data('url');
-      $('#content-area').html('<p>로딩 중...</p>');
-      $.ajax({
-        url: url,
-        type: 'GET',
-        success: function (data) {
-          $('#content-area').html(data);
-        },
-        error: function () {
-          $('#content-area').html('<p>오류가 발생했습니다.</p>');
-        }
-      });
-    });
-  });
-</script>
+
+  <script>
+  	$(document).ready(function () {
+  	  $('.menu-item').click(function () {
+  	    const url = $(this).data('url');
+  	    $('#content-area').html('<p>로딩 중...</p>');
+
+  	    $.ajax({
+  	      url: url,
+  	      type: 'GET',
+  	      dataType: 'html',
+  	      success: function (data) {
+  	        // 전체 HTML에서 원하는 부분만 추출 (예: .inner-content)
+  			
+  	        $('#content-area').html(data);
+  	      },
+  	      error: function () {
+  	        $('#content-area').html('<p>오류 발생</p>');
+  	      }
+  	    });
+  	  });
+  	});
+  </script>

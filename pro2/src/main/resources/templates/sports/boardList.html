@@ -1,0 +1,160 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+	.container_body {
+	  display: flex;
+	  gap: 30px;
+	  max-width: 1200px;
+	  margin: 0 auto;
+	}
+	.article-list {
+	  flex: 1; /* 가능한 공간 다 차지 */
+	  display: flex;
+	  flex-direction: column;
+	  gap: 20px;
+	  padding: 10px;
+	}
+
+	.article-card {
+	  display: flex;
+	  gap: 16px;
+	  padding: 15px;
+	  background: #ffffff;
+	  border-radius: 8px;
+	  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+	  transition: transform 0.2s ease;
+	}
+
+	.article-card:hover {
+	  transform: translateY(-3px);
+	}
+
+	.article-card img {
+	  width: 150px;
+	  height: 100px;
+	  object-fit: cover;
+	  border-radius: 6px;
+	}
+
+	.article-info {
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: space-between;
+	}
+
+	.article-title {
+	  font-size: 1.05rem;
+	  margin: 0;
+	  color: #333;
+	  font-weight: 600;
+	}
+
+	.article-summary {
+	  font-size: 0.9rem;
+	  color: #666;
+	  margin: 6px 0;
+	}
+
+	.article-date {
+	  font-size: 0.8rem;
+	  color: #aaa;
+	}
+	.sidebar {
+	  width: 250px;
+	  background: #f8f8f8;
+	  padding: 15px;
+	  border-radius: 8px;
+	  font-family: 'Noto Sans KR', sans-serif;
+	  font-size: 0.95rem;
+	  /* 기존 스타일 유지 */
+	}
+	.sidebar h3 {
+	  font-size: 1.1rem;
+	  margin-bottom: 10px;
+	  border-bottom: 1px solid #ccc;
+	  padding-bottom: 5px;
+	}
+
+	.sidebar ul {
+	  list-style: none;
+	  padding: 0;
+	}
+
+	.sidebar li {
+	  padding: 6px 0;
+	  color: #444;
+	}
+</style>
+<div class="container_body">
+<div class="article-list"  id="article-list">
+	<h2>스포츠</h2>
+  <div class="article-card" th:each="dto:${list}">
+    <img th:src="${dto.thumbnail}" alt="썸네일">
+    <div class="article-info">
+      <h3 class="article-title">[[${dto.title}]]</h3>
+      <p class="article-summary">[[${dto.cleanContent}]]</p>
+      <span class="article-date">[[${#temporals.format(dto.reg,'yyyy-MM-dd HH:mm')}]]</span>
+	  <span class="article-date">[[${dto.writer}]]</span>
+    </div>
+  </div>
+
+
+</div>
+  <!-- 사이드바는 오른쪽으로 이동 -->
+  <aside class="sidebar">
+    <h3>많이 본 뉴스</h3>
+    <ul>
+      <li>1. 인기 기사</li>
+      <li>2. 실시간 뉴스</li>
+      ...
+    </ul>
+  </aside>
+</div>
+
+
+<button id="load-more-btn" th:data-category="${cate}">더보기</button>
+
+<script>
+	$('#load-more-btn').click(function () {
+		const num = 1;
+	  const btn = $(this);
+	  const pageNum = num +1;
+	  const category = btn.data('category');
+	
+	  $.ajax({
+	    url: '/sports/more',
+	    method: 'GET',
+	    data: {
+	      category: category,
+	      pageNum: pageNum
+	    },
+	    success: function (articles) {
+	      if (articles.length < 5) {
+	        btn.hide(); // 더 이상 로딩할 게 없으면 버튼 숨김
+
+	      }
+
+	      articles.forEach(article => {
+	        const html = `
+	          <div class="article-card">
+	            <img src="${article.thumbnail}" alt="썸네일">
+	            <div class="article-info">
+	              <h3 class="article-title">${article.title}</h3>
+	              <p class="article-summary">${article.cleanContent}</p>
+	              <span class="article-date">${article.reg}</span>
+				  <span class="article-date">${article.writer}</span>
+	            </div>
+	          </div>
+	        `;
+	        $('#article-list').append(html);
+	      });
+
+	      btn.data('pageNum', pageNum); // 다음 페이지 준비
+	    },
+	    error: function () {
+	      alert('더보기 실패');
+	    }
+	  });
+	});
+	
+</script>

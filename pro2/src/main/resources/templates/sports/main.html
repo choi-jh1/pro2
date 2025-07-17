@@ -5,7 +5,6 @@
   max-width: 1000px;   /* 최대 너비 설정 */
   margin: 0 auto;      /* 좌우 자동 여백 → 수평 중앙 정렬 */
   padding: 20px 0;
-  border-top: 2px solid #ccc;
   font-family: 'Noto Sans KR', sans-serif;
   
 }
@@ -79,51 +78,7 @@
 }
 </style>
 
-<link rel="stylesheet" th:href="@{/css/main.css}">
 
-
-<header class="site-header">
-	<div class="container">
-  <div class="logo">로고</div>
-
-  <div class="top-bar">
-    <div class="date">2025.07.03</div>
-    <div class="user-menu">
-      <a th:href="@{/report/write}">기사제보</a>
-	  <span th:if="${session.sid == null}">
-	      <a th:href="@{/user/login}">로그인</a>
-	      <a th:href="@{/user/insert}">회원가입</a>
-	  </span>
-	  <span th:if="${session.sid != null}">
-			  <a th:href="@{/user/myPage}">마이페이지</a>
-	  	      <a th:href="@{/user/logout}">로그아웃</a>
-	  </span>
-	</div>
-  </div>
-
-  <nav class="main-nav">
-    <ul>
-      <li><a href="#">뉴스</a></li>
-      <li><a th:href="@{/sports/list}">스포츠</a></li>
-      <li><a href="#">엔터</a></li>
-    </ul>
-    <div class="search">
-      <input type="text" placeholder="검색" />
-    </div>
-  </nav>
-
-  <nav class="sub-nav">
-    <ul>
-
-      <li><a href="#">종합1</a></li>
-      <li><a href="#">야구2</a></li>
-      <li><a href="#">축구3</a></li>
-      <li><a href="#">배구4</a></li>
-      <li><a href="#">농구</a></li>
-    </ul>
-  </nav>
-</div>
-</header>
 
 <div class="main-news-wrap">
   <!-- 왼쪽: 대표기사 -->

@@ -5,15 +5,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.ex.data.ReporterDTO;
 import com.ex.data.UsersDTO;
-
 @Mapper
 @Repository
-public interface UsersMapper {
-	// 회원가입
-	public void userInsert(UsersDTO dto);
-	// 로그인
-	public UsersDTO loginCheck(UsersDTO dto);
-	// 유저목록
-	public List<UsersDTO> userList();
+public interface ReporterMapper {
+	// 기자 등록
+	public void reporterInsert(ReporterDTO reporter);
+	// 기자 목록
+	public List<UsersDTO> reporterList();
 }

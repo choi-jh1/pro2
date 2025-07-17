@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ex.data.ReportBoardDTO;
 import com.ex.service.ReportService;
 
-
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -23,12 +23,17 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("write")
-    public String reportForm() {
-        return "report/reportForm";
+    public String reportForm(HttpSession session) {
+    	String role = (String)session.getAttribute("role");
+    	if(role == null || (!role.equals("admin") && !role.equals("reporter"))) {
+    		return "report/reportForm";		
+    	}
+    	return "redirect:/report/list";
     }
 
     @PostMapping("writePro")
-    public String reportWrite(ReportBoardDTO dto, @RequestParam MultipartFile file) {
+    public String reportWrite(ReportBoardDTO dto, @RequestParam("file") MultipartFile file, HttpSession session) {
+ 
         reportService.insert(dto, file);
         return "redirect:/report/list";
     }
@@ -71,6 +76,7 @@ public class ReportController {
 	@GetMapping("content")
 	public String content(Model model, @RequestParam("report_id") int report_id, @RequestParam("pageNum") int pageNum) {
 		ReportBoardDTO dto = reportService.reportContent(report_id);
+
 		model.addAttribute("dto", dto);
 		model.addAttribute("pageNum",pageNum);
 		return "report/reportContent";

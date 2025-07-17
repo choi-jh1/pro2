@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${news.title}">뉴스 상세</title>
+</head>
+
+<body>
+	
+	<!-- 기사 제목 -->
+	<h1 th:text="${news.title}">기사 제목</h1>
+	
+	<!-- 작성일 , 수정일 -->
+	<p>
+		작성일 : <span th:text="${#temporals.format(news.reg, 'yyyy-MM-dd HH:mm')}"></span><br>
+		수정일 : <span th:text="${#temporals.format(news.mod, 'yyyy-MM-dd HH:mm')}"></span>
+	</p>
+	
+	<!-- 기자 정보 -->
+	<div>
+		<img th:src="${news.writerPhoto}" alt="기자 사진" width="60" height="60">
+		<p th:text="${news.writerName}">기자 이름 나옴</p>
+	</div>
+	
+	<!-- 기사 본문 -->
+	<div>
+		<p th:utext="${news.content}">기사 본문 나옴</p>
+	</div>
+	
+	<!-- 추천 -->
+	<div>
+		<form th:action="@{/news/hot}" method="post">
+			<input type="hidden" name="num" th:value="${news.num}">
+			<button type="submit">추천</button>
+			<span>추천 수 : <span th:text="${news.hot}">0</span></span>
+		</form>
+	</div>
+	
+	<!-- 댓글 -->
+	<div>
+		<h3>댓글</h3>
+		<form th:action="@{/comment/add}" method="post">
+			<input type="hidden" name="newsNum" th:value="${news.num}">
+			<textarea name="content" rows="4" cols="60" placeholder="댓글을 입력하세요."></textarea><br>
+			<button type="submit">댓글 등록</button>
+		</form>
+	</div>
+	
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

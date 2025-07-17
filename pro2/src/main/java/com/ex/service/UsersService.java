@@ -1,5 +1,7 @@
 package com.ex.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.ex.data.UsersDTO;
@@ -22,4 +24,10 @@ public class UsersService {
 	public UsersDTO loginCheck(UsersDTO dto) {
 		return usersMapper.loginCheck(dto);
 	}
+	
+	// 유저 목록
+	public List<UsersDTO> userList() {
+		return usersMapper.userList();
+	}
+		
 }
