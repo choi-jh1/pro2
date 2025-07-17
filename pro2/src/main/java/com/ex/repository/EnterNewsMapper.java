@@ -9,7 +9,9 @@ import com.ex.data.EnterNewsDTO;
 
 @Mapper
 public interface EnterNewsMapper {
-	List<EnterNewsDTO> getTop10DailyNews();
+	public List<EnterNewsDTO> getTop10DailyNews();
 	
-	List<EnterNewsDTO> getPagedEnterNews(@Param("offset") int offset, @Param("limit") int limit);
+	public List<EnterNewsDTO> getPagedEnterNews(@Param("offset") int offset, @Param("limit") int limit);
+	
+	public int insertNews(EnterNewsDTO dto);
 }
