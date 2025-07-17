@@ -76,17 +76,10 @@
 		</span>
 		<span th:if="${session.sid != null and session.role == 'admin'}">
 			  <a th:href="@{/user/logout}">로그아웃</a>
-<<<<<<< HEAD
 			  <a th:href="@{/admin/adminPage}">관리자 페이지</a>
 		</span>
-		<span th:if="${session.sid != null and session.role == 'user'}">
-
-
-=======
-			  <a th:href="@{/admin/adminPage}">관리자페이지</a>
-	  </span>
 	  <span th:if="${session.sid != null and session.role != 'admin'}">
->>>>>>> cjh
+
 			  <a th:href="@{/user/myPage}">마이페이지</a>
 			      <a th:href="@{/user/logout}">로그아웃</a>
 		</span>
@@ -135,36 +128,40 @@
 
 <script>
 	$(document).ready(function () {
-	  // localStorage에서 마지막 선택한 카테고리 가져오기 (기본값 '종합')
-	  const savedCategory = localStorage.getItem('selectedCategory') || '종합';
+	  // 1. 새로고침이 아닌 경우: 카테고리 '종합'으로 초기화
+	  if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+	    localStorage.setItem('selectedCategory', '종합');
+	  }
 
-	  // 카테고리별 AJAX 요청 함수
+	  // 2. AJAX로 카테고리 기사 불러오기
 	  function loadCategory(category) {
-	    let url = category === '종합' ? '/sports/main' : '/sports/boardList';
-
+	    let url = (category === '종합') ? '/sports/main' : '/sports/boardList';
 	    $.ajax({
 	      url: url,
 	      method: 'GET',
 	      data: { category: category },
 	      success: function (html) {
 	        $('#sports-content').html(html);
-	        $('.category-link').removeClass('active');
-	        $('.category-link[data-category="' + category + '"]').addClass('active');
 	      },
 	      error: function () {
-	        alert('카테고리 기사 로딩 실패!');
+	        alert('카테고리 로딩 실패');
 	      }
 	    });
 	  }
 
-	  // 페이지 로드 시 저장된 카테고리로 AJAX 호출
-	  loadCategory(savedCategory);
-
-	  // 카테고리 클릭 시 localStorage 업데이트 + AJAX 호출
+	  // 3. 카테고리 클릭 이벤트
 	  $('.category-link').click(function () {
+	    $('.category-link').removeClass('active');
+	    $(this).addClass('active');
+
 	    const category = $(this).data('category');
 	    localStorage.setItem('selectedCategory', category);
 	    loadCategory(category);
 	  });
+
+	  // 4. 페이지 로딩 시 저장된 카테고리 로드
+	  const saved = localStorage.getItem('selectedCategory') || '종합';
+	  loadCategory(saved);
+	  $('.category-link[data-category="' + saved + '"]').addClass('active');
 	});
 </script>
