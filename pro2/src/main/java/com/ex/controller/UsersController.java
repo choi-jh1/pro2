@@ -63,8 +63,14 @@ public class UsersController {
 	
 	// 마이페이지
 	@GetMapping("myPage")
-	public String myPage() {
-		return "user/myPage";
+	public String myPage(HttpSession session) {
+		String role = (String) session.getAttribute("role");
+		
+		if("reporter".equals(role)) {
+			return "redirect:/reporter/myPage";	// 기자용 마이페이지 이동
+		}
+		
+		return "user/myPage";	// 일반 회원 마이페이지 이동
 	}
 	
 	// 회원 정보 수정

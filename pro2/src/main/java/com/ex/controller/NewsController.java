@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Element; 
 
 
 import com.ex.data.NewsDTO;
 import com.ex.service.NewsService;
+
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -32,10 +34,10 @@ public class NewsController {
     	// 카테고리 별 조회수 상위 5개 뉴스
     	List<NewsDTO> politicsTop5 = newsService.getTop5ByCategory("politics");
     	List<NewsDTO> economyTop5 = newsService.getTop5ByCategory("economy");
-    	List<NewsDTO> secietyTop5 = newsService.getTop5ByCategory("society");
+    	List<NewsDTO> societyTop5 = newsService.getTop5ByCategory("society");
         model.addAttribute("politicsTop5", politicsTop5);
         model.addAttribute("economyTop5", economyTop5);
-        model.addAttribute("secietyTop5", secietyTop5);
+        model.addAttribute("secietyTop5", societyTop5);
         
         // 속보 3개
         List<NewsDTO> breakingNews = newsService.getBreakingNews();
@@ -47,12 +49,24 @@ public class NewsController {
     
     // 기사 작성 폼 페이지 반환
     @GetMapping("write")
-    public String writeForm() {
+    public String writeForm(HttpSession session) {
+    	String role = (String) session.getAttribute("role");
+    	if(!"reporter".equals(role)) {
+    		return "redirect:/user/main";
+    	}
     	return "news/write";	// news/write.html 이동 
     }
     // 기사 작성 처리
     @PostMapping("writePro")
-    public String writePro(@ModelAttribute NewsDTO dto) {
+    public String writePro(@ModelAttribute NewsDTO dto, HttpSession session) {
+    	String role = (String) session.getAttribute("role");
+    	if(!"reporter".equals(role)) {
+    		return "redirect:/user/main";
+    	}
+    	
+    	String writerId = (String) session.getAttribute("sid");
+    	dto.setWriter(writerId);
+    	
         String thumbnail = extractFirstImageSrc(dto.getContent());
         if (thumbnail != null) {
             dto.setThumbUrl(thumbnail);

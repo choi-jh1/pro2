@@ -10,6 +10,8 @@ import com.ex.data.UsersDTO;
 @Mapper
 @Repository
 public interface ReporterMapper {
+	ReporterDTO selectById(String id);
+	
 	// 기자 등록
 	public void reporterInsert(ReporterDTO reporter);
 	// 기자 목록

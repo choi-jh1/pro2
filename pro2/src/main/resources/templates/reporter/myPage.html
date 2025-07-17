@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>기자 마이페이지</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .body_container {
+            display: flex;
+            width: 1000px;
+            margin: 0 auto;
+        }
+        .sidebar {
+            width: 200px;
+            border-right: 1px solid #ccc;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar li {
+            padding: 12px;
+            cursor: pointer;
+        }
+        .sidebar li:hover {
+            background-color: #f1f1f1;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            min-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+		<div class="container">
+			    <div class="logo">
+					<a th:href="@{/user/main}">로고</a>
+				</div>
+			    <div class="top-bar">
+			      <div class="date">2025.07.03</div>
+			      <div class="user-menu">
+			        <span th:if="${session.sid == null}">
+			          <a th:href="@{/user/login}">로그인</a>
+			          <a th:href="@{/user/insert}">회원가입</a>
+			        </span>
+			        <span th:if="${session.sid != null and session.role == 'admin'}">
+			          <a th:href="@{/user/logout}">로그아웃</a>
+			          <a th:href="@{/admin/adminPage}">관리자 페이지</a>
+			        </span>
+			        <span th:if="${session.sid != null and session.role == 'user'}">
+			          <a th:href="@{/user/myPage}">마이페이지</a>
+			          <a th:href="@{/user/logout}">로그아웃</a>
+			        </span>
+			        <span th:if="${session.sid != null and session.role == 'reporter'}">
+			          <a th:href="@{/user/myPage}">마이페이지(기자)</a>
+			          <a th:href="@{/user/logout}">로그아웃</a>
+			        </span>
+			      </div>
+			    </div>
+			    <nav class="main-nav">
+			      <ul>
+			        <li><a th:href="@{/news/home}">뉴스</a></li>
+			        <li><a th:href="@{/sports/list}">스포츠</a></li>
+			        <li><a href="#">엔터</a></li>
+			      </ul>
+			      <div class="search">
+			        <input type="text" placeholder="검색" />
+			      </div>
+			    </nav>
+			    <nav class="sub-nav">
+			      <ul>
+			        <li><a href="#">종합1</a></li>
+			        <li><a href="#">야구2</a></li>
+			        <li><a href="#">축구3</a></li>
+			        <li><a href="#">배구4</a></li>
+			        <li><a href="#">농구</a></li>
+			      </ul>
+			    </nav>
+		</div>
+    </header>
+
+    <div class="body_container">
+        <div class="sidebar">
+            <ul>
+				<li class="menu-item" data-url="/news/write">기사 등록</li>
+                <li class="menu-item" data-url="/reporter/articles">내가 쓴 기사 목록</li>
+                <li class="menu-item" data-url="/reporter/update">기자 정보 조회/수정</li>
+                <li class="menu-item" data-url="/reporter/withdraw-form">내 제보 관리</li>
+            </ul>
+        </div>
+
+        <div class="content" id="content-area">
+            <h3>기자 마이페이지입니다. 메뉴를 선택해주세요.</h3>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.menu-item').click(function () {
+                const url = $(this).data('url');
+                $('#content-area').html('<p>로딩 중...</p>');
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (data) {
+                        $('#content-area').html(data);
+                    },
+                    error: function () {
+                        $('#content-area').html('<p>오류 발생</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
