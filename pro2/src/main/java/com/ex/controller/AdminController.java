@@ -61,8 +61,9 @@ public class AdminController {
         int start = (currentPage - 1)*pageSize+1;
         int end = currentPage * pageSize;
         int reportCount = reportService.reportCount();
-        
         List<ReportBoardDTO> list = null;
+        List<UsersDTO> reportList = reporterService.reporterList();
+        model.addAttribute("reporterList", reportList);
     	if(reportCount > 0 ) {
     		list = reportService.reportList(start, end);
     	}else {
@@ -85,6 +86,7 @@ public class AdminController {
     	model.addAttribute("end",end);
     	model.addAttribute("reportCount",reportCount);
     	model.addAttribute("list",list);
+    
     	
 		return "admin/reportManagement";
 	} 

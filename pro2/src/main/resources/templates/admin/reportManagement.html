@@ -15,6 +15,7 @@
 			<th>이메일</th>
 			<th>작성일</th>
 			<th>상태</th>
+			<th>담당기자</th>
 		</tr>
 		<tr th:each="report:${list}">
 			<td>
@@ -24,6 +25,35 @@
 			<td th:text="${report.email}"></td>
 			<td th:text="${#temporals.format(report.reg, 'yy-MM-dd HH:mm')}"></td>
 			<td th:text="${report.status}"></td>
+			<td>
+				<form th:action="@{/admin/assign}" method="post">
+				<input type="hidden" name="report_id" th:value="${report.report_id}"/>
+				
+				<select name="assigned">
+					<optgroup label="정치">
+						<option th:each="r : ${reporterList}"
+								th:if="${r.category == '일반뉴스'}"
+								th:value="${r.id}"
+								th:text="${r.id + ' 기자 ['+ r.category + ']'}">							
+						</option>
+					</optgroup>
+					<optgroup label="스포츠">
+						<option th:each="r : ${reporterList}"
+								th:if="${r.category == '스포츠'}"
+								th:value="${r.id}"
+								th:text="${r.id + ' 기자 ['+ r.category + ']'}">					
+						</option>
+					</optgroup>
+					<optgroup label="연애">
+						<option th:each="r : ${reporterList}"
+								th:if="${r.category == '연애'}"
+								th:value="${r.id}"
+								th:text="${r.id + ' 기자 ['+ r.category + ']'}">					
+						</option>
+					</optgroup>
+				</select>
+				</form>
+			</td>
 		</tr>
 	</table>
 </div>
