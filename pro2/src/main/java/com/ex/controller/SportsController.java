@@ -1,6 +1,7 @@
 package com.ex.controller;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,33 +37,21 @@ public class SportsController {
 	// 기사 DB등록
 	@PostMapping("write")
 	public String write(SportsDTO dto) {
-		
-		String thumbnail = firstImg(dto.getContent());
-		dto.setThumbnail(thumbnail);
-		
 		sportsService.boardWrite(dto);
 		
-		return "redirect:/sports/boardWrite";
+		return "redirect:/sports/list";
 	}
-	// 첫번째 이미지 추출
-	public String firstImg(String img) {
-		if(img == null) {
-			return null;
-		}
-		
-		Pattern pattern = Pattern.compile("<img[^>]+src=['\\\"]([^'\\\"]+)['\\\"]");
-		Matcher matcher = pattern.matcher(img);
-		
-		if(matcher.find()) {
-			return matcher.group(1);	// 첫 번째 이미지
-		}
-		return null;
-	}
+
 	// 외부폴더에 이미지 생성
 	@PostMapping("uploadImage")
 	@ResponseBody
+<<<<<<< HEAD
 	public String uploadImage(@RequestParam MultipartFile file,HttpServletRequest request) {
         String uploadPath = "D:/cjh/upload/";
+=======
+	public String uploadImage(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
+        String uploadPath = "C:/sports/upload/";
+>>>>>>> cjh
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         File dest = new File(uploadPath + fileName);
         try {
@@ -85,5 +74,25 @@ public class SportsController {
 	@GetMapping("list")
 	public String list() {
 		return "sports/list";
+	}
+	
+	// 카테고리별 리스트 출력
+	@GetMapping("boardList")
+	public String boardList(Model model,@RequestParam("category") int category) {
+		List<SportsDTO> list = sportsService.sportsCateList(category,0,5);
+		int pageNum=1;
+		model.addAttribute("list",list);
+		model.addAttribute("cate",category);
+		model.addAttribute("pageNum",pageNum);
+		return "sports/boardList";
+	}
+	
+	// 더보기 처리
+	@GetMapping("more")
+	@ResponseBody
+	public List<SportsDTO> loadMore(@RequestParam("category") int category,@RequestParam("pageNum") int pageNum) {
+	    int pageSize = 5; // 한 번에 5개씩
+	    int offset = (pageNum - 1) * pageSize;
+	    return sportsService.sportsCateList(category,offset,pageSize);
 	}
 }

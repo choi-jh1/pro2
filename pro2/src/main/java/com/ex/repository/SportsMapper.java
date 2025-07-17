@@ -19,5 +19,7 @@ public interface SportsMapper {
 	// 스포츠기사 목록
 	public List<SportsDTO> sportsList();
 	// 카테고리별 스포츠기사 목록
-	public List<SportsDTO> sportsCateList(@Param("cate") int cate);
+	public List<SportsDTO> sportsCateList(@Param("cateId") int cateId,@Param("offset") int offset,@Param("pageSize") int size);
+	// 내용 출력 이미지 제외
+	public List<String> content();
 }
