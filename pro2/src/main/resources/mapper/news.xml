@@ -12,7 +12,7 @@
  	</select>
 
 
-  <!-- 2. 속보 N개 (옵션) -->
+  <!-- 2. 속보 3개 -->
 	<select id="selectBreakingByTitle"
 	        parameterType="int"
 	        resultType="com.ex.data.NewsDTO">
@@ -65,6 +65,15 @@
 	<select id="selectByCategory" parameterType="string" resultType="com.ex.data.NewsDTO">
 		select * from news where category = #{category} order by reg desc
 	</select>
+	
+	<select id="selectByNum" parameterType="int" resultType="com.ex.data.NewsDTO">
+		select num, title, content, writer, reg, hot, thumbUrl from news
+		where num = #{num}
+	</select>
+	
+	<update id="increaseHot" parameterType="int">
+		update news set hot = hot + 1 where num = #{num}
+	</update>
 
 
 

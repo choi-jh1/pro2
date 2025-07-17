@@ -56,8 +56,16 @@ public class NewsService {
 		return page * page_size >= total;
 	}
 
+	// 뉴스 상세 페이지
+	public NewsDTO getNewsByNum(int num) {
+		return mapper.selectByNum(num);
+	}
 	
-	
+	// 추천 수 : 뉴스 상세 페이지
+	public void increaseHot(int num) {
+		mapper.increaseHot(num);
+		
+	}
 	
 	
 	
