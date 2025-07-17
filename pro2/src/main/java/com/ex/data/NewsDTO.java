@@ -15,6 +15,12 @@ public class NewsDTO {
 	private int hot;			// 추천수
 	private String category;	// 카테고리 (politics / economy / society)
 	private String thumbUrl;	// 썸네일 이미지 URL
-	private int is_breaking;	
+	private int is_breaking;	// 속보
+	
+	
+	
+	private String writerName;
+	private String writerPhoto;
+	private LocalDateTime mod;	// 수정 일시
 	
 }
