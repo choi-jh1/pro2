@@ -6,7 +6,7 @@
 <h2 style="text-align:center;">제보 게시판</h2>
 <hr><br><br>
 <form th:action="@{/report/writePro}" method="post" class="report-form" enctype="multipart/form-data">
-
+  <input type="hidden" name="writer_id" th:if="${session.sid != null}" th:value="${session.sid}">
   <div class="form-group">
     <label for="title">제목 *</label>
     <input type="text" id="title" name="title" placeholder="제목을 입력해주세요" required />
@@ -27,8 +27,6 @@
     <input type="password" id="writerPw" name="writerPw" placeholder="비밀번호를 입력해주세요" required />
   </div>
   
-  <div class="form-group" th:if="${session.role}==user"></div>
-
   <div class="form-group">
     <label for="file">첨부파일 *</label>
     <input type="file" id="file" name="file" multiple/>

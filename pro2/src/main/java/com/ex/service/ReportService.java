@@ -43,6 +43,9 @@ public class ReportService {
         if (dto.getStatus() == null || dto.getStatus().isBlank()) {
             dto.setStatus("대기중");
         }
+        if (dto.getWriter_id()==null) {
+        	dto.setWriter_id("익명");
+        }
         reportMapper.insertReport(dto);
     }
     // 제보 글 목록

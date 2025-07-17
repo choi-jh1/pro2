@@ -32,7 +32,8 @@ public class ReportController {
     }
 
     @PostMapping("writePro")
-    public String reportWrite(ReportBoardDTO dto, @RequestParam("file") MultipartFile file) {
+    public String reportWrite(ReportBoardDTO dto, @RequestParam("file") MultipartFile file, HttpSession session) {
+ 
         reportService.insert(dto, file);
         return "redirect:/report/list";
     }
@@ -75,6 +76,7 @@ public class ReportController {
 	@GetMapping("content")
 	public String content(Model model, @RequestParam("report_id") int report_id, @RequestParam("pageNum") int pageNum) {
 		ReportBoardDTO dto = reportService.reportContent(report_id);
+
 		model.addAttribute("dto", dto);
 		model.addAttribute("pageNum",pageNum);
 		return "report/reportContent";

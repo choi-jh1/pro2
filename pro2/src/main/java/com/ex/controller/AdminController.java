@@ -1,6 +1,8 @@
 package com.ex.controller;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
 import com.ex.data.UsersDTO;
+import com.ex.service.ReportService;
 import com.ex.service.ReporterService;
 import com.ex.service.UsersService;
 
@@ -26,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminController {
 	private final ReporterService reporterService;
+	private final ReportService reportService;
 	private final UsersService usersService;
 	@GetMapping("adminPage")
 	public String admin(HttpSession session) {
@@ -48,9 +53,39 @@ public class AdminController {
 		return "admin/reporterUpdate";
 	}
 	
-	// 제보 관리
+	// 제보 관리(제보 글 목록과 비슷)
 	@GetMapping("reportManagement")
-	public String reportManagement() {
+	public String reportManagement(Model model, @RequestParam(name="pageNum", defaultValue="1") int pageNum) {
+		int pageSize = 10;
+        int currentPage = pageNum;
+        int start = (currentPage - 1)*pageSize+1;
+        int end = currentPage * pageSize;
+        int reportCount = reportService.reportCount();
+        
+        List<ReportBoardDTO> list = null;
+    	if(reportCount > 0 ) {
+    		list = reportService.reportList(start, end);
+    	}else {
+    		list = Collections.emptyList();
+    	}
+    	int pageCount = reportCount/pageSize+(reportCount%pageSize==0 ? 0:1);
+    	int startPage=(int)((currentPage-1)/10)*10+1;
+    	int pageBlock=10;
+    	int endPage=startPage+pageBlock-1;
+    	if(pageCount<endPage) {
+    		endPage=pageCount;
+    	}
+        model.addAttribute("pageCount",pageCount);
+    	model.addAttribute("startPage",startPage);
+    	model.addAttribute("pageBlock",pageBlock);
+    	model.addAttribute("endPage",endPage);
+    	model.addAttribute("pageSize",pageSize);
+    	model.addAttribute("pageNum",pageNum);
+    	model.addAttribute("start",start);
+    	model.addAttribute("end",end);
+    	model.addAttribute("reportCount",reportCount);
+    	model.addAttribute("list",list);
+    	
 		return "admin/reportManagement";
 	} 
 	
