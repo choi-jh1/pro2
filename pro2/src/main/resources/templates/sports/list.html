@@ -149,17 +149,21 @@
 	    });
 	  }
 
-	  // 2) 카테고리 클릭 이벤트 등록 (한번만!)
-	  $('.category-link').click(function () {
-	    $('.category-link').removeClass('active'); // 클릭된 버튼 강조 위해
-	    $(this).addClass('active');
+	  // 2) 카테고리 클릭 이벤트 등록
+	    $('.category-link').click(function () {
+	      $('.category-link').removeClass('active');
+	      $(this).addClass('active');
 
-	    const category = $(this).data('category');
-	    loadCategory(category); // 클릭한 카테고리 AJAX 호출
+	      const category = $(this).data('category');
+	      loadCategory(category);
+
+	      // ✅ 선택한 카테고리 localStorage에 저장
+	      localStorage.setItem('selectedCategory', category);
+	    });
+
+	    // 3) 페이지 로딩 시 마지막 선택 카테고리 자동 호출
+	    const savedCategory = localStorage.getItem('selectedCategory') || '종합';
+	    loadCategory(savedCategory);
+	    $('.category-link[data-category="' + savedCategory + '"]').addClass('active');
 	  });
-
-	  // 3) 페이지 로딩 시 기본 '종합' 카테고리 자동 호출
-	  loadCategory('종합');
-	  $('.category-link[data-category="종합"]').addClass('active');
-	});
 </script>
