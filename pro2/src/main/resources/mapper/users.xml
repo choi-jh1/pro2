@@ -11,4 +11,9 @@
 	<select id="loginCheck" resultType="com.ex.data.UsersDTO" parameterType="com.ex.data.UsersDTO">
 		select * from users where id=#{id} and pw=#{pw}
 	</select>
+	<!--유저목록-->
+	<select id="userList" resultType="com.ex.data.UsersDTO">
+		select * from users where role='user'
+	</select>
+
 </mapper>
