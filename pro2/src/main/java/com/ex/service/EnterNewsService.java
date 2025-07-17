@@ -49,4 +49,10 @@ public class EnterNewsService {
 
 		return content.substring(srcStart, srcEnd);
 	}
+	
+	public int insertNews(EnterNewsDTO dto) {
+		dto.setThumbnail(extractThumbnail(dto.getContent()));
+		int result=enterNewsMapper.insertNews(dto);
+		return result;
+	}
 }
