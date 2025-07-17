@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <title>정치 뉴스</title>
+  <title>사회 뉴스</title>
 </head>
 <body>
 
-<h1>정치 뉴스 목록</h1>
+<h1>사회 뉴스 목록</h1>
 
 <div th:each="news : ${newsList}">
   <a th:href="@{/news/content/{num}(num=${news.num})}">
