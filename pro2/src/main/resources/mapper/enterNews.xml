@@ -14,17 +14,7 @@
 
 	<!-- 2. 최신 뉴스 목록 (무한스크롤용, 페이징) -->
 	<select id="getPagedEnterNews" resultType="com.ex.data.EnterNewsDTO">
-		select
-		num,
-		title,
-		content,
-		writer_id,
-		null as writer_nickname,
-		null as writer_email,
-		reg,
-		readcount,
-		category,
-		hot
+		select num, title, content, writer_id, null as writer_nickname, null as writer_email, reg, readcount, category, hot
 		from enter_news
 		where status = 1
 		order by reg desc

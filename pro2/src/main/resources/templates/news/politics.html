@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>정치 뉴스</title>
+</head>
+<body>
+
+<h1>정치 뉴스 목록</h1>
+
+<div th:each="news : ${newsList}">
+  <a th:href="@{/news/content/{num}(num=${news.num})}">
+    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br/>
+    <span th:text="${news.title}">뉴스 제목</span>
+  </a><br/>
+</div>
+
+</body>
+</html>

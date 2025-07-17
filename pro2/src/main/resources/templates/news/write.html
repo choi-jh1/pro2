@@ -14,7 +14,14 @@
 
   <form th:action="@{/news/writePro}" method="post">
     제목&nbsp;<input type="text" name="title" required><br><br>
-    카테고리&nbsp;<input type="text" name="category" placeholder="politics" required><br><br>
+	카테고리&nbsp;
+	<select name="category" required>
+	  <option value="">-- 카테고리 선택 --</option>
+	  <option value="politics">정치</option>
+	  <option value="economy">경제</option>
+	  <option value="society">사회</option>
+	</select><br><br>
+
 
     <textarea id="summernote" name="content"></textarea><br>
     <button type="submit">등록</button>
