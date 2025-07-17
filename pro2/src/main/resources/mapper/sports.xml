@@ -15,8 +15,12 @@
 	<select id="sportsList" resultType="com.ex.data.SportsDTO">
 		select * from sports
 	</select>
-	
+	<!--카테고리별 목록-->
 	<select id="sportsCateList" resultType="com.ex.data.SportsDTO">
-		select * from sports where cateId=#{cateId}
+		select * from sports where cateId=#{cateId} order by boardNum desc offset #{offset} rows fetch next #{pageSize} rows only
+	</select>
+	<!--내용만 출력(이미지 제외)-->
+	<select id="content" resultType="String">
+		select content from sports
 	</select>
 </mapper>
