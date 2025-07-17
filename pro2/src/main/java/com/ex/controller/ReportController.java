@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ex.data.ReportBoardDTO;
 import com.ex.service.ReportService;
 
-
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -23,8 +23,12 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("write")
-    public String reportForm() {
-        return "report/reportForm";
+    public String reportForm(HttpSession session) {
+    	String role = (String)session.getAttribute("role");
+    	if(role == null || (!role.equals("admin") && !role.equals("reporter"))) {
+    		return "report/reportForm";		
+    	}
+    	return "redirect:/report/list";
     }
 
     @PostMapping("writePro")
