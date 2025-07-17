@@ -21,6 +21,9 @@ public interface NewsMapper {
     List<NewsDTO> selectLatestPage(Map<String, Object> param);
     int countAll();
     
-    /* <정치> 기사 최신순 */
-    List<NewsDTO> selectPolitics();
+    /* <정치><경제><사회> 기사 최신순 */
+    List<NewsDTO> selectByCategory(@Param("category") String category);
+	List<NewsDTO> selectEconomy();
+	List<NewsDTO> selectSociety();
+
 }

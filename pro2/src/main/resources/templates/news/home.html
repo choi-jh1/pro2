@@ -4,23 +4,30 @@
   <meta charset="UTF-8">
   <title>뉴스 홈</title>
 </head>
-<body>
-
-<h1>📰 최신 뉴스 5개</h1>
-<div th:each="news : ${latestNews}">
-  <a th:href="@{/news/content/{num}(num=${news.num})}">
-    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
-    <strong th:text="${news.title}">뉴스 제목</strong>
-  </a>
-</div>
-
-<h2>⚡ 속보 뉴스 3개</h2>
-<div th:each="news : ${breakingNews}">
-  <a th:href="@{/news/content/{num}(num=${news.num})}">
-    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
-    <span th:text="${news.title}"></span>
-  </a>
-</div>
-
-</body>
+	<body>
+		
+		<nav>
+			<h2>카테고리</h2>
+		  <a th:href="@{/news/politics}">정치</a>
+		  <a th:href="@{/news/economy}">경제</a>
+		  <a th:href="@{/news/society}">사회</a>
+		</nav>
+	
+		<h1>📰 최신 뉴스 5개</h1>
+			<div th:each="news : ${latestNews}">
+		  	<a th:href="@{/news/content/{num}(num=${news.num})}">
+		    	<img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
+		    	<strong th:text="${news.title}">뉴스 제목</strong>
+		 	 </a>
+			</div>
+	
+		<h2>⚡ 속보 뉴스 3개</h2>
+			<div th:each="news : ${breakingNews}">
+		 	 <a th:href="@{/news/content/{num}(num=${news.num})}">
+		    	<img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
+		    	<span th:text="${news.title}"></span>
+		 	 </a>
+			</div>
+	
+	</body>
 </html>
