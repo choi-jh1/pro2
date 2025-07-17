@@ -76,11 +76,17 @@
 		</span>
 		<span th:if="${session.sid != null and session.role == 'admin'}">
 			  <a th:href="@{/user/logout}">로그아웃</a>
+<<<<<<< HEAD
 			  <a th:href="@{/admin/adminPage}">관리자 페이지</a>
 		</span>
 		<span th:if="${session.sid != null and session.role == 'user'}">
 
 
+=======
+			  <a th:href="@{/admin/adminPage}">관리자페이지</a>
+	  </span>
+	  <span th:if="${session.sid != null and session.role != 'admin'}">
+>>>>>>> cjh
 			  <a th:href="@{/user/myPage}">마이페이지</a>
 			      <a th:href="@{/user/logout}">로그아웃</a>
 		</span>
@@ -94,7 +100,7 @@
   <nav class="main-nav">
     <ul>
       <li><a href="#">뉴스</a></li>
-      <li><a th:href="@{/sports/list}">스포츠</a></li>
+      <li><a href="/sports/list">스포츠</a></li>
       <li><a href="#">엔터</a></li>
     </ul>
     <div class="search">
@@ -129,23 +135,21 @@
 
 <script>
 	$(document).ready(function () {
+	  // localStorage에서 마지막 선택한 카테고리 가져오기 (기본값 '종합')
+	  const savedCategory = localStorage.getItem('selectedCategory') || '종합';
 
-	  // 1) AJAX 요청 함수 정의
+	  // 카테고리별 AJAX 요청 함수
 	  function loadCategory(category) {
-	    let url = "/sports/boardList"; // 기본 URL
+	    let url = category === '종합' ? '/sports/main' : '/sports/boardList';
 
-	    // '종합'이면 URL 변경
-	    if (category === "종합") {
-	      url = "/sports/main"; 
-	    }
-
-	    // AJAX 요청
 	    $.ajax({
 	      url: url,
 	      method: 'GET',
 	      data: { category: category },
 	      success: function (html) {
 	        $('#sports-content').html(html);
+	        $('.category-link').removeClass('active');
+	        $('.category-link[data-category="' + category + '"]').addClass('active');
 	      },
 	      error: function () {
 	        alert('카테고리 기사 로딩 실패!');
@@ -153,21 +157,14 @@
 	    });
 	  }
 
-	  // 2) 카테고리 클릭 이벤트 등록
-	    $('.category-link').click(function () {
-	      $('.category-link').removeClass('active');
-	      $(this).addClass('active');
+	  // 페이지 로드 시 저장된 카테고리로 AJAX 호출
+	  loadCategory(savedCategory);
 
-	      const category = $(this).data('category');
-	      loadCategory(category);
-
-	      // ✅ 선택한 카테고리 localStorage에 저장
-	      localStorage.setItem('selectedCategory', category);
-	    });
-
-	    // 3) 페이지 로딩 시 마지막 선택 카테고리 자동 호출
-	    const savedCategory = localStorage.getItem('selectedCategory') || '종합';
-	    loadCategory(savedCategory);
-	    $('.category-link[data-category="' + savedCategory + '"]').addClass('active');
+	  // 카테고리 클릭 시 localStorage 업데이트 + AJAX 호출
+	  $('.category-link').click(function () {
+	    const category = $(this).data('category');
+	    localStorage.setItem('selectedCategory', category);
+	    loadCategory(category);
 	  });
+	});
 </script>
