@@ -188,11 +188,11 @@
 			</nav>
 			<nav class="sub-nav">
 				<ul>
-					<li><a th:href="@{main}">홈</a></li>
-					<li><a th:href="@{category?type=drama}">드라마</a></li>
-					<li><a th:href="@{category?type=movie}">영화</a></li>
-					<li><a th:href="@{category?type=music}">뮤직</a></li>
-					<li><a th:href="@{category?type=general}">연예일반</a></li>
+					<li><a th:href="@{/enter/main}">홈</a></li>
+					<li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
+					<li><a th:href="@{/enter/category?category=movie}" th:classappend="${category} == 'movie' ? 'active' : ''">영화</a></li>
+					<li><a th:href="@{/enter/category?category=music}" th:classappend="${category} == 'music' ? 'active' : ''">뮤직</a></li>
+					<li><a th:href="@{/enter/category?category=general}" th:classappend="${category} == 'general' ? 'active' : ''">연예일반</a></li>
 				</ul>
 			</nav>
 		</div>

@@ -25,4 +25,5 @@ public interface EnterNewsMapper {
 
 	public int updateEnterNews(EnterNewsDTO dto);
 	
+	public List<EnterNewsDTO> getNewsByCategory(@Param("category") String category);
 }

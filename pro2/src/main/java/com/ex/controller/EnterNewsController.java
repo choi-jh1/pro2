@@ -39,6 +39,8 @@ public class EnterNewsController {
 		
         model.addAttribute("sid", session.getAttribute("sid"));
         model.addAttribute("role", session.getAttribute("role"));
+        
+        model.addAttribute("type", "main");
 		return "enter/main";
 	}
 	
@@ -145,6 +147,14 @@ public class EnterNewsController {
 	@ResponseBody
 	public List<EnterNewsDTO> loadMoreEnterNews(@RequestParam int offset, @RequestParam int limit) {
 	    return enterNewsService.getPagedEnterNews(offset, limit);
+	}
+
+	@GetMapping("category")
+	public String categoryNews(@RequestParam("category") String category, Model model) {
+	    List<EnterNewsDTO> categoryNews = enterNewsService.getNewsByCategory(category);
+	    model.addAttribute("categoryNews", categoryNews);
+	    model.addAttribute("type", category);
+	    return "enter/category";
 	}
 
 }

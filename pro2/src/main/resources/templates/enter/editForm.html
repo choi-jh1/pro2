@@ -87,12 +87,12 @@
 
 		<!-- 카테고리 -->
 		<label>카테고리</label>
-		<select th:field="*{category}" required>
-			<option value="">카테고리 선택</option>
-			<option value="드라마">드라마</option>
-			<option value="영화">영화</option>
-			<option value="뮤직">뮤직</option>
-			<option value="연예일반">연예일반</option>
+		<select name="category" required>
+		  <option value="">카테고리 선택</option>
+		  <option value="drama" th:selected="${dto.category == 'drama'}">드라마</option>
+		  <option value="movie" th:selected="${dto.category == 'movie'}">영화</option>
+		  <option value="music" th:selected="${dto.category == 'music'}">뮤직</option>
+		  <option value="general" th:selected="${dto.category == 'general'}">연예일반</option>
 		</select>
 
 		<!-- 본문 -->

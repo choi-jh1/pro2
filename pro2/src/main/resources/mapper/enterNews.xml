@@ -75,5 +75,16 @@
 		where
 			num = #{num}
 	</update>
+	
+	<!-- 카테고리별 뉴스 목록 -->
+	<select id="getNewsByCategory" parameterType="string" resultType="com.ex.data.EnterNewsDTO">
+		select
+			num, title, DBMS_LOB.SUBSTR(content, 4000, 1) as content, writer_id,
+			null as writerNickname, null as writerEmail,
+			reg, readcount, category, hot, thumbnail
+		from enter_news
+		where status = 1 and category = #{category}
+		order by reg desc
+	</select>
 
 </mapper>

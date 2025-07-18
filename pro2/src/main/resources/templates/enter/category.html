@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${type} + ' 뉴스 목록'">카테고리 뉴스</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+	<header class="site-header">
+		<div class="container">
+			<div class="logo">로고</div>
+	
+			<div class="top-bar">
+				<div class="date">2025.07.03</div>
+				<div class="user-menu">
+					<a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
+					<span th:if="${session.sid == null}">
+						<a th:href="@{/user/login}">로그인</a>
+						<a th:href="@{/user/insert}">회원가입</a>
+					</span>
+					<span th:if="${session.sid != null and session.role == 'admin'}">
+						<a th:href="@{/user/logout}">로그아웃</a>
+						<a th:href="@{/admin/adminPage}">관리자페이지</a>
+					</span>
+					<span th:if="${session.sid != null and session.role != 'admin'}">
+	
+						<a th:href="@{/user/myPage}">마이페이지</a>
+						<a th:href="@{/user/logout}">로그아웃</a>
+					</span>
+				</div>
+			</div>
+			<nav class="main-nav">
+				<ul>
+					<li><a th:href="@{/news/home}">뉴스</a></li>
+					<li><a th:href="@{/sports/list}">스포츠</a></li>
+					<li><a th:href="@{main}" class="active">엔터</a></li>
+				</ul>
+				<div class="search">
+					<input type="text" placeholder="검색" />
+				</div>
+			</nav>
+			<nav class="sub-nav">
+				<ul>
+					<li><a th:href="@{/enter/main}">홈</a></li>
+					<li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
+					<li><a th:href="@{/enter/category?category=movie}" th:classappend="${category} == 'movie' ? 'active' : ''">영화</a></li>
+					<li><a th:href="@{/enter/category?category=music}" th:classappend="${category} == 'music' ? 'active' : ''">뮤직</a></li>
+					<li><a th:href="@{/enter/category?category=general}" th:classappend="${category} == 'general' ? 'active' : ''">연예일반</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- 상단 랭킹 박스 -->
+	<div th:switch="${category}">
+		<div th:case="'music'">
+			<section class="music-chart-box">
+				<h3>멜론 차트 TOP 30</h3>
+				<!-- 멜론 차트 더미 데이터 나중에 삽입 -->
+			</section>
+		</div>
+		<div th:case="'drama'">
+			<section class="drama-ranking-box">
+				<h3>이번주 드라마 인기순위</h3>
+				<!-- 드라마 랭킹 더미 데이터 나중에 삽입 -->
+			</section>
+		</div>
+		<div th:case="'movie'">
+			<section class="movie-ranking-box">
+				<h3>이번주 영화 인기순위</h3>
+				<!-- 영화 랭킹 더미 데이터 나중에 삽입 -->
+			</section>
+		</div>
+	</div>
+
+	<!-- 뉴스 카드 목록 -->
+	<main class="news-grid" id="newsContainer">
+		<div th:each="news : ${categoryNews}" class="news-card">
+			<a th:href="@{/enter/detail(num=${news.num})}">
+				<img th:src="${news.thumbnail}" alt="썸네일" class="thumbnail">
+				<h3 th:text="${news.title}">기사 제목</h3>
+				<p th:text="${#temporals.format(news.reg, 'yyyy.MM.dd')}">작성일</p>
+			</a>
+		</div>
+	</main>
+	<!--
+	// 로딩 상태
+	<div id="loading" style="text-align: center; margin: 20px;">Loading...</div>
+
+	// 무한 스크롤 스크립트
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	/*
+	let offset = 10;
+	const limit = 10;
+	const type = /*[[${type}]] 'general';
+	let isLoading = false;
+
+	function loadMoreNews() {
+		if (isLoading) return;
+		isLoading = true;
+		$("#loading").show();
+
+		$.ajax({
+			url: "/enter/category/loadMore",
+			method: "GET",
+			data: {
+				type: type,
+				offset: offset,
+				limit: limit
+			},
+			success: function (data) {
+				if (data.length === 0) {
+					$("#loading").text("더 이상 기사가 없습니다");
+					return;
+				}
+				data.forEach(function(news) {
+					const html = `
+						<div class="news-card">
+							<a href="/enter/detail?num=${news.num}">
+								<img src="${news.thumbnail}" alt="썸네일" class="thumbnail">
+								<h3>${news.title}</h3>
+								<p>${news.reg ? news.reg.substring(0, 10) : ''}</p>
+							</a>
+						</div>
+					`;
+					$("#newsContainer").append(html);
+				});
+				offset += limit;
+				isLoading = false;
+				$("#loading").hide();
+			},
+			error: function () {
+				$("#loading").text("불러오기에 실패했습니다");
+			}
+		});
+	}
+
+	$(window).on("scroll", function () {
+		if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
+			loadMoreNews();
+		}
+	});*/
+	/*]]>*/
+	</script>
+	-->
+</body>
+</html>

@@ -77,4 +77,9 @@ public class EnterNewsService {
 		int result=enterNewsMapper.updateEnterNews(dto);
 		return result;
 	}
+	
+	public List<EnterNewsDTO> getNewsByCategory(String category) {
+		return enterNewsMapper.getNewsByCategory(category);
+	}
+
 }
