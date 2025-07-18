@@ -216,11 +216,11 @@
 <div class="article-list"  id="article-list">
 	<div><span style="font-size: 24px; font-weight: 500;"> 스포츠 </span><span th:text="' > '+${catename}"></span></div>
   <div class="article-card" th:each="dto:${list}" >
-	<a th:href="@{|/sports/content?boardNum=${dto.boardNum}&id=${dto.writer}|}">
+	<a th:href="@{|/sports/content/${dto.boardNum}|}">
     <img th:src="${dto.thumbnail}" alt="썸네일">
 	</a>
     <div class="article-info">
-		<a th:href="@{|/sports/content?boardNum=${dto.boardNum}&id=${dto.writer}|}">
+		<a th:href="@{|/sports/content/${dto.boardNum}|}">
       <h3 class="article-title">[[${dto.title}]]</h3>
 	  </a>
       <p class="article-summary">[[${dto.cleanContent}]]</p>

@@ -1,6 +1,7 @@
 package com.ex.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.ex.data.SportsCateDTO;
 import com.ex.data.SportsDTO;
-import com.ex.data.SportsReaction;
 
 @Mapper
 @Repository
@@ -32,9 +32,11 @@ public interface SportsMapper {
 	// 스포츠기사 좋아요넣기
 	public void reactionInsert(@Param("sports_id") int num,@Param("user_id") String id,@Param("emotion_type") String type);
 	// 좋아요 아이디 체크
-	public int idCheck(@Param("sports_id") int num,@Param("user_id") String id);
+	public String idCheck(@Param("sports_id") int num,@Param("user_id") String id);
 	// 좋아요 취소
 	public void removeReaction(@Param("sports_id") int num,@Param("user_id") String id,@Param("emotion_type") String type);
+	public void deleteReaction(@Param("sports_id") int num,@Param("user_id") String id);
+	
 	// 좋아요 개수
-	public int reactionCount(@Param("emotion_type") String type,@Param("sports_id") int num);
+	public List<Map<String,Object>> reactionCount(int num);
 }

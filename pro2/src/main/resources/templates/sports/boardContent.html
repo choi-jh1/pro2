@@ -236,28 +236,27 @@
 	<div class="reaction-buttons">
 	  <button class="reaction-button" data-type="like">
 	    <img src="/images/emoji_like.png" alt="좋아요" />
-	    <strong th:text="${reactionCounts['like']}">0</strong>
-	    <strong>2</strong>
+	     <strong th:text="${count['like']} ?: 0"></strong>
 	  </button>
 	  <button class="reaction-button" data-type="sad">
 	    <img src="/images/emoji_sad.png" alt="슬퍼요" />
 	    <span>슬퍼요</span>
-	    <strong th:text="${reactionCounts['sad']}">0</strong>
+	    
 	  </button>
 	  <button class="reaction-button" data-type="angry">
 	    <img src="/images/emoji_angry.png" alt="화나요" />
 	    <span>화나요</span>
-	    <strong th:text="${reactionCounts['angry']}">0</strong>
+	  
 	  </button>
 	  <button class="reaction-button" data-type="surprise">
 	    <img src="/images/emoji_fan.png" alt="놀랐어요" />
 	    <span>팬이에요</span>
-	    <strong th:text="${reactionCounts['surprise']}">0</strong>
+	  
 	  </button>
 	  <button class="reaction-button" data-type="followup">
 	    <img src="/images/emoji_followup.png" alt="후속기사 원해요" />
 	    <span>후속기사 원해요</span>
-	    <strong th:text="${reactionCounts['followup']}">0</strong>
+	
 	  </button>
 	</div>
   </div>
@@ -271,7 +270,7 @@
 <script>
 	$(document).ready(function(){
 		// 현재 사용자가 선택한 리액션 타입
-		let currentReaction = null;
+ 		let currentReaction = '[[${reactionType}]]' || null;
 		const boardNum = "[[${dto.boardNum}]]";
 		const id = "[[${session.sid}]]"
 		$('.reaction-button').click(function(){
@@ -326,11 +325,6 @@
 				          currentReaction = clickedType;
 				          updateUI(clickedType);
 						  
-						  // 리액션 수 새로고침
-						  reactionCount(clickedType);
-						  if (currentReaction !== null) {
-						    reactionCount(currentReaction); // 기존꺼도 다시 불러오기
-						  }
 				        },
 				        error: function () {
 				          alert("리액션 등록 실패");
@@ -352,26 +346,5 @@
 		}
 	});
 	
-	// 좋아요 개수
-	function reactionCount(type) {
-	  $.ajax({
-	    url: '/sports/reaction/count',
-	    method: 'GET',
-	    data: {
-	      boardNum: boardNum,
-	      reactionType: type
-	    },
-	    success: function (res) {
-	      const newCount = res.count;
-		  updateReactionCount(type, newCount);
 
-	    },
-	    error: function () {
-	      console.error("리액션 수 조회 실패");
-	    }
-	  });
-	}
-	function updateReactionCount(type, count) {
-	  $(`.reaction-button[data-type="${type}"] strong`).text(count);
-	}
 </script>

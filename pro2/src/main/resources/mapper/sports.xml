@@ -41,14 +41,20 @@
 	</insert>
 	<!--스포츠기사 좋아요 아이디체크-->
 	<select id="idCheck" resultType="int">
-		select count(*) from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
+		select emotion_Type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
 	</select>
 	<!--좋아요 취소-->
 	<delete id="removeReaction">
 		delete from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id} and emotion_type=#{emotion_type}
 	</delete>
+	<!-- 기존 반응 삭제 -->
+	<delete id="deleteReaction">
+	    DELETE FROM sportsReaction 
+	    WHERE sports_id = #{sports_id} AND user_id = #{user_id}
+	</delete>
 	<!--좋아요 개수-->
-	<select id="reactionCount" resultType="int">
-		select count(*) from sportsReaction where emotion_type=#{emotion_type} and sports_id=#{sports_id}
+	<select id="reactionCount" resultType="map">
+		select emotion_type, COUNT(*) AS cnt from sportsReaction where sports_id = #{boardNum} GROUP BY emotion_type
 	</select>
+
 </mapper>
