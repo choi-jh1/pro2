@@ -67,20 +67,52 @@ public class SportsController {
 	}
 	
 	// 스포츠 축구
-	@GetMapping("list")
-	public String list() {
-		return "sports/list";
-	}
-	
-	// 카테고리별 리스트 출력
-	@GetMapping("boardList")
-	public String boardList(Model model,@RequestParam("category") int category) {
-		List<SportsDTO> list = sportsService.sportsCateList(category,0,5);
+	@GetMapping("football")
+	public String football(Model model) {
+		int cate = 1;
+		List<SportsDTO> list = sportsService.sportsCateList(cate,0,5);
 		int pageNum=1;
 		model.addAttribute("list",list);
-		model.addAttribute("cate",category);
+		model.addAttribute("cate",cate);
 		model.addAttribute("pageNum",pageNum);
-		return "sports/boardList";
+		model.addAttribute("catename",sportsService.catename(cate));
+		return "sports/sportsCategory";
+	}
+	// 스포츠 야구
+	@GetMapping("baseball")
+	public String baseball(Model model) {
+		int cate = 2;
+		List<SportsDTO> list = sportsService.sportsCateList(cate,0,5);
+		int pageNum=1;
+		model.addAttribute("list",list);
+		model.addAttribute("cate",cate);
+		model.addAttribute("pageNum",pageNum);
+		model.addAttribute("catename",sportsService.catename(cate));
+		return "sports/sportsCategory";
+	}
+	// 스포츠 농구
+	@GetMapping("basketball")
+	public String basketball(Model model) {
+		int cate = 3;
+		List<SportsDTO> list = sportsService.sportsCateList(cate,0,5);
+		int pageNum=1;
+		model.addAttribute("list",list);
+		model.addAttribute("cate",cate);
+		model.addAttribute("pageNum",pageNum);
+		model.addAttribute("catename",sportsService.catename(cate));
+		return "sports/sportsCategory";
+	}
+	// 스포츠 배구
+	@GetMapping("volleyball")
+	public String volleyball(Model model) {
+		int cate = 4;
+		List<SportsDTO> list = sportsService.sportsCateList(cate,0,5);
+		int pageNum=1;
+		model.addAttribute("list",list);
+		model.addAttribute("cate",cate);
+		model.addAttribute("pageNum",pageNum);
+		model.addAttribute("catename",sportsService.catename(cate));
+		return "sports/sportsCategory";
 	}
 	
 	// 더보기 처리

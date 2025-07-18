@@ -11,6 +11,10 @@
 	<select id="cate" resultType="com.ex.data.SportsCateDTO">
 		select * from sportsCate
 	</select>
+	<!--스포츠 카테고리 이름 조회-->
+	<select id="catename" resultType="String">
+		select name from sportsCate where cateId=#{cateId}
+	</select>
 	<!--스포츠기사 전체 목록-->
 	<select id="sportsList" resultType="com.ex.data.SportsDTO">
 		select * from sports

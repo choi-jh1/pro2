@@ -22,7 +22,7 @@
 
 	/* 사이드바 박스 */
 	.sidebar {
-	  width: 280px;
+	  width: 200px;
 	  background-color: #f9f9f9;
 	  border: 1px solid #ddd;
 	  border-radius: 10px;
@@ -60,11 +60,12 @@
 	  align-items: center;
 	}
 	.article-body img {
-	  width: 100%;       /* 부모 영역 꽉 채우기 */
-	  max-width: 600px;  /* 최대 너비 제한 (원하는 값으로 변경) */
-	  height: auto;      /* 비율 유지 */
-	  display: block;    /* 줄바꿈 포함 */
-	  margin: 10px auto; /* 가운데 정렬 */
+	  width: 100%;
+	  max-width: 700px;
+	  min-width: 700px;  /* 👈 이 줄이 포인트 */
+	  height: auto;
+	  display: block;
+	  margin: 10px auto;
 	}
 	.article-body {
 		font-size:20px;
@@ -100,7 +101,7 @@
   <nav class="main-nav">
     <ul>
       <li><a href="#">뉴스</a></li>
-      <li><a th:href="@{/sports/list}">스포츠</a></li>
+      <li><a th:href="@{/sports/main}">스포츠</a></li>
       <li><a href="#">엔터</a></li>
     </ul>
     <div class="search">
@@ -111,11 +112,11 @@
   <nav class="sub-nav">
     <ul>
 
-		<li class="category-link" data-category="종합">종합</li>
-		<li class="category-link" data-category="1">축구</li>
-		<li class="category-link" data-category="2">야구</li>
-		<li class="category-link" data-category="3">농구</li>
-		<li class="category-link" data-category="4">배구</li>
+		<li><a href="/sports/main">종합</a></li>
+		<li><a href="/sports/football">축구</a></li>
+		<li><a href="/sports/baseball">야구</a></li>
+		<li><a href="/sports/basketball">농구</a></li>
+		<li><a href="/sports/volleyball">배구</a></li>
     </ul>
   </nav>
 </div>

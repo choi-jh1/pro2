@@ -43,7 +43,10 @@ public class SportsService {
 	public List<SportsCateDTO> cate() {
 		return sportsMapper.cate();
 	}
-	
+	// 스포츠기사 카테고리 이름
+	public String catename(int id) {
+		return sportsMapper.catename(id);
+	}
 	
 	// 스포츠기사 목록
 	public List<SportsDTO> sportsList(){
