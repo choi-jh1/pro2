@@ -32,4 +32,5 @@
 	<update id="updateCategory">
 		update reporter set category=#{category} where id=#{id}
 	</update>
+
 </mapper>

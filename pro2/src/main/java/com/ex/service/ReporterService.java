@@ -28,5 +28,14 @@ public class ReporterService {
 	public List<ReporterDTO> getReporterListWithStatus(){
 		return repoterMapper.getReporterListWithStatus();
 	}
+	// 기자 목록 조회
+	public List<UsersDTO> reporterList() {
+		return repoterMapper.reporterList();
+	}
+	
+	// 기자 정보 조회
+	public ReporterDTO reporterInfo(String id) {
+		return repoterMapper.reporterInfo(id);
+	}
 
 }

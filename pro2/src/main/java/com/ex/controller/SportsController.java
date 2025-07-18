@@ -3,9 +3,14 @@ package com.ex.controller;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ex.data.SportsDTO;
+import com.ex.service.ReporterService;
 import com.ex.service.SportsService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SportsController {
 	private final SportsService sportsService;
+	private final ReporterService reporterService;
 	
 	// 스포츠기사 쓰기
 	@GetMapping("write")
@@ -36,7 +43,7 @@ public class SportsController {
 	public String write(SportsDTO dto) {
 		sportsService.boardWrite(dto);
 		
-		return "redirect:/sports/list";
+		return "redirect:/sports/main";
 	}
 
 	// 외부폴더에 이미지 생성
@@ -122,9 +129,35 @@ public class SportsController {
 	}
 	
 	// 스포츠기사 내용
-	@GetMapping("content")
-	public String content(@RequestParam("boardNum") int boardNum,Model model) {
-		model.addAttribute("dto",sportsService.sportsContent(boardNum));
+	@GetMapping("content/{boardNum}")
+	public String content(@PathVariable("boardNum") int boardNum,Model model) {
+		
+		Map<String,Object> count = sportsService.reactionCount(boardNum);
+		
+		SportsDTO dto = sportsService.sportsContent(boardNum);
+		String id = dto.getWriter();
+		
+		model.addAttribute("reactionType",sportsService.reactionType(boardNum,id));
+		model.addAttribute("count",count);
+		model.addAttribute("repo",reporterService.reporterInfo(dto.getWriter()));
+		model.addAttribute("dto",dto);
 		return "sports/boardContent";
 	}
+	
+	// 스포츠기사 좋아요
+	@PostMapping("reaction")
+	public ResponseEntity<?> addReaction(@RequestParam("boardNum") int num,@RequestParam("id") String id,@RequestParam("reactionType") String type) {
+		sportsService.reactionInsert(num, id, type);
+		return ResponseEntity.ok(Map.of("message","성공"));
+		
+	}
+	
+	// 반응 취소
+	@DeleteMapping("reaction")
+	public ResponseEntity<?> removeReaction(@RequestParam("boardNum") int num,@RequestParam("id") String id,@RequestParam("reactionType") String type){
+		sportsService.removeReaction(num, id,type);
+		return ResponseEntity.ok(Map.of("message", "반응 취소 성공"));
+	}
+	
+
 }

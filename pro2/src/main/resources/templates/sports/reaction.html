@@ -1,0 +1,91 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/reaction.css}">
+
+<div class="reaction-buttons">
+  <button class="reaction-button" data-type="like">
+    <img src="/images/emoji_like.png" alt="좋아요" />
+    <span>좋아요</span>
+    <strong>2</strong>
+  </button>
+  <button class="reaction-button" data-type="sad">
+    <img src="/images/emoji_sad.png" alt="슬퍼요" />
+    <span>슬퍼요</span>
+    <strong>6</strong>
+  </button>
+  <button class="reaction-button" data-type="angry">
+    <img src="/images/emoji_angry.png" alt="화나요" />
+    <span>화나요</span>
+    <strong>3</strong>
+  </button>
+  <button class="reaction-button" data-type="surprise">
+    <img src="/images/emoji_fan.png" alt="놀랐어요" />
+    <span>팬이에요</span>
+    <strong>0</strong>
+  </button>
+  <button class="reaction-button" data-type="followup">
+    <img src="/images/emoji_followup.png" alt="후속기사 원해요" />
+    <span>후속기사 원해요</span>
+    <strong>3</strong>
+  </button>
+</div>
+
+<script>
+	$(document).ready(function(){
+		// 현재 사용자가 선택한 리액션 타입
+		let currentReaction = null;
+		const boardNum = "[[${dto.boardNum}]]";
+		const id = "[[${session.sid}]]"
+		$('.reaction-button').click(function(){
+			// 클릭한 리액션 타입
+			const clickedType = $(this).data('type');
+			
+			if(currentReaction === clickedType){
+				// 같은 버튼 클릭시 취소 요청
+				$.ajax({
+					url:'/sports/reaction',
+					method:'delete',
+					data:{
+						reactionType:clickedType,
+						boardNum:boardNum,
+						id:id
+					},
+					success:function(){
+						currentReaction=null;
+						updateUI(null);
+					},
+					error:function(){
+						alert("취소실패");
+					}
+				});
+			}else{
+				$.ajax({
+					url:'/sports/reaction',
+					method:'post',
+					data:{
+						currentReaction : clickedType,
+						boardNum:boardNum,
+						id:id
+					},
+					success:function(){
+						currentReaction=clickedType;
+						updateUI(clickedType);
+					},
+					error:function(){
+						alert("등록실패");
+						}
+				});
+			}
+		});
+		
+		function updateUI(select){
+			$('.reaction-button').each(function(){
+				const type=$(this).data('type');
+				if(type===select){
+					$(this).addClass('select');
+				}else{
+					$(this).removeClass('select');
+				}
+			});
+		}
+	});
+</script>

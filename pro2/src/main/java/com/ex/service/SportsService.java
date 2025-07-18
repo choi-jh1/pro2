@@ -1,6 +1,8 @@
 package com.ex.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,5 +73,37 @@ public class SportsService {
     // 스포츠기사 내용 출력
     public SportsDTO sportsContent(int boardNum) {
     	return sportsMapper.sportsContent(boardNum);
+    }
+    // 스포츠기사 조회수 +1
+    public void sportsReadCount(int boardNum) {
+    	sportsMapper.sportsReadCount(boardNum);
+    }
+
+    // 스포츠기사 좋아요
+    public void reactionInsert(int num,String id,String type) {
+    	// 먼저 기존 반응 삭제
+    	String idCheck = sportsMapper.idCheck(num, id);
+        if(idCheck != null) {
+    	sportsMapper.deleteReaction(num, id);
+        }
+    		sportsMapper.reactionInsert(num,id,type);
+    	
+    }
+    // 스포츠기사 좋아요 취소
+    public void removeReaction(int num,String id,String type) {
+    	sportsMapper.removeReaction(num,id,type);
+    }
+    // 스포츠기사 좋아요 개수
+    public Map<String,Object> reactionCount(int num) {
+    	List<Map<String,Object>> list = sportsMapper.reactionCount(num);
+    	Map<String,Object> result = new HashMap<>();
+    	for(Map<String,Object> map : list) {
+    		result.put((String)map.get("EMOTION_TYPE"), ((Number)map.get("cnt")).intValue());
+    	}
+    	return result;
+    }
+    //id 체크
+    public String reactionType(int num,String id) {
+    	return sportsMapper.idCheck(num, id);
     }
 }
