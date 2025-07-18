@@ -84,14 +84,33 @@
 	  padding: 6px 0;
 	  color: #444;
 	}
+	a {
+	  text-decoration: none;
+	  color: inherit; /* 기본 글자색도 상속받게 */
+	}
+	.article-summary {
+	  display: -webkit-box;
+	  -webkit-line-clamp: 2;         /* 최대 2줄 표시 */
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  height: 3em;                   /* line-height * 줄 수 */
+	  line-height: 1.5em;
+	  margin-top: 5px;
+	}
+
 </style>
 <div class="container_body">
 <div class="article-list"  id="article-list">
 	<h2>스포츠</h2>
-  <div class="article-card" th:each="dto:${list}">
+  <div class="article-card" th:each="dto:${list}" >
+	<a th:href="@{|/sports/content?boardNum=${dto.boardNum}|}">
     <img th:src="${dto.thumbnail}" alt="썸네일">
+	</a>
     <div class="article-info">
+		<a th:href="@{|/sports/content?boardNum=${dto.boardNum}|}">
       <h3 class="article-title">[[${dto.title}]]</h3>
+	  </a>
       <p class="article-summary">[[${dto.cleanContent}]]</p>
       <span class="article-date">[[${#temporals.format(dto.reg,'yyyy-MM-dd HH:mm')}]]</span>
 	  <span class="article-date">[[${dto.writer}]]</span>
