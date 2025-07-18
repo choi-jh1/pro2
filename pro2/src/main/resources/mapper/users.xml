@@ -15,5 +15,8 @@
 	<select id="userList" resultType="com.ex.data.UsersDTO">
 		select * from users where role='user'
 	</select>
-
+	<!--유저상태변경-->
+	<update id="updateStatus">
+		update users set status=#{status} where id=#{userId}
+	</update>
 </mapper>

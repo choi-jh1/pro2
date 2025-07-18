@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -98,7 +100,15 @@ public class AdminController {
 		return "admin/userUpdate";
 	}
 	// 유저 상태변경
-
+	@PostMapping("updateStatus")
+	public ResponseEntity<String> updateStatus(@RequestParam("userId") String userId, @RequestParam("status") String status) {
+		int result = usersService.updateStatus(userId, status);
+		if(result > 0) {
+			return ResponseEntity.ok("success");
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+		}
+	}
 	
 	@GetMapping("articleCheck")
 	public String articleCheck() {
@@ -112,7 +122,7 @@ public class AdminController {
 	                               @RequestParam("profile") MultipartFile profileFile) {
 
 	    // 실제 저장 디렉토리
-	    String uploadDir = "C:/upload/profile/";
+	    String uploadDir = "C:/profile/upload";
 	    File uploadPath = new File(uploadDir);
 
 	    if (!uploadPath.exists()) {

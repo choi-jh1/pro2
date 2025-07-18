@@ -19,9 +19,9 @@
 			<td th:text="${user.name}"></td>
 			<td th:text="${#temporals.format(user.reg, 'yy-MM-dd HH:mm')}"></td>
 			<td>
-				<select class="status-select" data-id="1">
-					<option value="active">active</option>
-					<option value="stop">stop</option>
+				<select class="status-select" th:data-id="${user.id}">
+					<option value="active" th:selected="${user.status == 'active'}">활동</option>
+					<option value="stop" th:selected="${user.status == 'stop'}">정지</option>
 				</select>
 			</td>
 			<td th:text="${user.role}"></td>

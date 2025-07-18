@@ -29,5 +29,10 @@ public class UsersService {
 	public List<UsersDTO> userList() {
 		return usersMapper.userList();
 	}
+	
+	// 유저 상태 변경
+	public int updateStatus(String userId, String status) {
+		return usersMapper.updateStatus(userId, status);
+	}
 		
 }

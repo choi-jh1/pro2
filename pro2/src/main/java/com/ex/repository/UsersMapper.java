@@ -3,6 +3,7 @@ package com.ex.repository;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ex.data.UsersDTO;
@@ -16,4 +17,6 @@ public interface UsersMapper {
 	public UsersDTO loginCheck(UsersDTO dto);
 	// 유저목록
 	public List<UsersDTO> userList();
+	// 유저상태변경
+	public int updateStatus(@Param("userId") String userId, @Param("status") String status);
 }
