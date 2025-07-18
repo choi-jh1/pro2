@@ -54,7 +54,7 @@
 	</delete>
 	<!--좋아요 개수-->
 	<select id="reactionCount" resultType="map">
-		select emotion_type, COUNT(*) AS cnt from sportsReaction where sports_id = #{boardNum} GROUP BY emotion_type
+		select emotion_type, COUNT(*) AS cnt from sportsReaction where sports_id = #{sports_id} GROUP BY emotion_type
 	</select>
 
 </mapper>

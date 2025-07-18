@@ -84,7 +84,7 @@ public class SportsService {
     	// 먼저 기존 반응 삭제
     	String idCheck = sportsMapper.idCheck(num, id);
         if(idCheck != null) {
-    	sportsMapper.deleteReaction(num, id);
+    		sportsMapper.deleteReaction(num, id);
         }
     		sportsMapper.reactionInsert(num,id,type);
     	
@@ -95,10 +95,11 @@ public class SportsService {
     }
     // 스포츠기사 좋아요 개수
     public Map<String,Object> reactionCount(int num) {
+    	
     	List<Map<String,Object>> list = sportsMapper.reactionCount(num);
     	Map<String,Object> result = new HashMap<>();
     	for(Map<String,Object> map : list) {
-    		result.put((String)map.get("EMOTION_TYPE"), ((Number)map.get("cnt")).intValue());
+    		result.put((String)map.get("EMOTION_TYPE"), ((Number)map.get("CNT")).intValue());
     	}
     	return result;
     }
