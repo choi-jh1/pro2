@@ -23,4 +23,7 @@ public interface ReportMapper {
     
     // 제보글 담당기자에게
     public void assignReporter(@Param("report_id") int report_id, @Param("assigned") String assigned);
+    
+    // 익명일때 비번받고 제보내용
+    public ReportBoardDTO checkPw(@Param("report_id") String reportId, @Param("password") String password);
 }

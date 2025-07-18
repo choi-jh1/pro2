@@ -69,4 +69,9 @@ public class ReportService {
         reportMapper.assignReporter(report_id, assigned);
     }
     
+    // 익명일 때 제보글 비번확인
+    public ReportBoardDTO checkPw(String reportId, String password) {
+    	return reportMapper.checkPw(reportId, password);
+    }
+    
 }

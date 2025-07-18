@@ -18,3 +18,4 @@
   			join users u on r.id = u.id where u.role='reporter'
   	</select>
   </mapper>
+  

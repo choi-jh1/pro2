@@ -3,6 +3,8 @@ package com.ex.controller;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReportController {
     private final ReportService reportService;
-
+    // 제보 글쓰기 폼
     @GetMapping("write")
     public String reportForm(HttpSession session) {
     	String role = (String)session.getAttribute("role");
@@ -30,14 +32,14 @@ public class ReportController {
     	}
     	return "redirect:/report/list";
     }
-
+    // 제보 글쓰기
     @PostMapping("writePro")
     public String reportWrite(ReportBoardDTO dto, @RequestParam("file") MultipartFile file, HttpSession session) {
  
         reportService.insert(dto, file);
         return "redirect:/report/list";
     }
-
+    // 제보 글 목록
     @GetMapping("list")
     public String list(Model model, @RequestParam(name="pageNum", defaultValue="1") int pageNum) {
         int pageSize = 10;
@@ -72,7 +74,7 @@ public class ReportController {
     	
     	return "report/list";
     }
-    	
+    // 제보 내용
 	@GetMapping("content")
 	public String content(Model model, @RequestParam("report_id") int report_id, @RequestParam("pageNum") int pageNum) {
 		ReportBoardDTO dto = reportService.reportContent(report_id);
@@ -81,4 +83,21 @@ public class ReportController {
 		model.addAttribute("pageNum",pageNum);
 		return "report/reportContent";
     }
-}
+	// 제보 익명일 떄 비밀번호
+	@PostMapping("checkPw")
+	public ResponseEntity<String> checkPw (@RequestParam("report_id") String reportId,
+	                                       @RequestParam("password") String password){
+	    try {
+	        ReportBoardDTO dto = reportService.checkPw(reportId, password);
+	        if(dto != null) {
+	            return ResponseEntity.ok("success"); // 비밀번호 일치
+	        } else {
+	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("fail"); // 비밀번호 틀림
+	        }
+	    } catch(Exception e) {
+	        e.printStackTrace(); // 문제 디버깅을 위해 로그 남기기
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error"); // 진짜 예외 발생 시
+	    }
+	}
+
+} 

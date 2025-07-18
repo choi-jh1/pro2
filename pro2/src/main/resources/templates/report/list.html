@@ -1,95 +1,121 @@
+<link rel="stylesheet" th:href="@{/css/listModal.css}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <center><h1>제보 글 목록</h1></center>
+
+<!-- 제보 없음 -->
 <div th:if="${reportCount==0}">
-	<table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
-		<tr align="center">
-			<a th:href="@{/report/write}">제보하기</a>
-			<td><h3>제보 글이 없습니다.</h3></td>
-		</tr>
-	</table>
+  <table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
+    <tr align="center">
+      <a th:href="@{/report/write}">제보하기</a>
+      <td><h3>제보 글이 없습니다.</h3></td>
+    </tr>
+  </table>
 </div>
+
+<!-- 제보 있음 -->
 <div th:unless="${reportCount==0}">
-	<center><a th:href="@{/report/write}">제보하기</a></center>
-	<table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
-		<tr height="30">
-			<th>제보 글 번호</th>
-			<th>제보 글 제목</th>
-			<th>작성일</th>
-		</tr>
-		<tr th:each="report:${list}">
-			<td th:text="${report.report_id}"></td>
-			<td>
-				<span th:if="${session.sid == report.writer_id or session.role == 'admin' or session.sid == report.assigned}">
-				<a th:href="@{|/report/content?pageNum=${pageNum}&report_id=${report.report_id}|}"><span th:text="${report.title}"></span></a>
-				</span>
-				<span th:unless="${session.sid == report.writer_id or session.role == 'admin' or session.sid == report.assigned}">
-					<a href="#" class="pw-check-link" th:data-report-id="${report.report_id}">🔒 비밀글입니다.</a>
-				</span>
-			</td>
-			<td th:text="${#temporals.format(report.reg, 'yy-MM-dd HH:mm')}"></td>
-		</tr>
-	</table>
+  <center><a th:href="@{/report/write}">제보하기</a></center>
+  <table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
+    <tr height="30">
+      <th>제보 글 번호</th>
+      <th>제보 글 제목</th>
+      <th>작성일</th>
+    </tr>
+    <tr align="center"  th:each="report : ${list}">
+      <td th:text="${report.report_id}"></td>
+      <td>
+        <!-- 접근 가능한 사용자 -->
+        <span th:if="${session.sid == report.writer_id or session.role == 'admin' or session.sid == report.assigned}">
+          <a th:href="@{|/report/content?pageNum=${pageNum}&report_id=${report.report_id}|}">
+            <span th:text="${report.title}"></span>
+          </a>
+        </span>
+
+        <!-- 비밀글 처리 -->
+        <span th:unless="${session.sid == report.writer_id or session.role == 'admin' or session.sid == report.assigned}">
+          <a href="#" 
+             class="pw-check-link" 
+             th:data-report-id="${report.report_id}" 
+             th:data-page-num="${pageNum}">
+             🔒 비밀글입니다.
+          </a>
+        </span>
+      </td>
+      <td th:text="${#temporals.format(report.reg, 'yy-MM-dd HH:mm')}"></td>
+    </tr>
+  </table>
 </div>
+
+<!-- 페이지네이션 -->
 <div align="center" th:if="${reportCount > 0}">
-	<span th:if="${startPage>10}">
-		<a th:href="@{|/report/list?pageNum=${startPage-10}|}">[이전]</a>
-	</span>
-	<span th:if="${endPage < pageCount}">
-		<a th:href="@{|/report/list?pageNum=${startPage+10}|}">[다음]</a>
-	</span>
-	<span th:each="i : ${#numbers.sequence(startPage,endPage)}">
-		<a th:href="@{|/report/list?pageNum=${i}|}" th:text="'['+${i}+']'"></a>
-	</span>
+  <span th:if="${startPage > 10}">
+    <a th:href="@{|/report/list?pageNum=${startPage - 10}|}">[이전]</a>
+  </span>
+  <span th:if="${endPage < pageCount}">
+    <a th:href="@{|/report/list?pageNum=${startPage + 10}|}">[다음]</a>
+  </span>
+  <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+    <a th:href="@{|/report/list?pageNum=${i}|}" th:text="'[' + ${i} + ']'"></a>
+  </span>
 </div>
-<!-- 모달 창 -->
-<div id="pwModal" style="display:none;">
-  <div>
-    <p>비밀번호를 입력하세요:</p>
-    <input type="password" id="inputPw" />
+
+<!-- ✅ 비밀번호 모달 -->
+<div id="pwModal" class="modal-background" style="display: none;">
+  <div class="modal-content">
+    <p>🔒 비밀번호를 입력하세요</p>
+    <input type="password" id="inputPw" class="modal-input" />
     <input type="hidden" id="hiddenReportId" />
-    <button id="pwSubmitBtn">확인</button>
-    <button class="close-modal">취소</button>
+    <input type="hidden" id="hiddenPageNum" />
+    <div class="modal-buttons">
+      <button id="pwSubmitBtn" class="modal-btn">확인</button>
+      <button class="close-modal modal-btn">취소</button>
+    </div>
   </div>
 </div>
 
-<!-- 모달 구현 -->
+<!-- ✅ 모달 스크립트 -->
 <script>
-	$(document).ready(function(){
-		// 링크 클릭시 모달
-		$(".pw-check-link").click(function(e){
-			e.preventDefault(); // 이거 없으면 a링크 기본이동됨
-			const reportID = $(this).data("report-id");
-			$("#hiddenReportId").val(reportID);
-			$("#inputPw").val("");
-			$("#pwModal").show();
-		});
-		
-		// 모달 닫기
-		$(".close-modal").click(function(){
-			$("#pwModal").hide();
-		});
-		
-		// 확인 버튼 클릭 시
-		  $("#pwSubmitBtn").click(function () {
-		    const reportId = $("#hiddenReportId").val();
-		    const password = $("#inputPw").val();
+$(document).ready(function () {
+  // 비밀글 클릭 시 모달 열기
+  $(".pw-check-link").click(function (e) {
+    e.preventDefault();
+    const reportID = $(this).data("report-id");
+    const pageNum = $(this).data("page-num");
+    $("#hiddenReportId").val(reportID);
+    $("#hiddenPageNum").val(pageNum);
+    $("#inputPw").val("");
+    $("#pwModal").show();
+  });
 
-		    $.ajax({
-		      url: "/report/checkPw",
-		      type: "POST",
-		      data: { report_id: reportId, password: password },
-		      success: function (result) {
-		        if (result === "success") {
-		          location.href = "/report/content?report_id=" + reportId;
-		        } else {
-		          alert("비밀번호가 틀렸습니다");
-		        }
-		      },
-		      error: function () {
-		        alert("서버 오류");
-		      }
-		    });
-		  });
-		});
-	
+  // 모달 닫기
+  $(".close-modal").click(function () {
+    $("#pwModal").hide();
+  });
+
+  // 확인 버튼 클릭 시 AJAX 요청
+  $("#pwSubmitBtn").click(function () {
+    const reportId = $("#hiddenReportId").val();
+    const password = $("#inputPw").val();
+    const pageNum = $("#hiddenPageNum").val();
+
+    $.ajax({
+      url: "/report/checkPw",
+      type: "POST",
+      data: { report_id: reportId, password: password },
+      success: function (result) {
+        if (result === "success") {
+          location.href = "/report/content?pageNum=" + pageNum + "&report_id=" + reportId;
+        }
+      },
+      error: function (xhr) {
+        if (xhr.status === 401) {
+          alert("❌ 비밀번호가 틀렸습니다");
+        } else {
+          alert("⚠️ 서버 오류가 발생했습니다");
+        }
+      }
+    });
+  });
+});
 </script>
