@@ -33,6 +33,13 @@ public class CommentService {
 	}
 	// 답글
 	public void addReply(CommentDTO dto) {
+		// re_level이 1 이상이면 답글 추가 제한
+		if(dto.getRe_level() >= 1) {
+			throw new IllegalArgumentException("1단계 답글까지만 허용 가능합니다.");
+		}
+		// 기존 답글 추가 전 re_step 업데이트
+		updateReStep(dto);
+		
 		commentMapper.insertReply(dto);
 	}
 

@@ -44,16 +44,74 @@
 			<button type="submit">댓글 등록</button>
 		</form>
 	</div>
+	
 	<!-- 댓글 목록 -->
+	<p th:text="${#lists.size(commentList)}">댓글 수</p>
 	<ul>
 	  <li th:each="comment : ${commentList}">
-	    <strong th:text="${comment.writer}">작성자</strong> :
-	    <span th:text="${comment.content}">댓글 내용</span><br>
-	    <span th:text="${#temporals.format(comment.reg, 'yyyy-MM-dd HH:mm')}">작성 시간</span>
+	    <div>
+	      <strong th:text="${comment.writer}">작성자</strong> :
+	      <span th:text="${comment.content}">댓글 내용</span><br>
+	      <span th:text="${#temporals.format(comment.reg, 'yyyy-MM-dd HH:mm')}">작성 시간</span>
+
+	      <!-- 삭제 버튼 -->
+		  <!-- 답글쓰기 버튼 -->
+		  <button type="button" 
+		          data-com-num="${comment.com_num}" 
+		          onclick="toggleReplyForm(this.getAttribute('data-com-num'))">
+		    답글쓰기
+		  </button>
+
+		  <!-- 답글 폼 -->
+		  <div id="replyForm${comment.com_num}" style="display:none; margin-top:10px;">
+			<form onsubmit="return submitReply(event, this)">
+			  <input type="hidden" name="num" th:value="${news.num}" />
+			  <input type="hidden" name="com_num" th:value="${comment.com_num}" />
+			  <input type="hidden" name="ref" th:value="${comment.ref}" />
+			  <input type="hidden" name="re_level" th:value="${comment.re_level}" />
+			  <input type="hidden" name="re_step" th:value="${comment.re_step}" />
+			  <textarea name="content" rows="3" cols="50" placeholder="답글을 입력하세요." required></textarea><br />
+			  <button type="submit">답글 등록</button>
+			  <button type="button" onclick="toggleReplyForm(this.closest('div').id.replace('replyForm', ''))">취소</button>
+			</form>
+		  </div>
+	    </div>
 	  </li>
 	</ul>
 
-	
+	<script>
+		// 답글 폼 토글 함수
+		function toggleReplyForm(comNum){
+			const formDiv = document.getElementById('replyForm'+comNum);
+			if(formDiv.style.display === 'none' || formDiv.style.display === ''){
+				formDiv.style.display = 'block';
+			}else{
+				formDiv.style.display = 'none';
+			}
+		}
+		
+		// ajax로 답글 제출
+		function submitReply(event, form){
+			event.preventDefault();
+			
+			const formDate = new FormData(form);
+			
+			fetch('/comment/reply',{
+				method: 'POST', body: formData,
+			}).then(res =>{
+				if(res.ok){
+					location.reload();
+				}else{
+					alert('답글 등록 실패');
+				}
+			}).catch(err => {
+				alerter('오류가 발생했습니다.');
+				console.error(err);
+			});
+			
+			return false;
+		}
+	</script>
 </body>
 
 
