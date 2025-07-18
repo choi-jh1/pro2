@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ex.data.UsersDTO;
 import com.ex.service.UsersService;
@@ -71,5 +72,21 @@ public class UsersController {
 	@GetMapping("update")
 	public String update() {
 		return "user/update";
+	}
+	
+	// 회원 탈퇴
+	@GetMapping("delete")
+	public String delete() {
+		return "user/delete";
+	}
+	// 회원 탈퇴(비밀번호 받음)
+	@PostMapping("delete")
+	public String userDelete(HttpSession session, @RequestParam("pw") String pw) {
+		String sid = (String)session.getAttribute("sid");
+		int result = usersService.userDelete(sid, pw);
+		if(result == 1) {
+			session.invalidate();
+		}
+		return "redirect:/user/main";
 	}
 }

@@ -1,3 +1,4 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <center><h1>제보 글 목록</h1></center>
 <div th:if="${reportCount==0}">
 	<table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
@@ -18,7 +19,12 @@
 		<tr th:each="report:${list}">
 			<td th:text="${report.report_id}"></td>
 			<td>
+				<span th:if="${session.sid == report.writer_id or session.role == 'admin' or session.sid == report.assigned}">
 				<a th:href="@{|/report/content?pageNum=${pageNum}&report_id=${report.report_id}|}"><span th:text="${report.title}"></span></a>
+				</span>
+				<span th:unless="${session.sid == report.writer_id or session.role == 'admin' or session.sid == report.assigned}">
+					<a href="#" class="pw-check-link" th:data-report-id="${report.report_id}">🔒 비밀글입니다.</a>
+				</span>
 			</td>
 			<td th:text="${#temporals.format(report.reg, 'yy-MM-dd HH:mm')}"></td>
 		</tr>
@@ -35,3 +41,55 @@
 		<a th:href="@{|/report/list?pageNum=${i}|}" th:text="'['+${i}+']'"></a>
 	</span>
 </div>
+<!-- 모달 창 -->
+<div id="pwModal" style="display:none;">
+  <div>
+    <p>비밀번호를 입력하세요:</p>
+    <input type="password" id="inputPw" />
+    <input type="hidden" id="hiddenReportId" />
+    <button id="pwSubmitBtn">확인</button>
+    <button class="close-modal">취소</button>
+  </div>
+</div>
+
+<!-- 모달 구현 -->
+<script>
+	$(document).ready(function(){
+		// 링크 클릭시 모달
+		$(".pw-check-link").click(function(e){
+			e.preventDefault(); // 이거 없으면 a링크 기본이동됨
+			const reportID = $(this).data("report-id");
+			$("#hiddenReportId").val(reportID);
+			$("#inputPw").val("");
+			$("#pwModal").show();
+		});
+		
+		// 모달 닫기
+		$(".close-modal").click(function(){
+			$("#pwModal").hide();
+		});
+		
+		// 확인 버튼 클릭 시
+		  $("#pwSubmitBtn").click(function () {
+		    const reportId = $("#hiddenReportId").val();
+		    const password = $("#inputPw").val();
+
+		    $.ajax({
+		      url: "/report/checkPw",
+		      type: "POST",
+		      data: { report_id: reportId, password: password },
+		      success: function (result) {
+		        if (result === "success") {
+		          location.href = "/report/content?report_id=" + reportId;
+		        } else {
+		          alert("비밀번호가 틀렸습니다");
+		        }
+		      },
+		      error: function () {
+		        alert("서버 오류");
+		      }
+		    });
+		  });
+		});
+	
+</script>

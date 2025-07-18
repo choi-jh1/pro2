@@ -1,0 +1,10 @@
+<h1>회원탈퇴</h1>
+<form th:action="@{/user/delete}" method="post" onsubmit="return confirmCheck()">
+	비밀번호 : <input type="password" name="pw" />
+	<button type="submit">확인</button>
+</form>
+<script>
+	function confirmCheck(){
+		return window.confirm("정말 삭제하시겠습니까?");
+	}
+</script>
