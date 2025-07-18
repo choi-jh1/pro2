@@ -25,7 +25,7 @@
 	  	      <a th:href="@{/user/logout}">로그아웃</a>
 	  </span>
 	  <span th:if="${session.sid != null and session.role == 'reporter'}">
-			  <a th:href="@{/user/myPage}">마이페이지(기자)</a>
+			  <a th:href="@{/user/myPage}">기자페이지</a>
 		  	  <a th:href="@{/user/logout}">로그아웃</a>
 	  </span>
 	</div>
@@ -34,7 +34,7 @@
   <nav class="main-nav">
     <ul>
       <li><a href="#">뉴스</a></li>
-      <li><a th:href="@{/sports/list}">스포츠</a></li>
+      <li><a href="/sports/list">스포츠</a></li>
       <li><a href="#">엔터</a></li>
     </ul>
     <div class="search">
