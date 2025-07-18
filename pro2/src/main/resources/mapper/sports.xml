@@ -56,5 +56,7 @@
 	<select id="reactionCount" resultType="map">
 		select emotion_type, COUNT(*) AS cnt from sportsReaction where sports_id = #{sports_id} GROUP BY emotion_type
 	</select>
-
+	<select id="reactionCount1" resultType="com.ex.data.SportsReaction">
+		select emotion_type, COUNT(*) as count from sportsReaction where sports_id=#{sports_id} and emotion_type=#{emotion_type} group by emotion_type
+	</select>
 </mapper>

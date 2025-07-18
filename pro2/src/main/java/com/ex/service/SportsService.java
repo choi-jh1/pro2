@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ex.data.SportsCateDTO;
 import com.ex.data.SportsDTO;
+import com.ex.data.SportsReaction;
 import com.ex.repository.SportsMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -99,9 +100,17 @@ public class SportsService {
     	List<Map<String,Object>> list = sportsMapper.reactionCount(num);
     	Map<String,Object> result = new HashMap<>();
     	for(Map<String,Object> map : list) {
-    		result.put((String)map.get("EMOTION_TYPE"), ((Number)map.get("CNT")).intValue());
+    		result.put((String)map.get("emotion_type"), ((Number)map.get("CNT")).intValue());
     	}
     	return result;
+    }
+    public Map<String,Object> reactionCount1(int num,String type){
+    	List<SportsReaction> list = sportsMapper.reactionCount1(num, type);
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	for(SportsReaction dto : list) {
+    		map.put(dto.getEmotion_type(),dto.getCount());
+    	}
+    	return map;
     }
     //id 체크
     public String reactionType(int num,String id) {
