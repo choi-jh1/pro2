@@ -8,4 +8,6 @@ public class ReporterDTO {
 	private String profile_img;
 	private String category;
 	private String intro;
+	private String name;
+	private String email;
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ex.data.SportsCateDTO;
 import com.ex.data.SportsDTO;
+import com.ex.data.SportsReaction;
 
 @Mapper
 @Repository
@@ -26,4 +27,14 @@ public interface SportsMapper {
 	public List<String> content();
 	// 스포츠기사 내용 출력
 	public SportsDTO sportsContent(int boardNum);
+	// 스포츠기사 조회수 +1
+	public void sportsReadCount(int boardNum);
+	// 스포츠기사 좋아요넣기
+	public void reactionInsert(@Param("sports_id") int num,@Param("user_id") String id,@Param("emotion_type") String type);
+	// 좋아요 아이디 체크
+	public int idCheck(@Param("sports_id") int num,@Param("user_id") String id);
+	// 좋아요 취소
+	public void removeReaction(@Param("sports_id") int num,@Param("user_id") String id,@Param("emotion_type") String type);
+	// 좋아요 개수
+	public int reactionCount(@Param("emotion_type") String type,@Param("sports_id") int num);
 }

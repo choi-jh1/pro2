@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ex.data.SportsCateDTO;
 import com.ex.data.SportsDTO;
+import com.ex.data.SportsReaction;
 import com.ex.repository.SportsMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -72,4 +73,23 @@ public class SportsService {
     public SportsDTO sportsContent(int boardNum) {
     	return sportsMapper.sportsContent(boardNum);
     }
+    // 스포츠기사 조회수 +1
+    public void sportsReadCount(int boardNum) {
+    	sportsMapper.sportsReadCount(boardNum);
+    }
+
+    // 스포츠기사 좋아요
+    public void reactionInsert(int num,String id,String type) {
+    		sportsMapper.reactionInsert(num,id,type);
+    	
+    }
+    // 스포츠기사 좋아요 취소
+    public void removeReaction(int num,String id,String type) {
+    	sportsMapper.removeReaction(num,id,type);
+    }
+    // 스포츠기사 좋아요 개수
+    public int reactionCount(String type,int num) {
+    	return sportsMapper.reactionCount(type, num);
+    }
+    
 }

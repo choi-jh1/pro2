@@ -19,4 +19,5 @@
 	<update id="updateStatus">
 		update users set status=#{status} where id=#{userId}
 	</update>
+
 </mapper>

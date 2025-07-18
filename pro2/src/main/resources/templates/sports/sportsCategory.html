@@ -216,16 +216,16 @@
 <div class="article-list"  id="article-list">
 	<div><span style="font-size: 24px; font-weight: 500;"> 스포츠 </span><span th:text="' > '+${catename}"></span></div>
   <div class="article-card" th:each="dto:${list}" >
-	<a th:href="@{|/sports/content?boardNum=${dto.boardNum}|}">
+	<a th:href="@{|/sports/content?boardNum=${dto.boardNum}&id=${dto.writer}|}">
     <img th:src="${dto.thumbnail}" alt="썸네일">
 	</a>
     <div class="article-info">
-		<a th:href="@{|/sports/content?boardNum=${dto.boardNum}|}">
+		<a th:href="@{|/sports/content?boardNum=${dto.boardNum}&id=${dto.writer}|}">
       <h3 class="article-title">[[${dto.title}]]</h3>
 	  </a>
       <p class="article-summary">[[${dto.cleanContent}]]</p>
       <span class="article-date">[[${#temporals.format(dto.reg,'yyyy-MM-dd HH:mm')}]]</span>
-	  <span class="article-date">[[${dto.writer}]]</span>
+	  <span class="article-date">[[${dto.name}]] 기자</span>
     </div>
   </div>
 
@@ -270,11 +270,11 @@
 	      articles.forEach(article => {
 	        const html = `
 	          <div class="article-card">
-				<a href="/sports/content?boardNum=${article.boardNum}">
+				<a href="/sports/content?boardNum=${article.boardNum}&id=${dto.writer}">
 	            <img src="${article.thumbnail}" alt="썸네일">
 				</a>
 	            <div class="article-info">
-					<a href="/sports/content?boardNum=${article.boardNum}">
+					<a href="/sports/content?boardNum=${article.boardNum}&id=${dto.writer}">
 	              <h3 class="article-title">${article.title}</h3>
 				  </a>
 	              <p class="article-summary">${article.cleanContent}</p>

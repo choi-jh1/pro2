@@ -14,4 +14,6 @@ public interface ReporterMapper {
 	public void reporterInsert(ReporterDTO reporter);
 	// 기자 목록
 	public List<UsersDTO> reporterList();
+	// 기자 정보
+	public ReporterDTO reporterInfo(String id);
 }
