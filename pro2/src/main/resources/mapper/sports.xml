@@ -23,4 +23,8 @@
 	<select id="content" resultType="String">
 		select content from sports
 	</select>
+	<!--스포츠기사 내용 출력-->
+	<select id="sportsContent" resultType="com.ex.data.SportsDTO">
+		select * from sports where boardNum=#{boardNum}
+	</select>
 </mapper>

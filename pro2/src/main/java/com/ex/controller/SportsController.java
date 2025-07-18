@@ -94,7 +94,8 @@ public class SportsController {
 	
 	// 스포츠기사 내용
 	@GetMapping("content")
-	public String content() {
+	public String content(@RequestParam("boardNum") int boardNum,Model model) {
+		model.addAttribute("dto",sportsService.sportsContent(boardNum));
 		return "sports/boardContent";
 	}
 }

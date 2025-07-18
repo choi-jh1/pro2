@@ -22,4 +22,6 @@ public interface SportsMapper {
 	public List<SportsDTO> sportsCateList(@Param("cateId") int cateId,@Param("offset") int offset,@Param("pageSize") int size);
 	// 내용 출력 이미지 제외
 	public List<String> content();
+	// 스포츠기사 내용 출력
+	public SportsDTO sportsContent(int boardNum);
 }

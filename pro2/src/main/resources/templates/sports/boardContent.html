@@ -4,7 +4,7 @@
 	.container_body {
 	  display: flex;
 	  flex-direction: row;
-	  max-width: 1200px;
+	  max-width: 1100px;
 	  margin: 40px auto;
 	  gap: 30px;
 	  font-family: 'Noto Sans KR', sans-serif;
@@ -59,7 +59,16 @@
 	  justify-content: space-between;
 	  align-items: center;
 	}
-
+	.article-body img {
+	  width: 100%;       /* 부모 영역 꽉 채우기 */
+	  max-width: 600px;  /* 최대 너비 제한 (원하는 값으로 변경) */
+	  height: auto;      /* 비율 유지 */
+	  display: block;    /* 줄바꿈 포함 */
+	  margin: 10px auto; /* 가운데 정렬 */
+	}
+	.article-body {
+		font-size:20px;
+	}
 
 </style>
 
@@ -118,11 +127,11 @@
     <div class="category-label">스포츠조선</div>
 
     <h2 class="article-title">
-      '제발 남아주면 안될까' 토트넘 현실 깨달은 프랭크 감독, 손흥민 리더십 '1년 더 원한다'
+      [[${dto.title}]]
     </h2>
 
     <div class="article-info">
-      입력 2025.07.17. 12:31 | 기자코드
+      [[${#temporals.format(dto.reg,'yyyy.MM.dd HH:mm')}]] | 기자코드
     </div>
 
     <div class="article-interact">
@@ -130,12 +139,7 @@
       <span class="icons">🔁 📎</span>
     </div>
 
-    <div class="article-image">
-      <img src="your-image.jpg" alt="뉴스 이미지">
-    </div>
-
-    <div class="article-body">
-      “아무리 봐도 손흥민한테 의존이 크다”... 실력뿐 아니라 리더십에서...
+    <div class="article-body" th:utext="${dto.content}">
     </div>
   </div>
 
