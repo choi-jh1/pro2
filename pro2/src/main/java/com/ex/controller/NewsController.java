@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element; 
+import org.jsoup.nodes.Element;
 
-
+import com.ex.data.CommentDTO;
 import com.ex.data.NewsDTO;
+import com.ex.service.CommentService;
 import com.ex.service.NewsService;
 
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class NewsController {
 
     private final NewsService newsService;
+    private final CommentService commentService;
 
     // 메인 홈 페이지 (카테고리 별 상위 5개 , 속보 3개 출력)
     @GetMapping("home")
@@ -126,7 +128,9 @@ public class NewsController {
     @GetMapping("content/{num}")
     public String content(@PathVariable("num") int num, Model model) {
         NewsDTO news = newsService.getNewsByNum(num);
+        List<CommentDTO> commentList = commentService.getComments(num);
         model.addAttribute("news", news);
+        model.addAttribute("commentList", commentList);
         return "news/content";
     }
 

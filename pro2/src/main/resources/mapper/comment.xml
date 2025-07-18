@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  	"https://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  	
+ <mapper namespace="com.ex.repository.CommentMapper">
+ 	<!-- 뉴스 번호로 댓글 리스트 조회 -->
+ 	<select id="selectByNewsNum" resultType="com.ex.data.CommentDTO" parameterType="int">
+ 		select com_num, content, writer, reg, ref, re_level, re_step, is_delete, num from comments
+		where num = #{num} and is_delete = 1 order by ref asc, re_step asc
+ 	</select>
+ 
+ 	<!-- 댓글 추가 -->
+ 	<insert id="insertComment" parameterType="com.ex.data.CommentDTO">
+ 		insert into comments (com_num, content, writer, reg, ref, re_level, re_step, is_delete, num)
+ 		values(comments_seq.nextval, #{content}, #{writer}, sysdate, #{ref}, #{re_level}, #{re_step}, 1, #{num})
+ 	</insert>
+ 	
+ 	<!-- 댓글 삭제 -->
+ 	<update id="deleteComment" parameterType="int">
+ 		update comments set is_delete = 0 where com_num = #{com_num}
+ 	</update>
+ 	
+ 	<!-- 답글 추가 전 re_step 값 증가 -->
+ 	<update id="updateReStep" parameterType="com.ex.data.CommentDTO">
+ 		update comments set re_step = re_step +1 where ref = #{ref} and re_step > #{re_step}
+ 	</update>
+ 	
+ 	<!-- 답글 삽입 -->
+ 	<insert id="insertReply" parameterType="com.ex.data.CommentDTO">
+ 		insert into comments (com_num, content, writer, reg, ref, re_level, re_step, is_delete, num)
+ 		values (comments_seq.nextval, #{content}, #{writer}, sysdate, #{ref}, #{re_level}, #{re_step}, 1, #{num})
+ 	</insert>
+ 	
+ 	
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

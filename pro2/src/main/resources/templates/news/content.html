@@ -39,11 +39,20 @@
 	<div>
 		<h3>댓글</h3>
 		<form th:action="@{/comment/add}" method="post">
-			<input type="hidden" name="newsNum" th:value="${news.num}">
+			<input type="hidden" name="num" th:value="${news.num}">
 			<textarea name="content" rows="4" cols="60" placeholder="댓글을 입력하세요."></textarea><br>
 			<button type="submit">댓글 등록</button>
 		</form>
 	</div>
+	<!-- 댓글 목록 -->
+	<ul>
+	  <li th:each="comment : ${commentList}">
+	    <strong th:text="${comment.writer}">작성자</strong> :
+	    <span th:text="${comment.content}">댓글 내용</span><br>
+	    <span th:text="${#temporals.format(comment.reg, 'yyyy-MM-dd HH:mm')}">작성 시간</span>
+	  </li>
+	</ul>
+
 	
 </body>
 
