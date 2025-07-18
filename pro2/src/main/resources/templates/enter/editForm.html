@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<meta charset="UTF-8">
-	<title>연예 뉴스 작성</title>
+	<title>연예 뉴스 수정</title>
 
 	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -15,7 +14,8 @@
 	<!-- Summernote 한글 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 
-	<!--<style>
+	<!--
+	<style>
 		form {
 			max-width: 700px;
 			margin: 30px auto;
@@ -68,33 +68,44 @@
 		button.btn-primary:hover {
 			background-color: #0056b3;
 		}
-	</style>-->
+	</style>
+	-->
 </head>
 
 <body>
 
-	<form th:action="@{/enter/write}" method="post" enctype="multipart/form-data">
-		<h2>연예 뉴스 작성</h2>
+	<form th:action="@{/enter/edit}" method="post" th:object="${dto}">
+		<h2>연예 뉴스 수정</h2>
+
+		<!-- 고정: num, writer_id -->
+		<input type="hidden" th:field="*{num}" />
+		<input type="hidden" th:field="*{writer_id}" />
 
 		<!-- 제목 -->
 		<label>제목</label>
-		<input type="text" name="title" required>
+		<input type="text" th:field="*{title}" required />
 
 		<!-- 카테고리 -->
 		<label>카테고리</label>
-		<select name="category" required>
+		<select th:field="*{category}" required>
 			<option value="">카테고리 선택</option>
-			<option value="drama">드라마</option>
-			<option value="movie">영화</option>
-			<option value="music">뮤직</option>
-			<option value="general">연예일반</option>
+			<option value="드라마">드라마</option>
+			<option value="영화">영화</option>
+			<option value="뮤직">뮤직</option>
+			<option value="연예일반">연예일반</option>
 		</select>
 
 		<!-- 본문 -->
 		<label>내용</label>
-		<textarea id="summernote" name="content"></textarea>
+		<textarea id="summernote" th:field="*{content}"></textarea>
 
-		<button type="submit" class="btn-primary">작성 완료</button>
+		<!-- 현재 썸네일 미리보기 -->
+		<div>
+			<label>현재 썸네일</label><br>
+			<img th:src="${dto.thumbnail}" alt="썸네일" style="max-width: 200px;" />
+		</div>
+
+		<button type="submit" class="btn-primary">수정 완료</button>
 	</form>
 
 	<script>
@@ -131,7 +142,8 @@
 						});
 						$('#summernote').summernote('insertNode', img[0]);
 						$('#summernote').summernote('insertText', '\n\n');
-					},
+					}
+,
 					error: function (xhr) {
 						alert("이미지 업로드 실패: " + xhr.responseText);
 					}

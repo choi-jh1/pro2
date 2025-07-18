@@ -5,17 +5,24 @@
 <mapper namespace="com.ex.repository.EnterNewsMapper">
 	<!-- 1. 일간 조회수 TOP10 뉴스 (상단 슬라이드용) -->
 	<select id="getTop10DailyNews" resultType="com.ex.data.EnterNewsDTO">
-		select 
-			num, title, content, writer_id, null as writerNickname, null as writerEmail, reg, readcount, category, hot
-		from enter_news
-		where status = 1 and to_char(reg, 'YYYY-MM-DD') = to_char(sysdate, 'YYYY-MM-DD') order by readcount desc
+		select
+			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 4000, 1) as content, enter.thumbnail as thumbnail, enter.writer_id,
+			null as writerNickname, null as writerEmail,
+			enter.reg, enter.readcount, enter.category, enter.hot
+		from enter_news enter
+		join enter_read_log log on enter.num = log.news_id
+		where to_char(log.read_date, 'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')
+		and enter.status = 1
+		group by
+			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 4000, 1), enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
+		order by count(1) desc
 		fetch first 10 rows only
 	</select>
 
 	<!-- 2. 최신 뉴스 목록 (무한스크롤용, 페이징) -->
 	<select id="getPagedEnterNews" resultType="com.ex.data.EnterNewsDTO">
-		select 
-			num, title, content, writer_id, null as writerNickname, null as writerEmail, reg, readcount, category, hot
+		select
+			num, title, content, writer_id, null as writerNickname, null as	writerEmail, reg, readcount, category, hot
 		from enter_news
 		where status = 1 order by reg desc
 		offset #{offset} rows fetch next #{limit} rows only
@@ -23,8 +30,9 @@
 
 	<!-- 연예 기사 생성 -->
 	<insert id="insertNews" parameterType="com.ex.data.EnterNewsDTO">
-		insert into enter_news (num, title, content, writer_id, reg, readcount, category, hot, status, thumbnail)
-		values (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id}, sysdate, 0, #{category}, 0, 1, #{thumbnail, jdbcType=VARCHAR})
+		insert into enter_news (num, title, content, writer_id, reg, readcount,	category, hot, status, thumbnail)
+		values (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id},
+		sysdate, 0, #{category}, 0, 1, #{thumbnail, jdbcType=VARCHAR})
 	</insert>
 
 	<!-- 조회수 증가 -->
@@ -41,10 +49,31 @@
 			enter.num, enter.title, enter.content, enter.writer_id,
 			users.nick as writerNickname, users.email as writerEmail,
 			enter.reg, enter.readcount, enter.category, enter.hot
-		from 
+		from
 			enter_news enter
 		join users on enter.writer_id = users.id
 		where enter.num = #{num} and enter.status = 1
 	</select>
+
+	<insert id="insertReadLog">
+		insert into enter_read_log (id, news_id, read_date, reader_ip)
+		VALUES (enter_read_log_seq.NEXTVAL, #{newsId}, SYSDATE, #{ip})
+	</insert>
+
+	<!-- 기사 삭제(softDelete) -->
+	<update id="softDelete" parameterType="int">
+		update enter_news
+		set status = 0
+		where num = #{num}
+	</update>
+
+	<!-- 기사 수정 -->
+	<update id="updateEnterNews" parameterType="com.ex.data.EnterNewsDTO">
+		update enter_news
+		set
+			title = #{title}, content = #{content}, category = #{category}, thumbnail = #{thumbnail}
+		where
+			num = #{num}
+	</update>
 
 </mapper>

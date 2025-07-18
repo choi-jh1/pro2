@@ -18,4 +18,11 @@ public interface EnterNewsMapper {
 	public void increaseReadCount(int num);
 	
 	public EnterNewsDTO readEnterNews(int num);
+	
+	public void insertReadLog(@Param("newsId") int newsId, @Param("ip") String ip);
+
+	public void softDelete(int num);
+
+	public int updateEnterNews(EnterNewsDTO dto);
+	
 }
