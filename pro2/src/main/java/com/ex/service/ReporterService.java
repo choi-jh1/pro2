@@ -23,10 +23,10 @@ public class ReporterService {
 		user.setRole("reporter");
 		userMapper.userInsert(user);
 		repoterMapper.reporterInsert(reporter);
-		
 	}
-	// 기자 목록 조회
-	public List<UsersDTO> reporterList() {
-		return repoterMapper.reporterList();
+	// 기자리스트(제보)
+	public List<ReporterDTO> getReporterListWithStatus(){
+		return repoterMapper.getReporterListWithStatus();
 	}
+
 }

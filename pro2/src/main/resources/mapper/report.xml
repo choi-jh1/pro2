@@ -24,4 +24,13 @@
 	<select id="reportContent" resultType="com.ex.data.ReportBoardDTO">
 		select * from report_board where report_id=#{report_id}
 	</select> 
+	
+	<!-- 제보글 담당기자 배정 -->
+	<update id="assignReporter">
+		update report_board set assigned = #{assigned}, status='배정완료' where report_id = #{report_id}
+	
+	</update>
+
+
+
 </mapper>

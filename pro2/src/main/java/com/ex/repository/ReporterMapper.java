@@ -12,6 +12,6 @@ import com.ex.data.UsersDTO;
 public interface ReporterMapper {
 	// 기자 등록
 	public void reporterInsert(ReporterDTO reporter);
-	// 기자 목록
-	public List<UsersDTO> reporterList();
+	// 기자리스트(제보)
+	public List<ReporterDTO> getReporterListWithStatus();
 }

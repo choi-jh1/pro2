@@ -19,4 +19,8 @@ public interface UsersMapper {
 	public List<UsersDTO> userList();
 	// 유저상태변경
 	public int updateStatus(@Param("userId") String userId, @Param("status") String status);
+	// 전체 기자 조회
+	public List<UsersDTO> reporterList();
+	// 기자 카테고리 변경
+	public int updateCategory(@Param("id") String id, @Param("category") String category);
 }

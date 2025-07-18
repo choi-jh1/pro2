@@ -12,4 +12,9 @@
   	<select id="reporterList" resultType="com.ex.data.UsersDTO">
   		select * from users where role='reporter'
   	</select>
+  	<!--기자리스트(제보)-->
+  	<select id="getReporterListWithStatus" resultType="com.ex.data.ReporterDTO">
+  		select r.id, u.email, r.category, (select count(*) from report_board where assigned = r.id) as assignedCount from reporter r
+  			join users u on r.id = u.id where u.role='reporter'
+  	</select>
   </mapper>

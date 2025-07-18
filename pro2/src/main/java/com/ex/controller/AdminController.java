@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ex.data.ReportBoardDTO;
@@ -51,7 +52,7 @@ public class AdminController {
 	// 기자 관리
 	@GetMapping("reporterUpdate")
 	public String reportUpdate(Model model) {
-		model.addAttribute("list",reporterService.reporterList());
+		model.addAttribute("list",usersService.reporterList());
 		return "admin/reporterUpdate";
 	}
 	
@@ -64,7 +65,7 @@ public class AdminController {
         int end = currentPage * pageSize;
         int reportCount = reportService.reportCount();
         List<ReportBoardDTO> list = null;
-        List<UsersDTO> reportList = reporterService.reporterList();
+        List<UsersDTO> reportList = usersService.reporterList();
         model.addAttribute("reporterList", reportList);
     	if(reportCount > 0 ) {
     		list = reportService.reportList(start, end);
@@ -104,6 +105,17 @@ public class AdminController {
 	public ResponseEntity<String> updateStatus(@RequestParam("userId") String userId, @RequestParam("status") String status) {
 		int result = usersService.updateStatus(userId, status);
 		if(result > 0) {
+			return ResponseEntity.ok("success");
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+		}
+	}
+	
+	// 기자 카테고리 변경
+	@PostMapping("updateCategory")
+	public ResponseEntity<String> updateCategory(@RequestParam("id") String id, @RequestParam("category") String category){
+		int reselt = usersService.updateCategory(id, category);
+		if(reselt > 0) {
 			return ResponseEntity.ok("success");
 		}else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
@@ -164,6 +176,23 @@ public class AdminController {
 	    reporterService.reporterInsert(userDTO, reporterDTO);
 
 	    return "redirect:/admin/adminPage";
+	}
+	// 기자리스트(제보)
+	@GetMapping("/admin/reporterList")
+	@ResponseBody
+	public List<ReporterDTO> reporterListJson(){
+		return reporterService.getReporterListWithStatus();
+	}
+	// 제보게시판 기자배정
+	@PostMapping("assign")
+	public ResponseEntity<String> assignReporter(@RequestParam("report_id") int report_id, @RequestParam("assigned") String assigned) {
+		reportService.assignReporter(report_id, assigned);
+		 try {
+		        reportService.assignReporter(report_id, assigned);
+		        return ResponseEntity.ok("success");
+		    } catch (Exception e) {
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+		    }
 	}
 	
 }
