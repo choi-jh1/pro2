@@ -163,6 +163,7 @@ public class AdminController {
 	        profileFile.transferTo(saveFile);
 
 	        // DB에는 상대 경로만 저장
+	        reporterDTO.setProfile_img("/upload/" + newFileName);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return "error";
