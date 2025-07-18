@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import com.ex.data.SportsCateDTO;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class SportsService {
 	private final SportsMapper sportsMapper;
 	
-	// 첫번째 이미지 추출
+	// 첫번째 이미지 추출용
 	public String firstImg(String img) {
 		if(img == null) {
 			return null;
@@ -42,7 +43,10 @@ public class SportsService {
 	public List<SportsCateDTO> cate() {
 		return sportsMapper.cate();
 	}
-	
+	// 스포츠기사 카테고리 이름
+	public String catename(int id) {
+		return sportsMapper.catename(id);
+	}
 	
 	// 스포츠기사 목록
 	public List<SportsDTO> sportsList(){
@@ -54,15 +58,18 @@ public class SportsService {
         List<SportsDTO> list = sportsMapper.sportsCateList(cate,offset,pageSize); // DB에서 가져오기
 
         for (SportsDTO dto : list) {
-            dto.setCleanContent(removeImages(dto.getContent()));
+            dto.setCleanContent(cleanText(dto.getContent()));
         }
 		return list;
 	}
-	
-	// 이미지 제외
-    public String removeImages(String html) {
+    // 텍스트만 출력용 (글내용)
+    public String cleanText(String html) {
         if (html == null) return "";
-        return html.replaceAll("<[^>]*>", "");
+        return Jsoup.parse(html).text(); // 태그 제거 + HTML 엔티티 자동 디코딩
     }
-	
+
+    // 스포츠기사 내용 출력
+    public SportsDTO sportsContent(int boardNum) {
+    	return sportsMapper.sportsContent(boardNum);
+    }
 }

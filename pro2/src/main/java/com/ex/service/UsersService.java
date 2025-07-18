@@ -29,5 +29,20 @@ public class UsersService {
 	public List<UsersDTO> userList() {
 		return usersMapper.userList();
 	}
+	
+	// 유저 상태 변경
+	public int updateStatus(String userId, String status) {
+		return usersMapper.updateStatus(userId, status);
+	}
+	
+	// 전체 기자 조회
+	public List<UsersDTO> reporterList(){
+		return usersMapper.reporterList();
+	}
+	
+	// 기자 카테고리 변경
+	public int updateCategory(String id, String category) {
+		return usersMapper.updateCategory(id, category);
+	}
 		
 }

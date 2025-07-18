@@ -1,0 +1,151 @@
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<style>
+	/* 전체 컨테이너 */
+	.container_body {
+	  display: flex;
+	  flex-direction: row;
+	  max-width: 1100px;
+	  margin: 40px auto;
+	  gap: 30px;
+	  font-family: 'Noto Sans KR', sans-serif;
+	}
+
+	/* 메인 기사 박스 */
+	.main-content {
+	  flex: 1;
+	  background-color: #fff;
+	  padding: 25px;
+	  border: 1px solid #ddd;
+	  border-radius: 10px;
+	  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+	}
+
+	/* 사이드바 박스 */
+	.sidebar {
+	  width: 200px;
+	  background-color: #f9f9f9;
+	  border: 1px solid #ddd;
+	  border-radius: 10px;
+	  min-height: 800px;
+	  padding: 15px;
+	  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+	}
+
+	/* 기사 내용 */
+	.category-label {
+	  color: #1e90ff;
+	  font-weight: bold;
+	  margin-bottom: 10px;
+	  font-size: 14px;
+	}
+
+	.article-title {
+	  font-size: 24px;
+	  font-weight: bold;
+	  line-height: 1.4;
+	  margin-bottom: 10px;
+	}
+
+	.article-info {
+	  font-size: 13px;
+	  color: gray;
+	  margin-bottom: 15px;
+	}
+
+	.article-interact {
+	  font-size: 15px;
+	  margin-bottom: 20px;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	}
+	.article-body img {
+	  width: 100%;
+	  max-width: 700px;
+	  min-width: 700px;  /* 👈 이 줄이 포인트 */
+	  height: auto;
+	  display: block;
+	  margin: 10px auto;
+	}
+	.article-body {
+		font-size:20px;
+	}
+
+</style>
+
+<div class="site-header">
+	<div class="container">
+  <div class="logo">로고</div>
+
+  <div class="top-bar">
+    <div class="date">2025.07.03</div>
+    <div class="user-menu">
+      <a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
+	  <span th:if="${session.sid == null}">
+	      <a th:href="@{/user/login}">로그인</a>
+	      <a th:href="@{/user/insert}">회원가입</a>
+	  </span>
+	  <span th:if="${session.sid != null and session.role == 'admin'}">
+			  <a th:href="@{/user/logout}">로그아웃</a>
+			  <a th:href="@{/admin/adminPage}">관리자페이지</a>
+	  </span>
+	  <span th:if="${session.sid != null and session.role != 'admin'}">
+	  	      <a th:href="@{/user/logout}">로그아웃</a>
+	  <span th:if="${session.sid != null}">
+			  <a th:href="@{/user/myPage}">마이페이지</a>
+	  	      <a th:href="@{/user/logout}">로그아웃</a>
+	  </span>
+	</div>
+  </div>
+
+  <nav class="main-nav">
+    <ul>
+      <li><a href="#">뉴스</a></li>
+      <li><a th:href="@{/sports/main}">스포츠</a></li>
+      <li><a href="#">엔터</a></li>
+    </ul>
+    <div class="search">
+      <input type="text" placeholder="검색" />
+    </div>
+  </nav>
+
+  <nav class="sub-nav">
+    <ul>
+
+		<li><a href="/sports/main">종합</a></li>
+		<li><a href="/sports/football">축구</a></li>
+		<li><a href="/sports/baseball">야구</a></li>
+		<li><a href="/sports/basketball">농구</a></li>
+		<li><a href="/sports/volleyball">배구</a></li>
+    </ul>
+  </nav>
+</div>
+</div>
+
+<div class="container_body">
+  <!-- 좌측 메인 기사 영역 -->
+  <div class="main-content">
+    <div class="category-label">스포츠조선</div>
+
+    <h2 class="article-title">
+      [[${dto.title}]]
+    </h2>
+
+    <div class="article-info">
+      [[${#temporals.format(dto.reg,'yyyy.MM.dd HH:mm')}]] | 기자코드
+    </div>
+
+    <div class="article-interact">
+      <span class="likes">❤️ 28</span>
+      <span class="icons">🔁 📎</span>
+    </div>
+
+    <div class="article-body" th:utext="${dto.content}">
+    </div>
+  </div>
+
+  <!-- 우측 사이드바 -->
+  <div class="sidebar">
+    <!-- 추천 기사 등은 추후 삽입 가능 -->
+  </div>
+</div>

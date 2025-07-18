@@ -78,8 +78,7 @@
 			  <a th:href="@{/user/logout}">로그아웃</a>
 			  <a th:href="@{/admin/adminPage}">관리자 페이지</a>
 		</span>
-		<span th:if="${session.sid != null and session.role == 'user'}">
-
+	  <span th:if="${session.sid != null and session.role != 'admin'}">
 
 			  <a th:href="@{/user/myPage}">마이페이지</a>
 			      <a th:href="@{/user/logout}">로그아웃</a>
@@ -94,7 +93,7 @@
   <nav class="main-nav">
     <ul>
       <li><a href="#">뉴스</a></li>
-      <li><a th:href="@{/sports/list}">스포츠</a></li>
+      <li><a href="/sports/main">스포츠</a></li>
       <li><a href="#">엔터</a></li>
     </ul>
     <div class="search">
@@ -105,11 +104,11 @@
   <nav class="sub-nav">
     <ul>
 
-		<li class="category-link" data-category="종합">종합</li>
-		<li class="category-link" data-category="1">축구</li>
-		<li class="category-link" data-category="2">야구</li>
-		<li class="category-link" data-category="3">농구</li>
-		<li class="category-link" data-category="4">배구</li>
+		<li><a href="/sports/football">종합</a></li>
+		<li><a href="#">야구</a></li>
+		<li><a href="#">축구</a></li>
+		<li><a href="#">배구</a></li>
+		<li><a href="#">농구</a></li>
     </ul>
   </nav>
 </div>
@@ -129,17 +128,14 @@
 
 <script>
 	$(document).ready(function () {
+	  // 1. 새로고침이 아닌 경우: 카테고리 '종합'으로 초기화
+	  if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+	    localStorage.setItem('selectedCategory', '종합');
+	  }
 
-	  // 1) AJAX 요청 함수 정의
+	  // 2. AJAX로 카테고리 기사 불러오기
 	  function loadCategory(category) {
-	    let url = "/sports/boardList"; // 기본 URL
-
-	    // '종합'이면 URL 변경
-	    if (category === "종합") {
-	      url = "/sports/main"; 
-	    }
-
-	    // AJAX 요청
+	    let url = (category === '종합') ? '/sports/main' : '/sports/boardList';
 	    $.ajax({
 	      url: url,
 	      method: 'GET',
@@ -148,26 +144,24 @@
 	        $('#sports-content').html(html);
 	      },
 	      error: function () {
-	        alert('카테고리 기사 로딩 실패!');
+	        alert('카테고리 로딩 실패');
 	      }
 	    });
 	  }
 
-	  // 2) 카테고리 클릭 이벤트 등록
-	    $('.category-link').click(function () {
-	      $('.category-link').removeClass('active');
-	      $(this).addClass('active');
+	  // 3. 카테고리 클릭 이벤트
+	  $('.category-link').click(function () {
+	    $('.category-link').removeClass('active');
+	    $(this).addClass('active');
 
-	      const category = $(this).data('category');
-	      loadCategory(category);
-
-	      // ✅ 선택한 카테고리 localStorage에 저장
-	      localStorage.setItem('selectedCategory', category);
-	    });
-
-	    // 3) 페이지 로딩 시 마지막 선택 카테고리 자동 호출
-	    const savedCategory = localStorage.getItem('selectedCategory') || '종합';
-	    loadCategory(savedCategory);
-	    $('.category-link[data-category="' + savedCategory + '"]').addClass('active');
+	    const category = $(this).data('category');
+	    localStorage.setItem('selectedCategory', category);
+	    loadCategory(category);
 	  });
+
+	  // 4. 페이지 로딩 시 저장된 카테고리 로드
+	  const saved = localStorage.getItem('selectedCategory') || '종합';
+	  loadCategory(saved);
+	  $('.category-link[data-category="' + saved + '"]').addClass('active');
+	});
 </script>

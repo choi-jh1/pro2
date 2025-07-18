@@ -16,4 +16,5 @@ public class UsersDTO {
 	private String status;
 	private String role;
 	private LocalDateTime reg;
+	private String category;
 }

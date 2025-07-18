@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ReporterDTO {
+
 	private String id;				// id
 	private String writerName;		// 기자 이름
 	private String profile_img;		// 프로필 사진

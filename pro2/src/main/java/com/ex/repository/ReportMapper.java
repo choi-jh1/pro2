@@ -20,4 +20,7 @@ public interface ReportMapper {
     
     // 글 목록
     public ReportBoardDTO reportContent(int report_id);
+    
+    // 제보글 담당기자에게
+    public void assignReporter(@Param("report_id") int report_id, @Param("assigned") String assigned);
 }

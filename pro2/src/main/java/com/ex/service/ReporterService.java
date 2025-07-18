@@ -12,28 +12,25 @@ import com.ex.repository.UsersMapper;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
-	private final ReporterMapper reporterMapper;
-	@Autowired
-	private UsersMapper userMapper;
-	
-	// ID로 기자 정보 가져오기
-	public ReporterDTO getReporterById(String id) {
-		return reporterMapper.selectById(id);
-	}
-	
-	// 회원가입
-	public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
-		user.setRole("reporter");
-		userMapper.userInsert(user);
-		reporterMapper.reporterInsert(reporter);
-		
-	}
-	// 기자 목록 조회
-	public List<UsersDTO> reporterList() {
-		return reporterMapper.reporterList();
-	}
+   private final ReporterMapper repoterMapper;
+   @Autowired
+   private UsersMapper userMapper;
+   // 회원가입
+   public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
+      user.setRole("reporter");
+      userMapper.userInsert(user);
+      repoterMapper.reporterInsert(reporter);
+   }
+   // 기자리스트(제보)
+   public List<ReporterDTO> getReporterListWithStatus(){
+      return repoterMapper.getReporterListWithStatus();
+   }
+   public ReporterDTO getReporterById(String reporterId) {
+	// TODO Auto-generated method stub
+	return null;
+   }
+
 }

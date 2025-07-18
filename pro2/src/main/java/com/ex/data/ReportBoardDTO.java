@@ -8,7 +8,7 @@ public class ReportBoardDTO {
     private int report_id;		// 제보 번호
     private String title;		// 제보글 이름
     private String content;		// 제보글 내용
-    private String writer_Id;	// 제보자 아이디
+    private String writer_id;	// 제보자 아이디
     private String writer_Name;	// 제보자 닉네임
     private String writer_Pw;	// 제보자 비밀번호
     private LocalDateTime reg;		// 작성일

@@ -1,0 +1,179 @@
+<!-- 스타일 -->
+<style>
+.modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex; justify-content: center; align-items: center;
+}
+.modal-content {
+  background: white; padding: 20px; border-radius: 5px; width: 700px;
+  max-height: 80vh; overflow-y: auto;
+}
+#reporterTable {
+  width: 100%; border-collapse: collapse; margin-top: 10px;
+}
+#reporterTable th, #reporterTable td {
+  border: 1px solid #ccc; padding: 8px;
+}
+#reporterTable tbody tr:hover {
+  background-color: #f0f8ff;
+}
+</style>
+
+<!-- 본문 -->
+<center><h1>제보 글 목록</h1></center>
+<div th:if="${reportCount==0}">
+  <table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
+    <tr align="center">
+      <a th:href="@{/report/write}">제보하기</a>
+      <td><h3>제보 글이 없습니다.</h3></td>
+    </tr>
+  </table>
+</div>
+
+<div th:unless="${reportCount==0}">
+  <table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
+    <tr height="30">
+      <th>제보 글 제목</th>
+      <th>아이디</th>
+      <th>이메일</th>
+      <th>작성일</th>
+      <th>상태</th>
+      <th>담당기자</th>
+    </tr>
+    <tr th:each="report:${list}">
+      <td>
+        <a th:href="@{|/report/content?pageNum=${pageNum}&report_id=${report.report_id}|}">
+          <span th:text="${report.title}"></span>
+        </a>
+      </td>
+      <td th:text="${report.writer_id}"></td>
+      <td th:text="${report.email}"></td>
+      <td th:text="${#temporals.format(report.reg, 'yy-MM-dd HH:mm')}"></td>
+      <td th:text="${report.status}"></td>
+      <td>
+        <span th:text="${report.assigned != null ? report.assigned : '미배정'}"></span>
+        <button type="button" class="open-modal" th:data-report-id="${report.report_id}" th:if="${report.assigned == '미지정'}">배정하기</button>
+	 </td>
+    </tr>
+  </table>
+</div>
+
+<!-- 모달 -->
+<div id="assignModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" style="float:right; cursor:pointer;">&times;</span>
+    <h3>기자 배정</h3>
+    <input type="text" id="reporterSearch" placeholder="기자 ID 검색">
+    <select id="categoryFilter">
+      <option value="">전체</option>
+      <option value="일반뉴스">일반뉴스</option>
+      <option value="스포츠">스포츠</option>
+      <option value="연예">연예</option>
+    </select>
+
+    <table id="reporterTable">
+      <thead>
+        <tr>
+          <th>선택</th>
+          <th>기자 ID</th>
+          <th>이메일</th>
+          <th>카테고리</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div style="text-align:center; margin-top:10px;">
+      <button id="assignConfirm">배정하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 페이징 -->
+<div align="center" th:if="${reportCount > 0}">
+  <span th:if="${startPage>10}">
+    <a th:href="@{|/report/list?pageNum=${startPage-10}|}">[이전]</a>
+  </span>
+  <span th:if="${endPage < pageCount}">
+    <a th:href="@{|/report/list?pageNum=${startPage+10}|}">[다음]</a>
+  </span>
+  <span th:each="i : ${#numbers.sequence(startPage,endPage)}">
+    <a th:href="@{|/report/list?pageNum=${i}|}" th:text="'['+${i}+']'"></a>
+  </span>
+</div>
+
+<!-- 스크립트 -->
+<script>
+let selectedReportId = null;
+let selectedReporterId = null;
+
+$(document).ready(function () {
+  // 모달 열기
+  $(".open-modal").click(function () {
+    selectedReportId = $(this).data("report-id");
+    $("#assignModal").show();
+    loadReporterList();
+  });
+
+  // 모달 닫기
+  $(".close-modal").click(function () {
+    $("#assignModal").hide();
+    selectedReporterId = null;
+  });
+
+  // 필터 이벤트
+  $("#reporterSearch, #categoryFilter").on("input change", function () {
+    loadReporterList();
+  });
+
+  // 배정 버튼
+  $("#assignConfirm").click(function () {
+    if (!selectedReporterId) {
+      alert("기자를 선택하세요");
+      return;
+    }
+    $.post("/admin/assign", {
+      report_id: selectedReportId,
+      assigned: selectedReporterId
+    }).done(function () {
+      alert("배정 완료");
+      location.reload();
+    }).fail(function () {
+      alert("배정 실패");
+    });
+  });
+
+  // 기자 선택 (radio 이벤트 위임)
+  $("#reporterTable").on("change", "input[name='reporterSelect']", function () {
+    selectedReporterId = $(this).val();
+  });
+});
+
+// 기자 리스트 불러오기
+function loadReporterList() {
+  const keyword = $("#reporterSearch").val().toLowerCase();
+  const category = $("#categoryFilter").val();
+
+  $.get("/admin/reporterList", function (data) {
+    const tbody = $("#reporterTable tbody");
+    tbody.empty();
+
+    data.forEach(function (r) {
+      if ((keyword === '' || r.id.toLowerCase().includes(keyword)) &&
+          (category === '' || r.category === category)) {
+
+        const row = $(`
+          <tr align="center">
+            <td><input type="radio" name="reporterSelect" value="${r.id}"></td>
+            <td>${r.id}</td>
+            <td>${r.email || '-'}</td>
+            <td>${r.category}</td>
+          </tr>
+        `);
+        tbody.append(row);
+      }
+    });
+  });
+}
+</script>

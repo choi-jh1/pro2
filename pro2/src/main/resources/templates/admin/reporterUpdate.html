@@ -8,7 +8,7 @@
 		   <th>기자 ID</th>
 		   <th>이름</th>
 		   <th>입사일</th>
-		   <th>상태</th>
+		   <th>카테고리</th>
 		   <th>권한</th>
 		</tr>
 	</thead>
@@ -19,9 +19,10 @@
 			<td th:text="${user.name}"></td>
 			<td th:text="${#temporals.format(user.reg, 'yy-MM-dd HH:mm')}"></td>
 			<td>
-				<select class="status-select" data-id="1">
-					<option value="active">active</option>
-					<option value="stop">stop</option>
+				<select class="category-select" th:data-id="${user.id}">
+					<option value="일반뉴스" th:selected="${user.category == '일반뉴스'}">일반뉴스</option>
+					<option value="연애" th:selected="${user.category == '연애'}">연애</option>
+					<option value="스포츠" th:selected="${user.category == '스포츠'}">스포츠</option>
 				</select>
 			</td>
 			<td th:text="${user.role}"></td>
@@ -30,22 +31,22 @@
   </table>
 </div>
 <script>
-	$(".status-select").change(function() {
-	  const userId = $(this).data("id");
-	  const newStatus = $(this).val();
+	$(".category-select").change(function() {
+	  const reporterId = $(this).data("id");
+	  const newCategory = $(this).val();
 	
 	  $.ajax({
-	    url: "/admin/updateStatus",
+	    url: "/admin/updateCategory",
 	    type: "POST",
 	    data: {
-	      userId: userId,
-	      status: newStatus
+	      id: reporterId,
+	      category: newCategory
 	    },
 	    success: function(response) {
-	      alert("상태가 변경되었습니다");
+	      alert("카테고리가 변경되었습니다");
 	    },
 	    error: function() {
-	      alert("상태 변경 실패");
+	      alert("카테고리 변경 실패");
 	    }
 	  });
 	});

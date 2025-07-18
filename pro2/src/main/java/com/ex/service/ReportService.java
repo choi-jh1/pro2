@@ -43,6 +43,9 @@ public class ReportService {
         if (dto.getStatus() == null || dto.getStatus().isBlank()) {
             dto.setStatus("대기중");
         }
+        if (dto.getWriter_id()==null) {
+        	dto.setWriter_id("익명");
+        }
         reportMapper.insertReport(dto);
     }
     // 제보 글 목록
@@ -59,6 +62,11 @@ public class ReportService {
     public ReportBoardDTO reportContent(int report_id) {
     	ReportBoardDTO dto = reportMapper.reportContent(report_id);
     	return dto;
+    }
+    
+    // 제보 글 담당기자에게
+    public void assignReporter(int report_id, String assigned) {
+        reportMapper.assignReporter(report_id, assigned);
     }
     
 }

@@ -6,7 +6,7 @@
 <!-- DB에 글 저장하기-->
 	<insert id="insertReport" parameterType="com.ex.data.ReportBoardDTO">
 	 	INSERT INTO report_board (report_id, title, content, writer_id, writer_name, writer_pw, status, assigned, file_original_name, file_saved_name, file_mime_type, file_size, reg, email)
-	 		           	  VALUES (report_id_seq.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=CLOB}, #{writer_Id, jdbcType=VARCHAR}, #{writer_Name, jdbcType=VARCHAR}, #{writer_Pw, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{assigned, jdbcType=VARCHAR}, #{file_Original_Name, jdbcType=VARCHAR}, #{file_Saved_Name, jdbcType=VARCHAR}, #{file_Mime_Type, jdbcType=VARCHAR}, #{file_Size, jdbcType=NUMERIC}, SYSDATE, #{email, jdbcType=VARCHAR})</insert>
+	 		           	  VALUES (report_id_seq.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=CLOB}, #{writer_id, jdbcType=VARCHAR}, #{writer_Name, jdbcType=VARCHAR}, #{writer_Pw, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{assigned, jdbcType=VARCHAR}, #{file_Original_Name, jdbcType=VARCHAR}, #{file_Saved_Name, jdbcType=VARCHAR}, #{file_Mime_Type, jdbcType=VARCHAR}, #{file_Size, jdbcType=NUMERIC}, SYSDATE, #{email, jdbcType=VARCHAR})</insert>
 	
 	<!-- 제보글 목록 조회 -->
 	<select id="reportList" resultType="com.ex.data.ReportBoardDTO">
@@ -24,4 +24,13 @@
 	<select id="reportContent" resultType="com.ex.data.ReportBoardDTO">
 		select * from report_board where report_id=#{report_id}
 	</select> 
+	
+	<!-- 제보글 담당기자 배정 -->
+	<update id="assignReporter">
+		update report_board set assigned = #{assigned}, status='배정완료' where report_id = #{report_id}
+	
+	</update>
+
+
+
 </mapper>
