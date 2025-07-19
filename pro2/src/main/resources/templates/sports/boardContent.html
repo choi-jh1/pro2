@@ -236,7 +236,9 @@
 	<div class="reaction-buttons">
 	  <button class="reaction-button" data-type="like">
 	    <img src="/images/emoji_like.png" alt="좋아요" />
-		<strong th:text="${count['like']} ?: 0"></strong>
+		<span th:each="r : ${count}"
+		      th:if="${r.emotionType} == 'like'"
+		      th:text="${r.cnt}">0</span>
 	  </button>
 	  <button class="reaction-button" data-type="sad">
 	    <img src="/images/emoji_sad.png" alt="슬퍼요" />

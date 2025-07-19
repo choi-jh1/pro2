@@ -40,5 +40,5 @@ public interface SportsMapper {
 	
 	// 좋아요 개수
 	public List<Map<String,Object>> reactionCount(int num);
-	public List<SportsReaction> reactionCount1(@Param("sports_id") int num,@Param("emotion_type") String type);
+	public List<SportsReaction> reactionCount1(int num);
 }

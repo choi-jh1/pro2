@@ -95,22 +95,23 @@ public class SportsService {
     	sportsMapper.removeReaction(num,id,type);
     }
     // 스포츠기사 좋아요 개수
-    public Map<String,Object> reactionCount(int num) {
+    public Map<String,Integer> reactionCount(int num) {
     	
     	List<Map<String,Object>> list = sportsMapper.reactionCount(num);
-    	Map<String,Object> result = new HashMap<>();
+    	Map<String,Integer> result = new HashMap<>();
     	for(Map<String,Object> map : list) {
-    		result.put((String)map.get("emotion_type"), ((Number)map.get("CNT")).intValue());
+    		   Object typeObj = map.get("EMOTION_TYPE");
+    		    String type = typeObj != null ? typeObj.toString() : null;
+
+    		    Object cntObj = map.get("CNT");
+    		    int count = cntObj != null ? ((Number) cntObj).intValue() : 0;
+
+    		    result.put(type, count);
     	}
     	return result;
     }
-    public Map<String,Object> reactionCount1(int num,String type){
-    	List<SportsReaction> list = sportsMapper.reactionCount1(num, type);
-    	Map<String,Object> map = new HashMap<String,Object>();
-    	for(SportsReaction dto : list) {
-    		map.put(dto.getEmotion_type(),dto.getCount());
-    	}
-    	return map;
+    public List<SportsReaction> reactionCount1(int num){
+    	return sportsMapper.reactionCount1(num);
     }
     //id 체크
     public String reactionType(int num,String id) {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ex.data.SportsDTO;
+import com.ex.data.SportsReaction;
 import com.ex.service.ReporterService;
 import com.ex.service.SportsService;
 
@@ -132,7 +133,7 @@ public class SportsController {
 	@GetMapping("content/{boardNum}")
 	public String content(@PathVariable("boardNum") int boardNum,Model model) {
 		
-		Map<String,Object> count = sportsService.reactionCount(boardNum);
+		List<SportsReaction> count = sportsService.reactionCount1(boardNum);
 		
 		SportsDTO dto = sportsService.sportsContent(boardNum);
 		String id = dto.getWriter();
