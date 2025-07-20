@@ -35,7 +35,7 @@
 		</form>
 	</div>
 	
-	<!-- 댓글 -->
+	<!-- 댓글 작성 -->
 	<div>
 		<h3>댓글</h3>
 		<form th:action="@{/comment/add}" method="post">
@@ -47,87 +47,81 @@
 	
 	<!-- 댓글 목록 -->
 	<p th:text="${#lists.size(commentList)}">댓글 수</p>
-	<ul>
+	<ul id="commentUl">
 	  <li th:each="comment : ${commentList}">
-	    <div>
+		<div th:style="'margin-left: ' + (${comment.re_level} * 10) + 'px;'">
 	      <strong th:text="${comment.writer}">작성자</strong> :
 	      <span th:text="${comment.content}">댓글 내용</span><br>
 	      <span th:text="${#temporals.format(comment.reg, 'yyyy-MM-dd HH:mm')}">작성 시간</span>
-
-	      <!-- 삭제 버튼 -->
-		  <!-- 답글쓰기 버튼 -->
-		  <button type="button" 
-		          data-com-num="${comment.com_num}" 
-		          onclick="toggleReplyForm(this.getAttribute('data-com-num'))">
-		    답글쓰기
-		  </button>
-
-		  <!-- 답글 폼 -->
-		  <div id="replyForm${comment.com_num}" style="display:none; margin-top:10px;">
-			<form onsubmit="return submitReply(event, this)">
-			  <input type="hidden" name="num" th:value="${news.num}" />
-			  <input type="hidden" name="com_num" th:value="${comment.com_num}" />
-			  <input type="hidden" name="ref" th:value="${comment.ref}" />
-			  <input type="hidden" name="re_level" th:value="${comment.re_level}" />
-			  <input type="hidden" name="re_step" th:value="${comment.re_step}" />
-			  <textarea name="content" rows="3" cols="50" placeholder="답글을 입력하세요." required></textarea><br />
-			  <button type="submit">답글 등록</button>
-			  <button type="button" onclick="toggleReplyForm(this.closest('div').id.replace('replyForm', ''))">취소</button>
-			</form>
-		  </div>
-	    </div>
+	    
+		  <form th:action="@{/comment/delete}" method="post" style="display:inline;">
+		  	<input type="hidden" name="com_num" th:value="${comment.com_num}" />
+		    <input type="hidden" name="num" th:value="${news.num}" />
+		    <button type="submit" onclick="return confirm('댓글을 삭제하시겠습니까?');">삭제</button>
+		  </form>
+	  </div>
 	  </li>
 	</ul>
 
+	<!-- 스크립트 영역 -->
 	<script>
-		// 답글 폼 토글 함수
-		function toggleReplyForm(comNum){
-			const formDiv = document.getElementById('replyForm'+comNum);
-			if(formDiv.style.display === 'none' || formDiv.style.display === ''){
-				formDiv.style.display = 'block';
-			}else{
-				formDiv.style.display = 'none';
-			}
-		}
-		
-		// ajax로 답글 제출
-		function submitReply(event, form){
-			event.preventDefault();
-			
-			const formDate = new FormData(form);
-			
-			fetch('/comment/reply',{
-				method: 'POST', body: formData,
-			}).then(res =>{
-				if(res.ok){
-					location.reload();
-				}else{
-					alert('답글 등록 실패');
+		// 무한 스크롤 Ajax 댓글 추가 로딩
+		let page = 1;  // 현재 댓글 페이지 (서버에서 이미 1페이지 렌더링 완료 상태)
+		let isLoading = false; // 요청 중복 방지
+		let hasMore = true;    // 더 불러올 댓글 여부
+
+		window.addEventListener('scroll', () => {
+			// 페이지 맨 아래 100px 근처 도달 시
+			if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+				if (!isLoading && hasMore) {
+					loadMoreComments();
 				}
-			}).catch(err => {
-				alerter('오류가 발생했습니다.');
-				console.error(err);
-			});
-			
-			return false;
+			}
+		});
+
+		function loadMoreComments() {
+			isLoading = true;
+			page++;  // 다음 페이지 요청
+
+			// Thymeleaf 변수 치환
+			const newsNum = /*[[${news.num}]]*/ 0;
+
+			fetch(`/comment/load?num=${newsNum}&page=${page}`)
+				.then(response => response.json())
+				.then(data => {
+					if (data.length === 0) {
+						hasMore = false;
+						return;
+					}
+
+					const commentUl = document.getElementById("commentUl");
+
+					data.forEach(comment => {
+						const li = document.createElement("li");
+
+						const marginLeft = comment.re_level * 10;
+						const regTime = new Date(comment.reg).toLocaleString();
+
+						li.innerHTML = `
+							<div style="margin-left: ${marginLeft}px;">
+								<div>
+									<strong>${comment.writer}</strong> :
+									<span>${comment.content}</span><br>
+									<span>${regTime}</span>
+								</div>
+							</div>
+						`;
+
+						commentUl.appendChild(li);
+					});
+				})
+				.catch(error => {
+					console.error('댓글 불러오기 실패:', error);
+				})
+				.finally(() => {
+					isLoading = false;
+				});
 		}
 	</script>
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</html>

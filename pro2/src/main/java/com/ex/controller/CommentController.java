@@ -1,9 +1,13 @@
 package com.ex.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ex.data.CommentDTO;
@@ -27,6 +31,8 @@ public class CommentController {
 			return "redirect:/user/login";
 		}
 		comment.setWriter(writer);
+		comment.setRe_level(0);
+		comment.setRe_step(0);
 		commentService.addComment(comment);
 		return "redirect:/news/content/" + comment.getNum();
 	}
@@ -42,27 +48,16 @@ public class CommentController {
 		return "redirect:/news/content/" + num;
 	}
 	
-	// 답글 등록
-	@PostMapping("reply")
-	public String addReply(CommentDTO dto, HttpSession session, RedirectAttributes rttr) {
-		String writer = (String) session.getAttribute("sid");
-		if(writer == null) {
-			return "redirect:/user/login";
-		}
-		// 1단계 답글까지만 허용
-		if(dto.getRe_level() >= 1) {
-			rttr.addFlashAttribute("error", "1단계 답글까지만 작성 가능합니다.");
-			return "redirect:/news/content/" +dto.getNum();
-		}
-		// 답글 추가 전 기존 답글들의 re_step 증가
-		commentService.updateReStep(dto);
-		// 답글의 re_level은 원댓글 re_level + 1
-		dto.setRe_level(dto.getRe_level() + 1);
-		dto.setRe_step(dto.getRe_step() + 1);
+	
+	
+	// 댓글 비동기 로드 (GET /comment/load?num=1&page=2)
+	@GetMapping("load")
+	@ResponseBody
+	public List<CommentDTO> loadComments(@RequestParam("num") int num, @RequestParam("page") int page){
+		int pageSize= 10;
+		int offset = (page - 1) * pageSize;
 		
-		commentService.addReply(dto);
-		
-		return "redirect:/news/content/"+dto.getNum();
+		return commentService.getCommentsPaged(num, offset, pageSize);
 	}
 	
 }

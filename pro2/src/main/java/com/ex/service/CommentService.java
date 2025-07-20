@@ -21,6 +21,7 @@ public class CommentService {
 	// 댓글
 	public void addComment(CommentDTO comment) {
 		commentMapper.insertComment(comment);
+		commentMapper.updateRef(comment.getCom_num());
 		
 	}
 	// 댓글 삭제
@@ -31,16 +32,10 @@ public class CommentService {
 	public void updateReStep(CommentDTO dto) {
 		commentMapper.updateReStep(dto);
 	}
-	// 답글
-	public void addReply(CommentDTO dto) {
-		// re_level이 1 이상이면 답글 추가 제한
-		if(dto.getRe_level() >= 1) {
-			throw new IllegalArgumentException("1단계 답글까지만 허용 가능합니다.");
-		}
-		// 기존 답글 추가 전 re_step 업데이트
-		updateReStep(dto);
-		
-		commentMapper.insertReply(dto);
+
+	
+	public List<CommentDTO> getCommentsPaged(int num, int offset, int pageSize){
+		return commentMapper.selectCommentsPaged(num, offset, pageSize);
 	}
 
 }
