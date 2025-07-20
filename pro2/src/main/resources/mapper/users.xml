@@ -19,7 +19,7 @@
 	<update id="updateStatus">
 		update users set status=#{status} where id=#{userId}
 	</update>
-<<<<<<< HEAD
+
 	<!--기자 조회-->
 	<select id="reporterList" resultType="com.ex.data.UsersDTO">
 		select u.id, u.name, u.reg, u.role, r.category from users u
@@ -29,7 +29,5 @@
 	<update id="updateCategory">
 		update reporter set category=#{category} where id=#{id}
 	</update>
-=======
 
->>>>>>> cjh
 </mapper>
