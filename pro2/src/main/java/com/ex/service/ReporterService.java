@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
+
    private final ReporterMapper repoterMapper;
    @Autowired
    private UsersMapper userMapper;
@@ -32,5 +33,18 @@ public class ReporterService {
 	// TODO Auto-generated method stub
 	return null;
    }
+
+
+	private final ReporterMapper reporterMapper;
+
+	// 기자 목록 조회
+	public List<UsersDTO> reporterList() {
+		return reporterMapper.reporterList();
+	}
+	
+	// 기자 정보 조회
+	public ReporterDTO reporterInfo(String id) {
+		return reporterMapper.reporterInfo(id);
+	}
 
 }

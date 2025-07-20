@@ -1,0 +1,40 @@
+.reaction-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 70px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.reaction-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.reaction-button img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 5px;
+}
+
+.reaction-button span {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.reaction-button strong {
+  font-size: 16px;
+  color: #111;
+  font-weight: 600;
+}
+
+.reaction-button:hover {
+  transform: scale(1.08);
+}
