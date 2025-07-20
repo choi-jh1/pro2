@@ -28,4 +28,8 @@
 	<update id="updateCategory">
 		update reporter set category=#{category} where id=#{id}
 	</update>
+	
+	<select id="findById" parameterType="string" resultType="com.ex.data.UsersDTO">
+		select * from users where ID = #{num}
+	</select>
 </mapper>

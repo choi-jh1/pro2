@@ -23,4 +23,8 @@ public interface UsersMapper {
 	public List<UsersDTO> reporterList();
 	// 기자 카테고리 변경
 	public int updateCategory(@Param("id") String id, @Param("category") String category);
+	
+	public UsersDTO findById(String id);
+	
+	public void update(UsersDTO user);
 }
