@@ -13,25 +13,31 @@
  	<!-- 댓글 추가 -->
  	<insert id="insertComment" parameterType="com.ex.data.CommentDTO">
  		insert into comments (com_num, content, writer, reg, ref, re_level, re_step, is_delete, num)
- 		values(comments_seq.nextval, #{content}, #{writer}, sysdate, #{ref}, #{re_level}, #{re_step}, 1, #{num})
+ 		values(comments_seq.nextval, #{content}, #{writer}, sysdate, 0, 0, 0, 1, #{num})
  	</insert>
+
  	
  	<!-- 댓글 삭제 -->
  	<update id="deleteComment" parameterType="int">
  		update comments set is_delete = 0 where com_num = #{com_num}
  	</update>
  	
- 	<!-- 답글 추가 전 re_step 값 증가 -->
- 	<update id="updateReStep" parameterType="com.ex.data.CommentDTO">
- 		update comments set re_step = re_step +1 where ref = #{ref} and re_step > #{re_step}
- 	</update>
  	
- 	<!-- 답글 삽입 -->
- 	<insert id="insertReply" parameterType="com.ex.data.CommentDTO">
- 		insert into comments (com_num, content, writer, reg, ref, re_level, re_step, is_delete, num)
- 		values (comments_seq.nextval, #{content}, #{writer}, sysdate, #{ref}, #{re_level}, #{re_step}, 1, #{num})
- 	</insert>
- 	
+ 	<!-- 페이징 처리된 댓글 목록 -->
+	<select id="selectCommentsPaged" resultType="com.ex.data.CommentDTO" parameterType="map">
+		select * from (
+			select rownum as rn, com_num, content, writer, reg, ref, re_level, re_step, is_delete, num
+			from (
+				select com_num, content, writer, reg, ref, re_level, re_step, is_delete, num
+				from comments where num = #{num} and is_delete = 1
+				order by ref desc, re_step asc
+			)
+			where rownum &lt;= #{offset} + #{pageSize} 
+		)
+		where rn > #{offset}
+	</select>
+
+
  	
  </mapper>
  

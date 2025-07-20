@@ -21,6 +21,7 @@ public class CommentService {
 	// 댓글
 	public void addComment(CommentDTO comment) {
 		commentMapper.insertComment(comment);
+		commentMapper.updateRef(comment.getCom_num());
 		
 	}
 	// 댓글 삭제
@@ -31,9 +32,10 @@ public class CommentService {
 	public void updateReStep(CommentDTO dto) {
 		commentMapper.updateReStep(dto);
 	}
-	// 답글
-	public void addReply(CommentDTO dto) {
-		commentMapper.insertReply(dto);
+
+	
+	public List<CommentDTO> getCommentsPaged(int num, int offset, int pageSize){
+		return commentMapper.selectCommentsPaged(num, offset, pageSize);
 	}
 
 }

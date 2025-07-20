@@ -1,9 +1,14 @@
 package com.ex.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ex.data.CommentDTO;
 import com.ex.service.CommentService;
@@ -26,6 +31,8 @@ public class CommentController {
 			return "redirect:/user/login";
 		}
 		comment.setWriter(writer);
+		comment.setRe_level(0);
+		comment.setRe_step(0);
 		commentService.addComment(comment);
 		return "redirect:/news/content/" + comment.getNum();
 	}
@@ -41,20 +48,16 @@ public class CommentController {
 		return "redirect:/news/content/" + num;
 	}
 	
-	// 답글 등록
-	@PostMapping("reply")
-	public String addReply(CommentDTO dto, HttpSession session) {
-		String writer = (String) session.getAttribute("sid");
-		if(writer == null) {
-			return "redirect:/user/login";
-		}
-		dto.setWriter(writer);
+	
+	
+	// 댓글 비동기 로드 (GET /comment/load?num=1&page=2)
+	@GetMapping("load")
+	@ResponseBody
+	public List<CommentDTO> loadComments(@RequestParam("num") int num, @RequestParam("page") int page){
+		int pageSize= 10;
+		int offset = (page - 1) * pageSize;
 		
-		commentService.updateReStep(dto);
-		dto.setRe_level(dto.getRe_level()+1);
-		dto.setRe_step(dto.getRe_step()+1);
-		commentService.addReply(dto);
-		return "redirect:/news/content/"+dto.getNum();
+		return commentService.getCommentsPaged(num, offset, pageSize);
 	}
 	
 }
