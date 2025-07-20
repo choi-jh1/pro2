@@ -12,6 +12,7 @@
   	<select id="reporterList" resultType="com.ex.data.UsersDTO">
   		select * from users where role='reporter'
   	</select>
+<<<<<<< HEAD
  	
   	<select id="selectById" parameterType="string" resultType="com.ex.data.ReporterDTO">
   		select id, profile_img, category, intro from reporter where id = #{id}
@@ -22,4 +23,11 @@
   			join users u on r.id = u.id where u.role='reporter'
 
   	</select>
+=======
+  	<!--기자 정보-->
+  	<select id="reporterInfo" resultType="com.ex.data.ReporterDTO">
+  		select r.*,u.name,u.email from reporter r join users u on r.id = u.id where r.id=#{id}
+  	</select>
+	
+>>>>>>> cjh
   </mapper>

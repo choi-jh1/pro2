@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
+<<<<<<< HEAD
    private final ReporterMapper repoterMapper;
    @Autowired
    private UsersMapper userMapper;
@@ -33,4 +34,25 @@ public class ReporterService {
 	return null;
    }
 
+=======
+	private final ReporterMapper reporterMapper;
+	@Autowired
+	private UsersMapper userMapper;
+	// 회원가입
+	public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
+		user.setRole("reporter");
+		userMapper.userInsert(user);
+		reporterMapper.reporterInsert(reporter);
+		
+	}
+	// 기자 목록 조회
+	public List<UsersDTO> reporterList() {
+		return reporterMapper.reporterList();
+	}
+	
+	// 기자 정보 조회
+	public ReporterDTO reporterInfo(String id) {
+		return reporterMapper.reporterInfo(id);
+	}
+>>>>>>> cjh
 }

@@ -1,4 +1,6 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/reaction.css}">
 <style>
 	/* 전체 컨테이너 */
 	.container_body {
@@ -68,7 +70,81 @@
 	  margin: 10px auto;
 	}
 	.article-body {
-		font-size:20px;
+		font-size:18px;
+	}
+	.reporter-card {
+	  width: 700px;
+	  background: #f8f9fa;
+	  border-radius: 12px;
+	  padding: 16px;
+	  font-family: 'Arial', sans-serif;
+	  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	  margin: 0 auto;  
+	  margin-top:50px;
+	}
+
+	.reporter-header {
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	}
+
+	.profile-img {
+	  width: 48px;
+	  height: 48px;
+	  border-radius: 50%;
+	  margin-right: 10px;
+	}
+
+	.reporter-info {
+	  flex: 1;
+	}
+
+	.reporter-name {
+	  font-weight: bold;
+	  font-size: 15px;
+	}
+
+	.reporter-stats {
+	  font-size: 13px;
+	  color: #666;
+	}
+
+	.subscribe-btn {
+	  background-color: #f1f3f5;
+	  border: none;
+	  padding: 6px 12px;
+	  border-radius: 20px;
+	  font-size: 13px;
+	  cursor: pointer;
+	}
+
+	.reporter-board {
+	  margin-top: 10px;
+	  font-size: 14px;
+	  color: #222;
+	  line-height: 1.4;
+	  cursor: pointer;
+	}
+
+
+	.media-logo {
+	  width: 20px;
+	  margin-right: 6px;
+	}
+
+	.media-text {
+	  font-size: 13px;
+	  color: #007BFF;
+	  text-decoration: none;
+	}
+	.reporter-in{
+		font-size:13px;
+		font-weight: 400;
+	}
+	.reaction-hr{
+		margin-top:40px;
+		margin-bottom:30px;
 	}
 
 </style>
@@ -132,16 +208,59 @@
     </h2>
 
     <div class="article-info">
-      [[${#temporals.format(dto.reg,'yyyy.MM.dd HH:mm')}]] | 기자코드
+      [[${#temporals.format(dto.reg,'yyyy.MM.dd HH:mm')}]] | [[${repo.name}]] 기자
     </div>
 
     <div class="article-interact">
-      <span class="likes">❤️ 28</span>
+      <span class="likes">❤️ [[${allReaction}]]</span>
       <span class="icons">🔁 📎</span>
     </div>
 
-    <div class="article-body" th:utext="${dto.content}">
-    </div>
+    <div class="article-body" th:utext="${dto.content}"></div>
+	
+	
+	<div class="reporter-card">
+	  <div class="reporter-header">
+	    <img th:src="${repo.profile_img}" alt="기자 이미지" class="profile-img">
+	    <div class="reporter-info">
+	      <div class="reporter-name">[[${repo.name}]] 기자<span class="reporter-in">  구독 ?</span></div>
+	      <div class="reporter-stats">[[${repo.category}]]뉴스를 담당하고 있습니다.</div>
+	    </div>
+	    <button class="subscribe-btn">+ 구독</button>
+	  </div>
+
+	  <div class="reporter-board">K리그 MVP-득점왕 말컹, 6년 만의 복귀… 울산 HD와 계약 "한국 복귀 당연했다"[공식발표]</div>
+	  <div class="reporter-board">"눈부신 업적 남긴 조타" 울버햄튼, 명예의 전당 헌액 결정… "망장일치로 즉각 결정"</div>
+
+	</div>
+	<hr class="reaction-hr">
+	<div class="reaction-buttons">
+	  <button class="reaction-button" data-type="like" >
+	    <img src="/images/emoji_like.png" alt="좋아요" />
+		<span>좋아요</span>
+		 <strong th:text="${count['like']} ?: 0"  th:style="${userReaction == 'like'} ? 'color: #ff4d4d; font-weight: bold;' : ''">>
+		 </strong>
+	  <button class="reaction-button" data-type="sad">
+	    <img src="/images/emoji_sad.png" alt="슬퍼요" />
+	    <span>슬퍼요</span>
+		<strong th:text="${count['sad']} ?: 0" th:style="${userReaction == 'sad'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
+	  </button>
+	  <button class="reaction-button" data-type="angry">
+	    <img src="/images/emoji_angry.png" alt="화나요" />
+	    <span>화나요</span>
+		<strong th:text="${count['angry']} ?: 0" th:style="${userReaction == 'angry'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
+	  </button>
+	  <button class="reaction-button" data-type="surprise">
+	    <img src="/images/emoji_fan.png" alt="놀랐어요" />
+	    <span>놀랐어요</span>
+		<strong th:text="${count['surprise']} ?: 0" th:style="${userReaction == 'surprise'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
+	  </button>
+	  <button class="reaction-button" data-type="followup">
+	    <img src="/images/emoji_followup.png" alt="후속기사 원해요" />
+	    <span>후속기사 원해요</span>
+		<strong th:text="${count['followup']} ?: 0" th:style="${userReaction == 'followup'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
+	  </button>
+	</div>
   </div>
 
   <!-- 우측 사이드바 -->
@@ -149,3 +268,102 @@
     <!-- 추천 기사 등은 추후 삽입 가능 -->
   </div>
 </div>
+
+<script>
+	$(document).ready(function(){
+		// 현재 사용자가 선택한 리액션 타입
+		let currentReaction = '[[${reactionType}]]';
+		if(currentReaction === 'null' || currentReaction === '') {
+		    currentReaction = null;
+		}
+		const boardNum = "[[${dto.boardNum}]]";
+		const id = "[[${session.sid}]]"
+		
+		
+		 $('.reaction-button').click(function(){
+			// 클릭한 리액션 타입
+			const clickedType = $(this).data('type');
+			// 로그인 안된 상태면 confirm 띄우고 로그인 페이지로 이동
+			if (!id || id === 'null') {
+			    if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) {
+			        window.location.href = '/user/login';
+			    }
+			    return; // 아래 코드 실행 방지
+			}
+			
+			
+			if(currentReaction === clickedType){
+				// 같은 버튼 클릭시 취소 요청
+				$.ajax({
+					url:'/sports/reaction',
+					method:'delete',
+					data:{
+						reactionType:clickedType,
+						boardNum:boardNum,
+						id:id
+					},
+					success:function(){
+						currentReaction=null;
+						updateUI(null);
+						location.reload()
+					},
+					error:function(){
+						alert("취소실패");
+					}
+				});
+			}else{
+				    // 1. 기존 반응이 있다면 먼저 삭제
+				    const deleteOld = currentReaction !== null
+				    ?  $.ajax({
+				          url: '/sports/reaction',
+				          method: 'delete',
+				          contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				          data: {
+				            reactionType: currentReaction,
+				            boardNum: boardNum,
+				            id: id
+				          }
+				        })
+				     : Promise.resolve(); // 없으면 즉시 성공 처리
+
+				    // 2. 삭제 후 새로운 리액션 등록
+				    deleteOld.then(() => {
+				      $.ajax({
+				        url: '/sports/reaction',
+				        method: 'POST',
+				        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				        data: {
+				          reactionType: clickedType,
+				          boardNum: boardNum,
+				          id: id
+				        },
+				        success: function () {
+				          currentReaction = clickedType;
+				          updateUI(clickedType);
+						  location.reload()
+						  
+				        },
+				        error: function () {
+				          alert("리액션 등록 실패");
+				        }
+				      });
+				    });
+				  }
+				});
+		
+		function updateUI(select){
+			$('.reaction-button').each(function(){
+				const type=$(this).data('type');
+				if(type===select){
+					$(this).addClass('select');
+				}else{
+					$(this).removeClass('select');
+				}
+			});
+		}
+		
+		
+	});
+	
+
+</script>
