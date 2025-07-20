@@ -40,7 +40,7 @@
 		insert into sportsReaction values(sportsReaction_seq.nextval,#{sports_id},#{user_id},#{emotion_type},sysdate)
 	</insert>
 	<!--스포츠기사 좋아요 아이디체크-->
-	<select id="idCheck" resultType="int">
+	<select id="idCheck" resultType="String">
 		select emotion_Type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
 	</select>
 	<!--좋아요 취소-->
@@ -53,11 +53,18 @@
 	    WHERE sports_id = #{sports_id} AND user_id = #{user_id}
 	</delete>
 	<!--좋아요 개수-->
-	<select id="reactionCount" resultType="map">
-		select emotion_type, COUNT(*) AS cnt from sportsReaction where sports_id = #{sports_id} GROUP BY emotion_type
+	<select id="reactionCount1" resultType="com.ex.data.ReactionCountDTO">
+		  SELECT emotion_type AS emotionType, COUNT(*) AS count
+		  FROM sportsReaction
+		  WHERE sports_id = #{sports_id}
+		  GROUP BY emotion_type
 	</select>
-	<select id="reactionCount1" resultType="com.ex.data.SportsReaction">
-		select emotion_type AS emotionType, COUNT(*) AS count from sportsReaction where sports_id=#{sports_id} group by emotion_type
+	<!--아이디가 좋아요 누른 타입-->
+	<select id="userReaction" resultType="String">
+		select emotion_type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
 	</select>
-	
+	<!--게시글 좋아요 총 개수-->
+	<select id="reactionAllCount" resultType="int">
+		select count(*) from sportsReaction where sports_id=#{sports_id}
+	</select>
 </mapper>

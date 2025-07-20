@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ex.data.SportsDTO;
-import com.ex.data.SportsReaction;
 import com.ex.service.ReporterService;
 import com.ex.service.SportsService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -131,19 +131,29 @@ public class SportsController {
 	
 	// 스포츠기사 내용
 	@GetMapping("content/{boardNum}")
-	public String content(@PathVariable("boardNum") int boardNum,Model model) {
+	public String content(@PathVariable("boardNum") int boardNum,Model model,HttpSession session) {
 		
-		List<SportsReaction> count = sportsService.reactionCount1(boardNum);
+		String sid = (String)session.getAttribute("sid");
+		String userReaction = null;
+		if (sid != null) {
+		    userReaction = sportsService.reactionType(boardNum, sid);
+		}
+		// 좋아요 개수
+		Map<String,Integer> count = sportsService.reactionCount1(boardNum);
 		
+		// 기사 정보
 		SportsDTO dto = sportsService.sportsContent(boardNum);
 		String id = dto.getWriter();
 		
+		model.addAttribute("allReaction",sportsService.reactionAllCount(boardNum));
+		model.addAttribute("userReaction",userReaction);
 		model.addAttribute("reactionType",sportsService.reactionType(boardNum,id));
 		model.addAttribute("count",count);
 		model.addAttribute("repo",reporterService.reporterInfo(dto.getWriter()));
 		model.addAttribute("dto",dto);
 		return "sports/boardContent";
 	}
+	
 	
 	// 스포츠기사 좋아요
 	@PostMapping("reaction")

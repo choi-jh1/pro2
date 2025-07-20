@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.ex.data.ReactionCountDTO;
 import com.ex.data.SportsCateDTO;
 import com.ex.data.SportsDTO;
-import com.ex.data.SportsReaction;
 
 @Mapper
 @Repository
@@ -39,6 +39,9 @@ public interface SportsMapper {
 	public void deleteReaction(@Param("sports_id") int num,@Param("user_id") String id);
 	
 	// 좋아요 개수
-	public List<Map<String,Object>> reactionCount(int num);
-	public List<SportsReaction> reactionCount1(int num);
+	List<ReactionCountDTO> reactionCount1(int num);
+	// 유저가 좋아요 누른 타입
+	public String userReaction(@Param("sports_id") int num,@Param("user_id") String id);
+	// 게시글 좋아요 총 개수
+	public int reactionAllCount(int num);
 }

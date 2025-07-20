@@ -146,6 +146,7 @@
 		margin-top:40px;
 		margin-bottom:30px;
 	}
+
 </style>
 
 <div class="site-header">
@@ -211,7 +212,7 @@
     </div>
 
     <div class="article-interact">
-      <span class="likes">❤️ 28</span>
+      <span class="likes">❤️ [[${allReaction}]]</span>
       <span class="icons">🔁 📎</span>
     </div>
 
@@ -234,31 +235,30 @@
 	</div>
 	<hr class="reaction-hr">
 	<div class="reaction-buttons">
-	  <button class="reaction-button" data-type="like">
+	  <button class="reaction-button" data-type="like" >
 	    <img src="/images/emoji_like.png" alt="좋아요" />
-		<span th:each="r : ${count}"
-		      th:if="${r.emotionType} == 'like'"
-		      th:text="${r.cnt}">0</span>
-	  </button>
+		<span>좋아요</span>
+		 <strong th:text="${count['like']} ?: 0"  th:style="${userReaction == 'like'} ? 'color: #ff4d4d; font-weight: bold;' : ''">>
+		 </strong>
 	  <button class="reaction-button" data-type="sad">
 	    <img src="/images/emoji_sad.png" alt="슬퍼요" />
 	    <span>슬퍼요</span>
-	    
+		<strong th:text="${count['sad']} ?: 0" th:style="${userReaction == 'sad'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
 	  </button>
 	  <button class="reaction-button" data-type="angry">
 	    <img src="/images/emoji_angry.png" alt="화나요" />
 	    <span>화나요</span>
-	  
+		<strong th:text="${count['angry']} ?: 0" th:style="${userReaction == 'angry'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
 	  </button>
 	  <button class="reaction-button" data-type="surprise">
 	    <img src="/images/emoji_fan.png" alt="놀랐어요" />
-	    <span>팬이에요</span>
-	  
+	    <span>놀랐어요</span>
+		<strong th:text="${count['surprise']} ?: 0" th:style="${userReaction == 'surprise'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
 	  </button>
 	  <button class="reaction-button" data-type="followup">
 	    <img src="/images/emoji_followup.png" alt="후속기사 원해요" />
 	    <span>후속기사 원해요</span>
-	
+		<strong th:text="${count['followup']} ?: 0" th:style="${userReaction == 'followup'} ? 'color: #ff4d4d; font-weight: bold;' : ''"></strong>
 	  </button>
 	</div>
   </div>
@@ -272,12 +272,25 @@
 <script>
 	$(document).ready(function(){
 		// 현재 사용자가 선택한 리액션 타입
- 		let currentReaction = '[[${reactionType}]]' || null;
+		let currentReaction = '[[${reactionType}]]';
+		if(currentReaction === 'null' || currentReaction === '') {
+		    currentReaction = null;
+		}
 		const boardNum = "[[${dto.boardNum}]]";
 		const id = "[[${session.sid}]]"
-		$('.reaction-button').click(function(){
+		
+		
+		 $('.reaction-button').click(function(){
 			// 클릭한 리액션 타입
 			const clickedType = $(this).data('type');
+			// 로그인 안된 상태면 confirm 띄우고 로그인 페이지로 이동
+			if (!id || id === 'null') {
+			    if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) {
+			        window.location.href = '/user/login';
+			    }
+			    return; // 아래 코드 실행 방지
+			}
+			
 			
 			if(currentReaction === clickedType){
 				// 같은 버튼 클릭시 취소 요청
@@ -292,6 +305,7 @@
 					success:function(){
 						currentReaction=null;
 						updateUI(null);
+						location.reload()
 					},
 					error:function(){
 						alert("취소실패");
@@ -326,6 +340,7 @@
 				        success: function () {
 				          currentReaction = clickedType;
 				          updateUI(clickedType);
+						  location.reload()
 						  
 				        },
 				        error: function () {
@@ -346,6 +361,8 @@
 				}
 			});
 		}
+		
+		
 	});
 	
 

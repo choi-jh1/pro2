@@ -156,6 +156,23 @@
 	  line-height: 1.5em;
 	  margin-top: 5px;
 	}
+	.more-button {
+	  display: block;
+	  margin: 20px auto;
+	  padding: 10px 20px;
+	  background-color: #f2f2f2;
+	  border: none;
+	  font-size: 14px;
+	  font-weight: bold;
+	  color: #111;
+	  cursor: pointer;
+	  transition: background-color 0.3s, color 0.3s;
+	}
+
+	.more-button:hover {
+	  background-color: #ddd;
+	  color: #000;
+	}
 </style>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 
@@ -243,7 +260,7 @@
 </div>
 
 
-<button id="load-more-btn" th:data-category="${cate}">더보기</button>
+<button id="load-more-btn" th:data-category="${cate}" class="more-button">더보기 ▼</button>
 
 
 
