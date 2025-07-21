@@ -46,6 +46,9 @@
 	  display: block;      /* ✅ inline 특성 제거 */
 	  flex-shrink: 0;      /* ✅ 이미지가 줄어들지 않게 방지 */
 	}
+	.main-article a{
+		color: inherit;
+	}
 
 	.title {
 	  font-weight: bold;
@@ -79,7 +82,9 @@
 	  margin: 0 auto;
 	  padding: 30px 0;
 	}
-
+	a {
+	  text-decoration: none;
+	}
 </style>
 
 <header class="site-header">
@@ -147,19 +152,19 @@
   <div class="news-column">
 	<h3><center>스포츠</center></h3>
     <div class="main-article" th:if="${sportsList.size() > 0}">
-      <img th:src="${sportsList[0].thumbnail}" alt="썸네일" />
-      <p class="title" th:text="${sportsList[0].title}"></p>
+      <a th:href="@{|/sports/content/${sportsList[0].num}|}"><img th:src="${sportsList[0].thumbnail}" alt="썸네일" /></a>
+      <a th:href="@{|/sports/content/${sportsList[0].num}|}"><p class="title" th:text="${sportsList[0].title}"></p></a>
     </div>
     <div class="sub-article" th:if="${sportsList.size() > 1}">
-		<img th:src="${sportsList[1].thumbnail}" alt="썸네일" />
-		<p class="title" th:text="${sportsList[1].title}"></p>
+		<a th:href="@{|/sports/content/${sportsList[1].num}|}"><img th:src="${sportsList[1].thumbnail}" alt="썸네일" /></a>
+		<a th:href="@{|/sports/content/${sportsList[1].num}|}"><p class="title" th:text="${sportsList[1].title}"></p></a>
     </div>
     <div class="sub-article" th:if="${sportsList.size() > 2}">
-		<img th:src="${sportsList[2].thumbnail}" alt="썸네일" />
-		<p class="title" th:text="${sportsList[2].title}"></p>
+		<a th:href="@{|/sports/content/${sportsList[2].num}|}"><img th:src="${sportsList[2].thumbnail}" alt="썸네일" /></a>
+		<a th:href="@{|/sports/content/${sportsList[2].num}|}"><p class="title" th:text="${sportsList[2].title}"></p></a>
     </div>
 	<div th:each="sl, i : ${sportsList}" th:if="${i.index >= 3}" class="title-only">
-	  <p class="title" th:text="${sl.title}"></p>
+	  <a th:href="@{|/sports/content/${sl.num}|}"><p class="title" th:text="${sl.title}"></p></a>
 	</div>
   </div>
 

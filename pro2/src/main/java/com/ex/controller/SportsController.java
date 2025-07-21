@@ -135,29 +135,34 @@ public class SportsController {
 	// 스포츠기사 내용
 	@GetMapping("content/{num}")
 	public String content(@PathVariable("num") int boardNum,Model model,HttpSession session) {
-		
-		String sid = (String)session.getAttribute("sid");
-		String userReaction = null;
-		if (sid != null) {
-		    userReaction = sportsService.reactionType(boardNum, sid);
-		}
-		// 좋아요 개수
-		Map<String,Integer> count = sportsService.reactionCount1(boardNum);
-		
-		// 기사 정보
-		SportsDTO dto = sportsService.sportsContent(boardNum);
-		
-		List<SportsDTO> list = sportsService.sportsReadCount();
-		
-		model.addAttribute("list",list);
-		model.addAttribute("allReaction",sportsService.reactionAllCount(boardNum));
-		model.addAttribute("userReaction",userReaction);
-		model.addAttribute("reactionType",sportsService.reactionType(boardNum,sid));
-		model.addAttribute("count",count);
-		model.addAttribute("repo",reporterService.reporterInfo(dto.getWriter()));
-		model.addAttribute("dto",dto);
-		return "sports/boardContent";
+	    String sid = (String) session.getAttribute("sid");
+	    String userReaction = null;
+
+	    if (sid != null) {
+	        userReaction = sportsService.reactionType(boardNum, sid);
+	        model.addAttribute("userReaction", userReaction);
+	        model.addAttribute("reactionType", userReaction);
+	    } else {
+	        model.addAttribute("userReaction", null);
+	        model.addAttribute("reactionType", null);
+	    }
+
+	    // 좋아요 개수
+	    Map<String, Integer> count = sportsService.reactionCount1(boardNum);
+
+	    // 기사 정보
+	    SportsDTO dto = sportsService.sportsContent(boardNum);
+	    List<SportsDTO> list = sportsService.sportsReadCount();
+
+	    model.addAttribute("list", list);
+	    model.addAttribute("allReaction", sportsService.reactionAllCount(boardNum));
+	    model.addAttribute("count", count);
+	    model.addAttribute("repo", reporterService.reporterInfo(dto.getWriter()));
+	    model.addAttribute("dto", dto);
+
+	    return "sports/boardContent";
 	}
+	
 	
 	
 	// 스포츠기사 좋아요
