@@ -19,4 +19,5 @@ public class ReportBoardDTO {
     private String file_Mime_Type;		// 타입
     private Long file_Size;				// 크기
     private String email;
+	private String assigned_Email;
 }

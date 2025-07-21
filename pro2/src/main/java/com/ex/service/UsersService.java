@@ -25,6 +25,9 @@ public class UsersService {
 		return usersMapper.loginCheck(dto);
 	}
 	
+	public int userDelete(String id, String pw) {
+		return usersMapper.userDelete(id, pw);
+	}
 	// 유저 목록
 	public List<UsersDTO> userList() {
 		return usersMapper.userList();

@@ -29,7 +29,27 @@
 	<!-- 제보글 담당기자 배정 -->
 	<update id="assignReporter">
 		update report_board set assigned = #{assigned}, status='배정완료' where report_id = #{report_id}
-	
 	</update>
+
+	<!--제보글 익명일 떄 비밀번호 확인-->
+	<select id="checkPw" resultType="com.ex.data.ReportBoardDTO">
+		select * from report_board where report_id=#{report_id} and writer_pw=#{password}
+	</select>
+	
+	<!--배정된 제보글의 정보확인(제보자 email + 기자의 email)-->
+	<select id="getReporterInfo" resultType="com.ex.data.ReportBoardDTO">
+		select r.report_id, r.title, r.writer_id, r.email AS email, r.assigned, u.email AS assigned_email
+			from report_board r left join users u on r.assigned = u.id where r.report_id = #{report_id}
+	</select>	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 </mapper>
 
