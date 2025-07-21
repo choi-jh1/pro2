@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
+
    private final ReporterMapper reporterMapper;
    private final UsersMapper usersMapper;
 
