@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
 import com.ex.data.UsersDTO;
 import com.ex.repository.ReporterMapper;
@@ -65,6 +66,12 @@ public class ReporterService {
    public void updateUser(UsersDTO user) {
 	   usersMapper.update(user);
    }
+   
+   public List<ReportBoardDTO> getAssignedReports(String reporterId){
+	   return reporterMapper.getAssignedReports(reporterId);
+   }
+   
+
 
    public ReporterDTO reporterInfo(String id) {
 	   return reporterMapper.reporterInfo(id);

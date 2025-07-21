@@ -30,7 +30,7 @@ public interface ReportMapper {
     // 메일 전송용(익명 and 회원)
     ReportBoardDTO getReporterInfo(@Param("report_id") int report_Id);
 
-
+    List<ReportBoardDTO> getAssignedReports(@Param("reporterId") String reporterId);
 
 
 }
