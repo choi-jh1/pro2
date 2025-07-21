@@ -44,5 +44,13 @@ public class UsersService {
 	public int updateCategory(String id, String category) {
 		return usersMapper.updateCategory(id, category);
 	}
+	
+	public UsersDTO getUserById(String id) {
+		return usersMapper.findById(id);
+	}
+	
+	public void updateUser(UsersDTO user) {
+		usersMapper.update(user);
+	}
 		
 }

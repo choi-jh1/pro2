@@ -23,4 +23,10 @@ public interface ReporterMapper {
 	// 기자 정보
 	public ReporterDTO reporterInfo(String id);
 
+
+	
+	// 기자 정보 업데이트
+	ReporterDTO findById(String id);
+	public void update(ReporterDTO reporter);
+	
 }

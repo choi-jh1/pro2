@@ -5,7 +5,8 @@
 <mapper namespace="com.ex.repository.UsersMapper">
 	<!--회원 가입-->
 	<insert id="userInsert">
-		insert into users values(#{id},#{pw},#{nick},#{name},#{birth},#{phone},#{email},#{role},'active',sysdate)
+		insert into users (id, pw, nick, name, birth, phone, email, role)
+		values (#{id}, #{pw}, #{nick}, #{name}, #{birth}, #{phone}, #{email}, #{role})
 	</insert>
 	<!--로그인-->
 	<select id="loginCheck" resultType="com.ex.data.UsersDTO" parameterType="com.ex.data.UsersDTO">
@@ -28,6 +29,15 @@
 	<!--기자 카테고리 변경-->
 	<update id="updateCategory">
 		update reporter set category=#{category} where id=#{id}
+	</update>
+
+	
+	<select id="findById" parameterType="string" resultType="com.ex.data.UsersDTO">
+		select id, pw, nick, name, birth, phone, email, status, role, reg from users where id = #{id}
+	</select>
+	
+	<update id="update" parameterType="com.ex.data.UsersDTO">
+		update users set nick = #{nick}, name = #{name}, birth = #{birth}, phone = #{phone}, email = #{email}, status = #{status}, role = #{role}, category = #{category} where id = #{id}
 	</update>
 
 </mapper>

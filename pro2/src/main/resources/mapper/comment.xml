@@ -36,6 +36,10 @@
 		)
 		where rn > #{offset}
 	</select>
+	
+	<update id="updateRef" parameterType="com.ex.data.CommentDTO">
+		update comments set ref = #{ref} where com_num = #{com_num}
+	</update>
 
 
  	
