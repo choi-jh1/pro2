@@ -149,7 +149,7 @@ public class SportsController {
 		model.addAttribute("userReaction",userReaction);
 		model.addAttribute("reactionType",sportsService.reactionType(boardNum,id));
 		model.addAttribute("count",count);
-		model.addAttribute("repo",reporterService.reporterInfo(dto.getWriter()));
+		model.addAttribute("repo",reporterService.getReporterInfo(dto.getWriter()));
 		model.addAttribute("dto",dto);
 		return "sports/boardContent";
 	}
