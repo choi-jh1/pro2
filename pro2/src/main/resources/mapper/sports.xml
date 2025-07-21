@@ -5,7 +5,7 @@
 <mapper namespace="com.ex.repository.SportsMapper">
 	<!--스포츠기사 글쓰기-->
 	<insert id="boardWrite">
-		insert into sports(boardNum,title,writer,cateId,thumbnail,status,content) values(sports_seq.nextval,#{title},#{writer},#{cateId},#{thumbnail, jdbcType=VARCHAR},'wait',#{content})
+		insert into sports(num,title,writer,cateId,thumbnail,status,content) values(sports_seq.nextval,#{title},#{writer},#{cateId},#{thumbnail, jdbcType=VARCHAR},'wait',#{content})
 	</insert>
 	<!--스포츠 카테고리 조회-->
 	<select id="cate" resultType="com.ex.data.SportsCateDTO">
@@ -21,7 +21,7 @@
 	</select>
 	<!--카테고리별 목록-->
 	<select id="sportsCateList" resultType="com.ex.data.SportsDTO">
-		select s.*,u.name from sports s join users u on s.writer=u.id where s.cateId=#{cateId} order by boardNum desc offset #{offset} rows fetch next #{pageSize} rows only
+		select s.*,u.name from sports s join users u on s.writer=u.id where s.cateId=#{cateId} order by num desc offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 	<!--내용만 출력(이미지 제외)-->
 	<select id="content" resultType="String">
@@ -29,11 +29,11 @@
 	</select>
 	<!--스포츠기사 내용 출력-->
 	<select id="sportsContent" resultType="com.ex.data.SportsDTO">
-		select * from sports where boardNum=#{boardNum}
+		select * from sports where num=#{num}
 	</select>
 	<!--스포츠기사 조회수 +1-->
 	<update id="sportsReadCountUp">
-		update sports set readCount = readCount+1 where boardNum=#{boardNum}
+		update sports set readCount = readCount+1 where num=#{num}
 	</update>
 	<!--스포츠기사 좋아요-->
 	<insert id="reactionInsert">

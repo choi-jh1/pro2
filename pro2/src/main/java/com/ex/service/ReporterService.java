@@ -73,6 +73,8 @@ public class ReporterService {
    
 
 
-
+   public ReporterDTO reporterInfo(String id) {
+	   return reporterMapper.reporterInfo(id);
+   }
 
 }
