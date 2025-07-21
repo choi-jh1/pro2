@@ -45,13 +45,4 @@
 	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
 		select * from report_board where assigned = #{reporterId} order by report_id desc
 	</select>
-		
-		
-		
-		
-		
-		
-		
-		
 </mapper>
-

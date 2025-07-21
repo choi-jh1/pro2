@@ -31,6 +31,12 @@ dependencies {
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+  	// 이메일 전송용
+  	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// devtools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// mybatis
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
   	// 오라클
@@ -39,8 +45,6 @@ dependencies {
   	implementation 'commons-io:commons-io:2.15.0'
   	implementation 'org.jsoup:jsoup:1.17.2'
   	
-  	// 이메일 전송용
-  	implementation 'org.springframework.boot:spring-boot-starter-mail'
   	
 	// devtools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
