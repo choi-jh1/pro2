@@ -13,6 +13,14 @@ import com.ex.data.UsersDTO;
 public interface UsersMapper {
 	// 회원가입
 	public void userInsert(UsersDTO dto);
+	// 아이디 중복확인
+	public int idCheck(String id);
+	// 아이디 찾기
+	public String findId(UsersDTO dto);
+	// 이메일,전화번호로 유저 확인
+	public UsersDTO userCheck(UsersDTO dto);
+	// 비밀번호 재설정
+	public void pwUpdate(@Param("pw") String pw,@Param("id") String id);
 	// 로그인
 	public UsersDTO loginCheck(UsersDTO dto);
 	// 회원탈퇴
@@ -25,4 +33,8 @@ public interface UsersMapper {
 	public List<UsersDTO> reporterList();
 	// 기자 카테고리 변경
 	public int updateCategory(@Param("id") String id, @Param("category") String category);
+	
+	// 기자 정보 업데이트
+	public UsersDTO findById(String id);
+	public void update(UsersDTO user);
 }

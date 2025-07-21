@@ -23,7 +23,7 @@ public class EnterNewsDTO {
     private String category;
     private int hot;
     
-    private int status;
+    private String status;
     
     private String thumbnail;
 }

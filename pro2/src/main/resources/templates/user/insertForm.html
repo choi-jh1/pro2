@@ -1,16 +1,47 @@
 <link rel="stylesheet" th:href="@{/css/userInsert.css}" >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <div class="container">
   <h1 class="logo">더펙트</h1>
   <h2 class="title">회원가입</h2>
-  <form th:action="@{/user/insert}" method="post" class="form-box">
-    <label>아이디 <input type="text" name="id" /></label>
-    <label>비밀번호 <input type="password" name="pw" /></label>
-    <label>닉네임 <input type="text" name="nick" /></label>
-    <label>이름 <input type="text" name="name" /></label>
-    <label>생년월일 <input type="date" name="birth" /></label>
-    <label>전화번호 <input type="text" name="phone" /></label>
-    <label>이메일 <input type="email" name="email" /></label>
+  <form th:action="@{/user/insert}" method="post" class="form-box" name="userInput" onsubmit="return memCheck();" id="username">
+    <label>아이디 <input type="text" name="id" id="id" required/></label>
+	<button type="button" id="userCheck">중복확인</button>
+    <label id="result"></label>
+	<label>비밀번호 <input type="password" name="pw" required/></label>
+	<label>비밀번호 확인<input type="password" name="pw1" required/></label>
+    <label>닉네임 <input type="text" name="nick" required/></label>
+    <label>이름 <input type="text" name="name" required/></label>
+    <label>생년월일 <input type="date" name="birth" required/></label>
+    <label>전화번호 <input type="text" name="phone"  placeholder="01012345678" required/></label>
+    <label>이메일 <input type="email" name="email" required/></label>
     <button type="submit">완료</button>
   </form>
 </div>
+
+<script>
+	function memCheck() {
+	  let check = document.userInput;
+	  let pw = check.pw.value;
+		  
+		  if (pw !== check.pw1.value) {
+		      alert("비밀번호를 동일하게 입력해주세요");
+		      return false;
+		  }
+	  }
+	  $(document).ready(function(){
+		$('#userCheck').click(function(){
+			$.ajax({
+				url:"/user/userCheck",
+				data:{username:$("#id").val()},
+				success:function(a){
+					if (a.includes("불가능")) {
+					  $("#result").css("color", "red").text(a);
+					} else {
+					  $("#result").css("color", "green").text(a);
+					}
+				}
+			});
+		});
+	  });
+</script>

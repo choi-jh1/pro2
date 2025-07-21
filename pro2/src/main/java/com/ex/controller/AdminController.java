@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
 import com.ex.data.UsersDTO;
+import com.ex.service.ApproveService;
 import com.ex.service.ReportService;
 import com.ex.service.ReporterService;
 import com.ex.service.UsersService;
@@ -35,6 +36,7 @@ public class AdminController {
 	private final ReporterService reporterService;
 	private final ReportService reportService;
 	private final UsersService usersService;
+	private final ApproveService approveService;
 	@GetMapping("adminPage")
 	public String admin(HttpSession session) {
 		String role = (String)session.getAttribute("role");
@@ -121,11 +123,44 @@ public class AdminController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
 		}
 	}
-	
-	@GetMapping("articleCheck")
-	public String articleCheck() {
-		return "admin/articleCheck";
+	// 기사 미승인 글들 가져오기
+	@GetMapping("approveNews")
+	public String showApproveNews(Model model) {
+	    model.addAttribute("newsList", approveService.getWaitNews());
+	    return "admin/approveNews";
 	}
+
+	@GetMapping("approveEnt")
+	public String showApproveEnt(Model model) {
+	    model.addAttribute("entList", approveService.getWaitEnterNews());
+	    return "admin/approveEnt";
+	}
+
+	@GetMapping("approveSports")
+	public String showApproveSports(Model model) {
+	    model.addAttribute("sportsList", approveService.getSportsNews());
+	    return "admin/approveSports";
+	}
+	
+	// 기사 승인(각각)
+	@PostMapping("approveNews")
+	public String approveNews(@RequestParam int num) {
+	    approveService.approveNews(num);
+	    return "redirect:/admin/approveNews";
+	}
+
+	@PostMapping("approveEnt")
+	public String approveEnterNews(@RequestParam int num) {
+	    approveService.approveEnterNews(num);
+	    return "redirect:/admin/approveEnt";
+	}
+
+	@PostMapping("approveSports")
+	public String approveSports(@RequestParam int boardNum) {
+	    approveService.approveSportsNews(boardNum);
+	    return "redirect:/admin/approveSports";
+	}
+	
 	
 	// 기자 회원가입
 	@PostMapping("registerReporter")
@@ -194,5 +229,4 @@ public class AdminController {
 		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
 		    }
 	}
-	
 }

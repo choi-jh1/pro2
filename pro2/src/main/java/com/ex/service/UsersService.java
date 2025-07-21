@@ -20,6 +20,11 @@ public class UsersService {
 		usersMapper.userInsert(dto);
 	}
 	
+	// 아이디 중복확인
+	public int idCheck(String id) {
+		return usersMapper.idCheck(id);
+	}
+	
 	// 로그인 체크
 	public UsersDTO loginCheck(UsersDTO dto) {
 		return usersMapper.loginCheck(dto);
@@ -27,6 +32,18 @@ public class UsersService {
 	
 	public int userDelete(String id, String pw) {
 		return usersMapper.userDelete(id, pw);
+	}
+	// 아이디,전화번호로 유저 확인
+	public UsersDTO userCheck(UsersDTO dto) {
+		return usersMapper.userCheck(dto);
+	}
+	// 아이디 찾기
+	public String findId(UsersDTO dto) {
+		return usersMapper.findId(dto);
+	}
+	// 비밀번호 재설정
+	public void pwUpdate(String pw,String id) {
+		usersMapper.pwUpdate(pw,id);
 	}
 	// 유저 목록
 	public List<UsersDTO> userList() {
@@ -46,6 +63,14 @@ public class UsersService {
 	// 기자 카테고리 변경
 	public int updateCategory(String id, String category) {
 		return usersMapper.updateCategory(id, category);
+	}
+	
+	public UsersDTO getUserById(String id) {
+		return usersMapper.findById(id);
+	}
+	
+	public void updateUser(UsersDTO user) {
+		usersMapper.update(user);
 	}
 		
 }

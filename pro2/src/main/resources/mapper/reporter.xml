@@ -3,10 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.ex.repository.ReporterMapper">
+  
   	<!--회원가입-->
-  	<insert id="reporterInsert" >
-  		insert into reporter (id, profile_img, category)
-  			values(#{id}, #{profile_img}, #{category})
+  	<insert id="reporterInsert" parameterType="com.ex.data.ReporterDTO">
+  		insert into reporter (id, writer_name, profile_img, intro, category)
+  		values (#{id}, #{writer_name, jdbcType=VARCHAR}, #{profile_img, jdbcType=VARCHAR}, #{intro, jdbcType=VARCHAR}, #{category, jdbcType=VARCHAR})
   	</insert>
   	<!--기자목록-->
   	<select id="reporterList" resultType="com.ex.data.UsersDTO">
@@ -21,10 +22,26 @@
   		select r.id, u.email, r.category, (select count(*) from report_board where assigned = r.id) as assignedCount from reporter r
   			join users u on r.id = u.id where u.role='reporter'
   	</select>
-  	<!--기자 정보-->
-  	<select id="reporterInfo" resultType="com.ex.data.ReporterDTO">
-  		select r.*,u.name,u.email from reporter r join users u on r.id = u.id where r.id=#{id}
+  	<!--기자 정보 업데이트-->
+
+  	<update id="updateReporter" parameterType="com.ex.data.UsersDTO">
+  		update users set name = #{name, jdbcType=VARCHAR}, nick = #{nick, jdbcType=VARCHAR}, phone = #{phone, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}
+  		where id = #{id} and role = 'reporter'
+  	</update>
+  	
+  	<select id="findById" parameterType="string" resultType="com.ex.data.ReporterDTO">
+  		select id, writer_name, profile_img, category, intro from reporter where id = #{id}
   	</select>
+  	
+  	<update id="update" parameterType="com.ex.data.ReporterDTO">
+  		update reporter set writer_name = #{writer_name, jdbcType=VARCHAR}, profile_img = #{profile_img, jdbcType=VARCHAR}, category = #{category, jdbcType=VARCHAR}, intro = #{intro, jdbcType=VARCHAR} where id = #{id, jdbcType=VARCHAR}
+  	</update>
+
+	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
+		select * from report_board where assigned = #{reporterId} order by report_id desc
+	</select>
+	
   </mapper>
+
 
 
