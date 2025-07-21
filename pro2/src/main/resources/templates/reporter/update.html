@@ -6,7 +6,9 @@
 </head>
 <body>
     <h2>기자 정보 수정</h2>
+
     <form th:action="@{/reporter/update}" method="post">
+        <!-- 사용자 정보 -->
         <label>아이디 : </label>
         <input type="text" th:value="${user.id}" name="id" readonly><br>
 
@@ -22,23 +24,49 @@
         <label>이메일 : </label>
         <input type="text" th:value="${user.email}" name="email"><br>
 
+        <!-- 기자 정보 -->
+        <div th:if="${reporter != null}">
+            <h3>기자 상세 정보</h3>
+
+            <!-- ID는 UsersDTO와 ReporterDTO 양쪽에 존재 -->
+            <input type="hidden" th:value="${reporter.id}" name="reporter.id" />
+
+
+            <label>카테고리 : </label>
+			<select name="category" required>
+				  <option value="">선택</option>
+				  <option value="politics">정치</option>
+				  <option value="economy">경제</option>
+				  <option value="society">사회</option>
+				</select><br>
+            <label>소개 : </label>
+            <textarea name="intro" rows="4" cols="30" th:text="${reporter.intro}"></textarea><br>
+        </div>
+
         <button type="submit">수정하기</button>
     </form>
-	<div th:if="${reporter != null}">
-		<h3>기자 상세 정보</h3>
-		<form th:action="@{/reporter/update}" method="post">
-			<input type="hidden" th:value="${reporter.id}" name="id" />
-			
-			<label>기자 이름 : </label>
-			<input type="text" th:value="${reporter.writer_name}" name="writer_name" /> <br>
-			
-			<label>카테고리 : </label>
-			<input type="text" th:value="${reporter.category}" name="category" /> <br>
-			
-			<label>소개 : </label>
-			<textarea name="intro" rows="4" cols="30" th:text="${reporter.intro}"></textarea><br>
-			
-			<button type="submit">기자 정보 수정</button>
-		</form>
-	</div>
-</body>
+
+	<div id="result-message"></div>
+
+	    <script>
+	        $(document).ready(function () {
+	            $('#updateForm').on('submit', function (e) {
+	                e.preventDefault(); // 폼 기본 제출 방지
+
+	                $.ajax({
+	                    url: '/reporter/update',
+	                    type: 'POST',
+	                    data: $(this).serialize(),
+	                    success: function (response) {
+	                        $('#content-area').html(response); // 수정된 정보 보여주기
+	                    },
+	                    error: function () {
+	                        $('#result-message').html('<p style="color:red;">수정 실패</p>');
+	                    }
+	                });
+	            });
+	        });
+	    </script>
+	</body>
+	</html>
+

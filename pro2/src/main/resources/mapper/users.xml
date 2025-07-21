@@ -26,7 +26,7 @@
 	</update>
 	<!--로그인-->
 	<select id="loginCheck" resultType="com.ex.data.UsersDTO" parameterType="com.ex.data.UsersDTO">
-		select * from users where id=#{id} and pw=#{pw} and status='active'
+
 	</select>
 	
 	<!--회원 탈퇴-->
@@ -58,7 +58,7 @@
 	</select>
 	
 	<update id="update" parameterType="com.ex.data.UsersDTO">
-		update users set nick = #{nick}, name = #{name}, birth = #{birth}, phone = #{phone}, email = #{email}, status = #{status}, role = #{role}, category = #{category} where id = #{id}
+		update users set nick = #{nick, jdbcType=VARCHAR}, name = #{name, jdbcType=VARCHAR}, phone = #{phone, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}, status = #{status, jdbcType=VARCHAR}, role = #{role, jdbcType=VARCHAR} where id = #{id}
 	</update>
 
 </mapper>

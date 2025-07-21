@@ -41,7 +41,9 @@
 			from report_board r left join users u on r.assigned = u.id where r.report_id = #{report_id}
 	</select>	
 		
-		
+	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
+		select * from report_board where assigned = #{reporterId} order by report_id desc
+	</select>
 		
 		
 		

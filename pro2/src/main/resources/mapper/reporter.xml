@@ -23,8 +23,9 @@
   			join users u on r.id = u.id where u.role='reporter'
   	</select>
   	<!--기자 정보 업데이트-->
-  	<update id="updateReporter" parameterType="com.ex.data.ReporterDTO">
-  		update users set name = #{name, jdbcType=VARCHAR}, nick = #{nick, jdbcType=VARCHAR},birth=#{birth}, phone = #{phone, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}
+
+  	<update id="updateReporter" parameterType="com.ex.data.UsersDTO">
+  		update users set name = #{name, jdbcType=VARCHAR}, nick = #{nick, jdbcType=VARCHAR}, phone = #{phone, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}
   		where id = #{id} and role = 'reporter'
   	</update>
   	
@@ -36,6 +37,11 @@
   		update reporter set writer_name = #{writer_name, jdbcType=VARCHAR}, profile_img = #{profile_img, jdbcType=VARCHAR}, category = #{category, jdbcType=VARCHAR}, intro = #{intro, jdbcType=VARCHAR} where id = #{id, jdbcType=VARCHAR}
   	</update>
 
+	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
+		select * from report_board where assigned = #{reporterId} order by report_id desc
+	</select>
+	
   </mapper>
+
 
 
