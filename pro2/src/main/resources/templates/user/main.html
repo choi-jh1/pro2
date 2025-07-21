@@ -19,8 +19,6 @@
 			  <a th:href="@{/admin/adminPage}">관리자 페이지</a>
 	  </span>
 	  <span th:if="${session.sid != null and session.role == 'user'}">
-
-
 			  <a th:href="@{/user/myPage}">마이페이지</a>
 	  	      <a th:href="@{/user/logout}">로그아웃</a>
 	  </span>
@@ -34,7 +32,11 @@
   <nav class="main-nav">
     <ul>
       <li><a th:href="@{/news/home}">뉴스</a></li>
+<<<<<<< HEAD
       <li><a th:href="@{/sports/list}">스포츠</a></li>
+=======
+      <li><a href="/sports/main">스포츠</a></li>
+>>>>>>> cjh
       <li><a href="#">엔터</a></li>
     </ul>
     <div class="search">

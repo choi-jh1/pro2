@@ -29,10 +29,10 @@ public interface SportsMapper {
 	// 스포츠기사 내용 출력
 	public SportsDTO sportsContent(int boardNum);
 	// 스포츠기사 조회수 +1
-	public void sportsReadCount(int boardNum);
+	public void sportsReadCountUp(int boardNum);
 	// 스포츠기사 좋아요넣기
 	public void reactionInsert(@Param("sports_id") int num,@Param("user_id") String id,@Param("emotion_type") String type);
-	// 좋아요 아이디 체크
+	// 좋아요 아이디 체크( 유저가 좋아요 누른 타입 )
 	public String idCheck(@Param("sports_id") int num,@Param("user_id") String id);
 	// 좋아요 취소
 	public void removeReaction(@Param("sports_id") int num,@Param("user_id") String id,@Param("emotion_type") String type);
@@ -41,11 +41,18 @@ public interface SportsMapper {
 	// 좋아요 개수
 
 	List<ReactionCountDTO> reactionCount1(int num);
+<<<<<<< HEAD
 	
 	// 유저가 좋아요 누른 타입
 	public String userReaction(@Param("sports_id") int num,@Param("user_id") String id);
 	// 게시글 좋아요 총 개수
 	public int reactionAllCount(int num);
 	public List<Map<String,Object>> reactionCount(int num);
+=======
+	// 게시글 좋아요 총 개수
+	public int reactionAllCount(int num);
+	// 스포츠기사 조회순
+	public List<SportsDTO> sportsReadCount();
+>>>>>>> cjh
 }
 
