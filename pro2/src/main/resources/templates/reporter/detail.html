@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>내 정보 조회</title>
+</head>
+<body>
+    <h2>내 정보 조회</h2>
+
+    <p>아이디: <span th:text="${user.id}"></span></p>
+    <p>이름: <span th:text="${user.name}"></span></p>
+    <p>닉네임: <span th:text="${user.nick}"></span></p>
+    <p>전화번호: <span th:text="${user.phone}"></span></p>
+    <p>이메일: <span th:text="${user.email}"></span></p>
+
+    <div th:if="${reporter != null}">
+        <h3>기자 상세 정보</h3>
+        <p>기자 이름: <span th:text="${reporter.writer_name}"></span></p>
+        <p>카테고리: <span th:text="${reporter.category}"></span></p>
+        <p>소개: <span th:text="${reporter.intro}"></span></p>
+    </div>
+
+	<button id="editBtn">정보 수정</button>
+
+	<script>
+	    $(document).ready(function () {
+	        $('#editBtn').click(function () {
+	            // 수정 페이지를 비동기로 불러와서 content-area에 삽입
+	            $('#content-area').html('<p>로딩 중...</p>');
+	            $.ajax({
+	                url: '/reporter/update',  // GET 방식으로 수정 페이지 호출
+	                type: 'GET',
+	                success: function (data) {
+	                    $('#content-area').html(data);
+	                },
+	                error: function () {
+	                    $('#content-area').html('<p>오류 발생</p>');
+	                }
+	            });
+	        });
+	    });
+	</script>
+</body>
+</html>
