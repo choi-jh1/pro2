@@ -287,7 +287,7 @@
 		많이 본 스포츠 기사
 		<hr>
 		<div th:each="list,i : ${list}">
-			<a class="ellipsis" th:text="${i.count + '. ' + list.title}" th:href="@{|/sports/content/${list.boardNum}|}"></a>
+			<a class="ellipsis" th:text="${i.count + '. ' + list.title}" th:href="@{|/sports/content/${list.num}|}"></a>
 		</div>
 
 	</div>
@@ -301,7 +301,7 @@
 			currentReaction = null;
 		}
 		console.log('초기 currentReaction:', currentReaction);
-		const boardNum = "[[${dto.boardNum}]]";
+		const boardNum = "[[${dto.num}]]";
 		const id = "[[${session.sid}]]"
 
 

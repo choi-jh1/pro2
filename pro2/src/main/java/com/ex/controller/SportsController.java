@@ -133,8 +133,8 @@ public class SportsController {
 	}
 	
 	// 스포츠기사 내용
-	@GetMapping("content/{boardNum}")
-	public String content(@PathVariable("boardNum") int boardNum,Model model,HttpSession session) {
+	@GetMapping("content/{num}")
+	public String content(@PathVariable("num") int boardNum,Model model,HttpSession session) {
 		
 		String sid = (String)session.getAttribute("sid");
 		String userReaction = null;
@@ -154,7 +154,7 @@ public class SportsController {
 		model.addAttribute("userReaction",userReaction);
 		model.addAttribute("reactionType",sportsService.reactionType(boardNum,sid));
 		model.addAttribute("count",count);
-		model.addAttribute("repo",reporterService.getReporterInfo(dto.getWriter()));
+		model.addAttribute("repo",reporterService.reporterInfo(dto.getWriter()));
 		model.addAttribute("dto",dto);
 		return "sports/boardContent";
 	}

@@ -17,6 +17,9 @@
   	<select id="selectById" parameterType="string" resultType="com.ex.data.ReporterDTO">
   		select id, profile_img, category, intro from reporter where id = #{id}
   	</select>
+  	<select id="reporterInfo" resultType="com.ex.data.ReporterDTO">
+		select r.*,u.name,u.email from reporter r join users u on r.id = u.id where r.id=#{id}
+	</select>
   	<!--기자리스트(제보)-->
   	<select id="getReporterListWithStatus" resultType="com.ex.data.ReporterDTO">
   		select r.id, u.email, r.category, (select count(*) from report_board where assigned = r.id) as assignedCount from reporter r
@@ -29,7 +32,7 @@
   	</update>
   	
   	<select id="findById" parameterType="string" resultType="com.ex.data.ReporterDTO">
-  		select id, writer_name, profile_img, category, intro from reporter where id = #{id}
+  		select id, profile_img, category, intro from reporter where id = #{id}
   	</select>
   	
   	<update id="update" parameterType="com.ex.data.ReporterDTO">
