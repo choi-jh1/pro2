@@ -63,4 +63,23 @@ public class EnterNewsService {
 	public EnterNewsDTO readEnterNews(int num) {
 		return enterNewsMapper.readEnterNews(num);
 	}
+	
+	public void insertReadLog(int newsId, String ip) {
+	    enterNewsMapper.insertReadLog(newsId, ip);
+	}
+	
+	public void deleteNews(int num){
+	    enterNewsMapper.softDelete(num);
+	}
+
+	public int updateNews(EnterNewsDTO dto) {
+		dto.setThumbnail(extractThumbnail(dto.getContent()));
+		int result=enterNewsMapper.updateEnterNews(dto);
+		return result;
+	}
+	
+	public List<EnterNewsDTO> getNewsByCategory(String category) {
+		return enterNewsMapper.getNewsByCategory(category);
+	}
+
 }

@@ -71,12 +71,12 @@
 
 			<!-- 수정/삭제 버튼: 작성자 or 관리자만 -->
 			<div th:if="${session.sid == dto.writer_id or session.role == 'admin'}">
-				<form th:action="@{/enter/editForm}" method="get">
+				<form th:action="@{/enter/editForm}" method="post">
 					<input type="hidden" name="num" th:value="${dto.num}" />
 					<button type="submit">수정</button>
 				</form>
 
-				<form th:action="@{/enter/deletePro}" method="get" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+				<form th:action="@{/enter/deletePro}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
 					<input type="hidden" name="num" th:value="${dto.num}" />
 					<button type="submit">삭제</button>
 				</form>
