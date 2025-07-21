@@ -12,6 +12,7 @@
 		from enter_news enter
 		join enter_read_log log on enter.num = log.news_id
 		where to_char(log.read_date, 'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')
+		and enter.status = 'approve'
 		group by
 			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 4000, 1), enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
 		order by count(1) desc
@@ -23,6 +24,7 @@
 		select
 			num, title, content, writer_id, null as writerNickname, null as	writerEmail, reg, readcount, category, hot
 		from enter_news
+		where status = 'approve' order by reg desc
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>
 
