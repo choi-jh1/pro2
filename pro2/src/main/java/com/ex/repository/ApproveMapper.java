@@ -19,7 +19,7 @@ public interface ApproveMapper {
 	
 	
 	// 기사 승인 DB작업
-	public int approveNews(int num);
-	public int approveEnterNews(int num); 
-	public int approveSportsNews(int boardNum);
+	public int updateNewsStatus(int num);
+	public int updateEntStatus(int num); 
+	public int updateSportsStatus(int boardNum);
 }
