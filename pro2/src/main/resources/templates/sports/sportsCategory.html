@@ -233,11 +233,11 @@
 <div class="article-list"  id="article-list">
 	<div><span style="font-size: 24px; font-weight: 500;"> 스포츠 </span><span th:text="' > '+${catename}"></span></div>
   <div class="article-card" th:each="dto:${list}" >
-	<a th:href="@{|/sports/content/${dto.boardNum}|}">
+	<a th:href="@{|/sports/content/${dto.num}|}">
     <img th:src="${dto.thumbnail}" alt="썸네일">
 	</a>
     <div class="article-info">
-		<a th:href="@{|/sports/content/${dto.boardNum}|}">
+		<a th:href="@{|/sports/content/${dto.num}|}">
       <h3 class="article-title">[[${dto.title}]]</h3>
 	  </a>
       <p class="article-summary">[[${dto.cleanContent}]]</p>
@@ -287,11 +287,11 @@
 	      articles.forEach(article => {
 	        const html = `
 	          <div class="article-card">
-				<a href="/sports/content/{article.boardNum}">
+				<a href="/sports/content/{article.num}">
 	            <img src="${article.thumbnail}" alt="썸네일">
 				</a>
 	            <div class="article-info">
-					<a href="/sports/content/{article.boardNum}">
+					<a href="/sports/content/{article.num}">
 	              <h3 class="article-title">${article.title}</h3>
 				  </a>
 	              <p class="article-summary">${article.cleanContent}</p>
