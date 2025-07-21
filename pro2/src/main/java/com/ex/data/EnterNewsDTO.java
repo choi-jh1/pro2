@@ -12,7 +12,7 @@ public class EnterNewsDTO {
     private String content;
 
     // FK: users.id (VARCHAR2)
-    private String writerId;
+    private String writer_id;
 
     // JOIN 결과로 가져올 값
     private String writerNickname;

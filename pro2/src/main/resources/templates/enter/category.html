@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${category} + ' 뉴스 목록'">카테고리 뉴스</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+	<header class="site-header">
+		<div class="container">
+			<div class="logo">로고</div>
+	
+			<div class="top-bar">
+				<div class="date">2025.07.03</div>
+				<div class="user-menu">
+					<a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
+					<span th:if="${session.sid == null}">
+						<a th:href="@{/user/login}">로그인</a>
+						<a th:href="@{/user/insert}">회원가입</a>
+					</span>
+					<span th:if="${session.sid != null and session.role == 'admin'}">
+						<a th:href="@{/user/logout}">로그아웃</a>
+						<a th:href="@{/admin/adminPage}">관리자페이지</a>
+					</span>
+					<span th:if="${session.sid != null and session.role != 'admin'}">
+	
+						<a th:href="@{/user/myPage}">마이페이지</a>
+						<a th:href="@{/user/logout}">로그아웃</a>
+					</span>
+				</div>
+			</div>
+			<nav class="main-nav">
+				<ul>
+					<li><a th:href="@{/news/home}">뉴스</a></li>
+					<li><a th:href="@{/sports/list}">스포츠</a></li>
+					<li><a th:href="@{main}" class="active">엔터</a></li>
+				</ul>
+				<div class="search">
+					<input type="text" placeholder="검색" />
+				</div>
+			</nav>
+			<nav class="sub-nav">
+				<ul>
+					<li><a th:href="@{/enter/main}">홈</a></li>
+					<li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
+					<li><a th:href="@{/enter/category?category=movie}" th:classappend="${category} == 'movie' ? 'active' : ''">영화</a></li>
+					<li><a th:href="@{/enter/category?category=music}" th:classappend="${category} == 'music' ? 'active' : ''">뮤직</a></li>
+					<li><a th:href="@{/enter/category?category=general}" th:classappend="${category} == 'general' ? 'active' : ''">연예일반</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- 상단 랭킹 박스 -->
+	<div th:switch="${category}">
+		<div th:case="'music'">
+			<section class="music-chart-box">
+				<h3>멜론 차트 TOP 10</h3>
+				<ul class="music-chart-list">
+					<li>1. Golden - HUNTR/X</li>
+					<li>2. Soda Pop - Saja Boys</li>
+					<!-- ※ 1위 Golden은 애니메이션 <K-POP DEMON HUNTERS>의 가상 걸그룹 HUNTR/X의 곡이고
+							2위 Soda Pop은 애니메이션 <K-POP DEMON HUNTERS>의 가상 보이그룹 Saja Boys의 곡입니다. -->
+					<li>3. FAMOUS - ALLDAY PROJECT</li>
+					<li>4. 뛰어 (JUMP) - BLACKPINK</li>
+					<li>5. Dirty Work - aespa</li>
+					<li>6. Drowning - WOODZ</li>
+					<li>7. 시작의 아이 - 마크툽 (MAKTUB)</li>
+					<li>8. 너에게 닿기를 - 10CM</li>
+					<li>9. 모르시나요 (Prod. 로코베리) - 조재즈</li>
+					<li>10. 어제보다 슬픈 오늘 - 우디 (Woody)</li>
+				</ul>
+			</section>
+		</div>
+	
+		<div th:case="'drama'">
+			<section class="drama-ranking-box">
+				<h3>이번주 드라마 인기순위</h3>
+				<!-- 상위 1~5위 -->
+				<div class="drama-top5-row">
+					<div class="drama-card">
+						<img src="/images/enter/오징어게임.webp" alt="오징어 게임">
+						<p>1. 오징어 게임</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/우영우.webp" alt="이상한 변호사 우영우">
+						<p>2. 이상한 변호사 우영우</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/지우학.webp" alt="지금 우리 학교는">
+						<p>3. 지금 우리 학교는</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/눈물의여왕.webp" alt="눈물의 여왕">
+						<p>4. 눈물의 여왕</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/더 글로리.webp" alt="더 글로리">
+						<p>5. 더 글로리</p>
+					</div>
+				</div>
+				<!-- 하위 6~10위 -->
+				<div class="drama-bottom5-row">
+					<div class="drama-card">
+						<img src="/images/enter/킹더랜드.webp" alt="킹더랜드">
+						<p>6. 킹더랜드</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/마이데몬.webp" alt="마이 데몬">
+						<p>7. 마이 데몬</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/환혼.jpg" alt="환혼">
+						<p>8. 환혼</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/갯마을차차차.jpg" alt="갯마을 차차차">
+						<p>9. 갯마을 차차차</p>
+					</div>
+					<div class="drama-card">
+						<img src="/images/enter/사내맞선.webp" alt="사내맞선">
+						<p>10. 사내맞선</p>
+					</div>
+				</div>
+				<p class="note">
+					※ 해당 랭킹은 2025년 7월 기준, 넷플릭스 ‘한국 드라마’ 누적 시청 시간 순위 기준입니다.
+				</p>
+			</section>
+		</div>
+	
+		<div th:case="'movie'">
+			<section class="movie-ranking-box">
+				<h3>이번주 영화 인기순위</h3>
+				<!-- 상위 1~5위 -->
+				<div class="movie-rank-row top5">
+					<div class="movie">
+						<img src="/images/enter/쥬라기월드.webp" alt="쥬라기 월드: 새로운 시작">
+						<p>쥬라기 월드: 새로운 시작</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/슈퍼맨.webp" alt="슈퍼맨">
+						<p>슈퍼맨</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/노이즈.webp" alt="노이즈">
+						<p>노이즈</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/F1.webp" alt="F1 더 무비">
+						<p>F1 더 무비</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/드래곤.webp" alt="드래곤 길들이기">
+						<p>드래곤 길들이기</p>
+					</div>
+				</div>
+				<!-- 하위 6~10위 -->
+				<div class="movie-rank-row bottom5">
+					<div class="movie">
+						<img src="/images/enter/괴기열차.webp" alt="괴기열차">
+						<p>괴기열차</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/엘리오.webp" alt="엘리오">
+						<p>엘리오</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/신명.webp" alt="신명">
+						<p>신명</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/도라에몽.jpg" alt="극장판 도라에몽: 진구의 그림이야기">
+						<p>극장판 도라에몽: 진구의 그림이야기</p>
+					</div>
+					<div class="movie">
+						<img src="/images/enter/무명.webp" alt="무명 無名">
+						<p>무명 無名</p>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<!-- 뉴스 카드 목록 -->
+	<main class="news-grid" id="newsContainer">
+		<div th:each="news : ${categoryNews}" class="news-card">
+			<a th:href="@{/enter/detail(num=${news.num})}">
+				<img th:src="${news.thumbnail}" alt="썸네일" class="thumbnail">
+				<h3 th:text="${news.title}">기사 제목</h3>
+				<p th:text="${#temporals.format(news.reg, 'yyyy.MM.dd')}">작성일</p>
+			</a>
+		</div>
+	</main>
+	<div id="loading" style="text-align: center; margin: 20px; display: none;">Loading...</div>
+
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		let offset = 10;
+		const limit = 10;
+		const category = /*[[${category}]]*/ 'general';  // Thymeleaf로 카테고리 넘김
+		let isLoading = false;
+
+		function loadMoreNews() {
+			if (isLoading) return;
+			isLoading = true;
+			$("#loading").show();
+
+			$.ajax({
+				url: "/enter/category/loadMore",
+				method: "GET",
+				data: {
+					category: category,
+					offset: offset,
+					limit: limit
+				},
+				success: function (data) {
+					if (data.length === 0) {
+						$("#loading").text("더 이상 기사가 없습니다");
+						return;
+					}
+					data.forEach(function(news) {
+						const html = `
+							<div class="news-card">
+								<a href="/enter/detail?num=${news.num}">
+									<img src="${news.thumbnail}" alt="썸네일" class="thumbnail">
+									<h3>${news.title}</h3>
+									<p>${news.reg ? news.reg.substring(0, 10) : ''}</p>
+								</a>
+							</div>
+						`;
+						$("#newsContainer").append(html);
+					});
+					offset += limit;
+					isLoading = false;
+					$("#loading").hide();
+				},
+				error: function () {
+					$("#loading").text("불러오기에 실패했습니다");
+					isLoading = false;
+				}
+			});
+		}
+
+		$(window).on("scroll", function () {
+			if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
+				loadMoreNews();
+			}
+		});
+	/*]]>*/
+	</script>
+
+</body>
+</html>

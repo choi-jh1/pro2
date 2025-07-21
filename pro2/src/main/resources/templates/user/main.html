@@ -18,10 +18,12 @@
 			  <a th:href="@{/user/logout}">로그아웃</a>
 			  <a th:href="@{/admin/adminPage}">관리자 페이지</a>
 	  </span>
+
 	  <span th:if="${session.sid != null and session.role == 'user'}">
 			  <a th:href="@{/user/myPage}">마이페이지</a>
 	  	      <a th:href="@{/user/logout}">로그아웃</a>
 	  </span>
+
 	  <span th:if="${session.sid != null and session.role == 'reporter'}">
 			  <a th:href="@{/user/myPage}">기자페이지</a>
 		  	  <a th:href="@{/user/logout}">로그아웃</a>

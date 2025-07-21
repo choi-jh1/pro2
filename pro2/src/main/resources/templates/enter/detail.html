@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${dto.title}"></title>
+	<!--<style>
+		.container {
+			max-width: 800px;
+			margin: 40px auto;
+			font-family: sans-serif;
+		}
+
+		.meta {
+			font-size: 14px;
+			color: #666;
+			margin-bottom: 10px;
+		}
+
+		.content {
+			border-top: 1px solid #ccc;
+			padding-top: 20px;
+			font-size: 16px;
+			line-height: 1.6;
+		}
+
+		.btn-group {
+			margin-top: 30px;
+		}
+
+		.btn-group form {
+			display: inline;
+		}
+
+		.btn-group button {
+			padding: 8px 14px;
+			margin-right: 10px;
+			background: #eee;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+		}
+
+		.btn-group button:hover {
+			background: #ddd;
+		}
+	</style>-->
+</head>
+
+<body>
+	<div class="container">
+
+		<h1 th:text="'제목 : ' + ${dto.title}"></h1>
+
+		<div class="meta">
+			작성자: <span th:text="${dto.writerNickname}"></span> |
+			등록일: <span th:text="${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></span> |
+			조회수: <span th:text="${dto.readCount}"></span> |
+			카테고리: <span th:text="${dto.category}"></span>
+		</div>
+
+		<div class="content" th:utext="${dto.content}"></div>
+
+		<div class="btn-group">
+
+			<!-- 목록 버튼: 누구나 -->
+			<form th:action="@{/enter/main}" method="get">
+				<button type="submit">목록</button>
+			</form>
+
+			<!-- 수정/삭제 버튼: 작성자 or 관리자만 -->
+			<div th:if="${session.sid == dto.writer_id or session.role == 'admin'}">
+				<form th:action="@{/enter/editForm}" method="post">
+					<input type="hidden" name="num" th:value="${dto.num}" />
+					<button type="submit">수정</button>
+				</form>
+
+				<form th:action="@{/enter/deletePro}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+					<input type="hidden" name="num" th:value="${dto.num}" />
+					<button type="submit">삭제</button>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+</body>
+
+</html>

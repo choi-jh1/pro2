@@ -2,6 +2,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="com.ex.repository.ReportMapper">
 <!-- DB에 글 저장하기-->
 	<insert id="insertReport" parameterType="com.ex.data.ReportBoardDTO">
@@ -24,6 +25,7 @@
 	<select id="reportContent" resultType="com.ex.data.ReportBoardDTO">
 		select * from report_board where report_id=#{report_id}
 	</select> 
+
 	
 	<!-- 제보글 담당기자 배정 -->
 	<update id="assignReporter">
@@ -44,12 +46,5 @@
 	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
 		select * from report_board where assigned = #{reporterId} order by report_id desc
 	</select>
-		
-		
-		
-		
-		
-		
-		
 		
 </mapper>
