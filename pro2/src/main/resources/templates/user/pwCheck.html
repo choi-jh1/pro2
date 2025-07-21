@@ -1,0 +1,54 @@
+<link rel="stylesheet" th:href="@{/css/userInsert.css}" >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+	button {
+	  margin-top: 10px;
+	  padding: 12px;
+	  background-color: #4A90E2;
+	  color: white;
+	  font-weight: bold;
+	  border: none;
+	  border-radius: 6px;
+	  cursor: pointer;
+	  transition: background-color 0.2s ease;
+	}
+
+	button:hover {
+	  background-color: #357ABD;
+	}
+</style>
+
+<div class="container">
+  <h1 class="logo">더펙트</h1>
+	<h2 class="title">비밀번호 재설정</h2>
+	<form id="pwCheck" class="form-box">
+	  <label>아이디 <input type="text" name="id" required/></label>
+	  <label>전화번호 <input type="text" name="phone" required/></label>
+	  <button type="button" id="check">완료</button> 
+	</form>
+  <div id="result">
+  </div>
+</div>
+
+<script>
+	$(document).ready(function () {
+	  $('#check').click(function () {
+	    const formData = $('#pwCheck').serialize();
+
+	    $.ajax({
+	      url: "/user/pwCheck",
+	      method: "POST",
+	      data: formData,
+	      success: function (userId) {
+			if (userId) {
+			  // 성공 시 비밀번호 재설정 페이지로 이동 (userId를 쿼리로 전달)
+			  location.href = '/user/resetPw?id=' + encodeURIComponent(userId);
+			} else {
+			  $('#result').css("color", "red").text("일치하는 사용자가 없습니다.");
+			}
+	      }
+	    });
+	  });
+	});
+		  
+</script>

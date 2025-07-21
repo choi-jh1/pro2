@@ -1,0 +1,47 @@
+<link rel="stylesheet" th:href="@{/css/userInsert.css}" >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+	button {
+	  margin-top: 10px;
+	  padding: 12px;
+	  background-color: #4A90E2;
+	  color: white;
+	  font-weight: bold;
+	  border: none;
+	  border-radius: 6px;
+	  cursor: pointer;
+	  transition: background-color 0.2s ease;
+	}
+
+	button:hover {
+	  background-color: #357ABD;
+	}
+</style>
+
+<div class="container">
+  <h1 class="logo">더펙트</h1>
+	<h2 class="title">비밀번호 재설정</h2>
+	<form id="pwCheck" class="form-box" th:action="@{/user/pwUpdate}" method="post" name="userInput" onsubmit="return memCheck();">
+		<input type="hidden" name="id"th:value="${id}"/>
+	  <label>비밀번호 <input type="text" name="pw" id="userId" required/></label>
+	  <label>비밀번호 확인 <input type="text" name="pw1" required/></label>
+	  <button type="submit" >완료</button> 
+	</form>
+</div>
+
+<script>
+	function memCheck() {
+	  let check = document.userInput;
+	  let pw = check.pw.value;
+		  
+		  if (pw !== check.pw1.value) {
+		      alert("비밀번호를 동일하게 입력해주세요");
+		      return false;
+		  }
+	  }
+	  const params = new URLSearchParams(location.search);
+	  const userId = params.get("userId");
+	  if (userId) {
+	    document.getElementById("userId").value = userId;
+	  }
+  </script>

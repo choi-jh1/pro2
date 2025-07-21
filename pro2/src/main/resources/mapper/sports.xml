@@ -32,7 +32,7 @@
 		select * from sports where boardNum=#{boardNum}
 	</select>
 	<!--스포츠기사 조회수 +1-->
-	<update id="sportsReadCount">
+	<update id="sportsReadCountUp">
 		update sports set readCount = readCount+1 where boardNum=#{boardNum}
 	</update>
 	<!--스포츠기사 좋아요-->
@@ -41,7 +41,7 @@
 	</insert>
 	<!--스포츠기사 좋아요 아이디체크-->
 	<select id="idCheck" resultType="String">
-		select emotion_Type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
+		select emotion_type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
 	</select>
 	<!--좋아요 취소-->
 	<delete id="removeReaction">
@@ -59,12 +59,14 @@
 		  WHERE sports_id = #{sports_id}
 		  GROUP BY emotion_type
 	</select>
-	<!--아이디가 좋아요 누른 타입-->
-	<select id="userReaction" resultType="String">
-		select emotion_type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
-	</select>
 	<!--게시글 좋아요 총 개수-->
 	<select id="reactionAllCount" resultType="int">
 		select count(*) from sportsReaction where sports_id=#{sports_id}
+	</select>
+	<!--스포츠기사 조회순-->
+	<select id="sportsReadCount" resultType="com.ex.data.SportsDTO">
+		<![CDATA[
+			select * from (select * from sports order by readCount desc) where rownum <= 10
+		]]>
 	</select>
 </mapper>

@@ -1,0 +1,48 @@
+<link rel="stylesheet" th:href="@{/css/userInsert.css}" >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+	button {
+	  margin-top: 10px;
+	  padding: 12px;
+	  background-color: #4A90E2;
+	  color: white;
+	  font-weight: bold;
+	  border: none;
+	  border-radius: 6px;
+	  cursor: pointer;
+	  transition: background-color 0.2s ease;
+	}
+
+	button:hover {
+	  background-color: #357ABD;
+	}
+</style>
+
+<div class="container">
+  <h1 class="logo">더펙트</h1>
+	<h2 class="title">아이디 찾기</h2>
+	<form id="findIdForm" class="form-box">
+	  <label>이름 <input type="text" name="name" required/></label>
+	  <label>이메일 <input type="email" name="email" required/></label>
+	  <button type="button" id="findIdBtn">완료</button> 
+	</form>
+  <div id="result">
+  </div>
+</div>
+
+<script>
+	$(document).ready(function () {
+	  $('#findIdBtn').click(function () {
+	    const formData = $('#findIdForm').serialize();
+
+	    $.ajax({
+	      url: "/user/findId",
+	      method: "POST",
+	      data: formData,
+	      success: function (text) {
+	        $('#result').text(text);
+	      }
+	    });
+	  });
+	});
+</script>

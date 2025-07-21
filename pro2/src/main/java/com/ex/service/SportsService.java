@@ -73,12 +73,10 @@ public class SportsService {
 
     // 스포츠기사 내용 출력
     public SportsDTO sportsContent(int boardNum) {
+    	sportsMapper.sportsReadCountUp(boardNum);
     	return sportsMapper.sportsContent(boardNum);
     }
-    // 스포츠기사 조회수 +1
-    public void sportsReadCount(int boardNum) {
-    	sportsMapper.sportsReadCount(boardNum);
-    }
+
 
     // 스포츠기사 좋아요
     public void reactionInsert(int num,String id,String type) {
@@ -103,14 +101,12 @@ public class SportsService {
         for (ReactionCountDTO dto : list) {
             result.put(dto.getEmotionType(), dto.getCount());
         }
-
         return result;
-   
     }
     
     // 유저가 좋아요 누른 타입
     public String userReaction(int num,String id) {
-    	return sportsMapper.userReaction(num, id);
+    	return sportsMapper.idCheck(num, id);
     }
     //id 중복 체크
     public String reactionType(int num,String id) {
@@ -119,5 +115,9 @@ public class SportsService {
     // 게시글 좋아요 총 개수
     public int reactionAllCount(int num) {
     	return sportsMapper.reactionAllCount(num);
+    }
+    // 스포츠기사 조회순
+    public List<SportsDTO> sportsReadCount(){
+    	return sportsMapper.sportsReadCount();
     }
 }

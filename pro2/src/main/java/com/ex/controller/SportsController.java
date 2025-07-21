@@ -55,6 +55,9 @@ public class SportsController {
         String uploadPath = "C:/sports/upload/";
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         File dest = new File(uploadPath + fileName);
+        if (!dest.exists()) {
+        	dest.mkdirs(); // 디렉토리 없으면 생성
+        }
         try {
 			file.transferTo(dest);
 		} catch (Exception e) {
@@ -143,11 +146,13 @@ public class SportsController {
 		
 		// 기사 정보
 		SportsDTO dto = sportsService.sportsContent(boardNum);
-		String id = dto.getWriter();
 		
+		List<SportsDTO> list = sportsService.sportsReadCount();
+		
+		model.addAttribute("list",list);
 		model.addAttribute("allReaction",sportsService.reactionAllCount(boardNum));
 		model.addAttribute("userReaction",userReaction);
-		model.addAttribute("reactionType",sportsService.reactionType(boardNum,id));
+		model.addAttribute("reactionType",sportsService.reactionType(boardNum,sid));
 		model.addAttribute("count",count);
 		model.addAttribute("repo",reporterService.reporterInfo(dto.getWriter()));
 		model.addAttribute("dto",dto);
