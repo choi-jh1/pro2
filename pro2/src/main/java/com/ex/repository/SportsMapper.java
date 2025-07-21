@@ -41,18 +41,15 @@ public interface SportsMapper {
 	// 좋아요 개수
 
 	List<ReactionCountDTO> reactionCount1(int num);
-<<<<<<< HEAD
+
 	
 	// 유저가 좋아요 누른 타입
 	public String userReaction(@Param("sports_id") int num,@Param("user_id") String id);
 	// 게시글 좋아요 총 개수
 	public int reactionAllCount(int num);
 	public List<Map<String,Object>> reactionCount(int num);
-=======
-	// 게시글 좋아요 총 개수
-	public int reactionAllCount(int num);
 	// 스포츠기사 조회순
 	public List<SportsDTO> sportsReadCount();
->>>>>>> cjh
+
 }
 

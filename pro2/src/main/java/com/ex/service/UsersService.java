@@ -29,11 +29,10 @@ public class UsersService {
 	public UsersDTO loginCheck(UsersDTO dto) {
 		return usersMapper.loginCheck(dto);
 	}
-<<<<<<< HEAD
 	
 	public int userDelete(String id, String pw) {
 		return usersMapper.userDelete(id, pw);
-=======
+	}
 	// 아이디,전화번호로 유저 확인
 	public UsersDTO userCheck(UsersDTO dto) {
 		return usersMapper.userCheck(dto);
@@ -45,7 +44,6 @@ public class UsersService {
 	// 비밀번호 재설정
 	public void pwUpdate(String pw,String id) {
 		usersMapper.pwUpdate(pw,id);
->>>>>>> cjh
 	}
 	// 유저 목록
 	public List<UsersDTO> userList() {
