@@ -15,14 +15,14 @@
 	</select>
 	
 	<!-- 승인 처리하기 -->
-	<update id="approveNews">
+	<update id="updateNewsStatus">
 		update news set status ='approve' where num = #{num}
 	</update>
-	<update id="approveEnterNews">
-		update enter_news status = 'approve' where num = #{num}
+	<update id="updateEntStatus">
+		update enter_news set status = 'approve' where num = #{num}
 	</update>
-	<update id="approveSportsNews">
-		update sports status = 'approve' where num = #{num}
+	<update id="updateSportsStatus">
+		update sports set status = 'approve' where num = #{num}
 	</update>
 	
 	

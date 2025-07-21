@@ -142,24 +142,31 @@ public class AdminController {
 	    return "admin/approveSports";
 	}
 	
-	// 기사 승인(각각)
+	// 뉴스 상태 변경
 	@PostMapping("approveNews")
-	public String approveNews(@RequestParam int num) {
-	    approveService.approveNews(num);
-	    return "redirect:/admin/approveNews";
+	public String updateNewsStatus(@RequestParam("num") int num) {
+		approveService.updateNewsStatus(num);
+		return "redirect:/admin/adminPage";
+		
 	}
 
+
+	// 연예 상태 변경
 	@PostMapping("approveEnt")
-	public String approveEnterNews(@RequestParam int num) {
-	    approveService.approveEnterNews(num);
-	    return "redirect:/admin/approveEnt";
+	public String updateEntStatus(@RequestParam("num") int num) {
+		approveService.updateEntStatus(num);
+		return "redirect:/admin/adminPage";
+		
 	}
 
+	// 스포츠 상태 변경
 	@PostMapping("approveSports")
-	public String approveSports(@RequestParam int boardNum) {
-	    approveService.approveSportsNews(boardNum);
-	    return "redirect:/admin/approveSports";
+	public String updateSportsStatus(@RequestParam("num") int num) {
+		approveService.updateSportsStatus(num);
+		return "redirect:/admin/adminPage";
+		
 	}
+
 	
 	
 	// 기자 회원가입

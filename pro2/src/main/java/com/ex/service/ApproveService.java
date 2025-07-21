@@ -28,14 +28,14 @@ public class ApproveService {
 		return approveMapper.getSportsNews();
 	}
 	
-	public void approveNews(int num) {
-		approveMapper.approveNews(num);
+	public void updateNewsStatus(int num) {
+		approveMapper.updateNewsStatus(num);
 	}
-	public void approveEnterNews(int num) {
-		approveMapper.approveEnterNews(num);
+	public void updateEntStatus(int num) {
+		approveMapper.updateEntStatus(num);
 	}
 	
-	public void approveSportsNews(int boardNum) {
-		approveMapper.approveSportsNews(boardNum);
+	public void updateSportsStatus(int boardNum) {
+		approveMapper.updateSportsStatus(boardNum);
 	}
 }

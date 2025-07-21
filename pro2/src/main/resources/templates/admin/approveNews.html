@@ -15,35 +15,9 @@
       <td>
         <form th:action="@{/admin/approveNews}" method="post">
           <input type="hidden" name="num" th:value="${dto.num}">
-		  
-		  <select class="status-select" th:data-id="${dto.status}">
-		  	<option value="approve" th:selected="${dto.status == 'approve'}">승인</option>
-		  	<option value="wait" th:selected="${dto.status == 'wait'}">미승인</option>
-		  </select>
-        </form>
+		  <button type="submit">승인하기</button>	   
+	  </form>
       </td>
     </tr>
   </tbody>
 </table>
-
-<script>
-	$(".status-select").change(function() {
-	  const userId = $(this).data("id");
-	  const newStatus = $(this).val();
-	
-	  $.ajax({
-	    url: "/admin/updateStatus",
-	    type: "POST",
-	    data: {
-	      userId: userId,
-	      status: newStatus
-	    },
-	    success: function(response) {
-	      alert("상태가 변경되었습니다");
-	    },
-	    error: function() {
-	      alert("상태 변경 실패");
-	    }
-	  });
-	});
-</script>
