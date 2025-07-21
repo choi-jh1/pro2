@@ -71,6 +71,14 @@
 	  overflow: hidden;
 	  text-overflow: ellipsis;
 	}
+	.news-container {
+	  display: flex;
+	  justify-content: space-between;
+	  gap: 20px;
+	  max-width: 1200px;
+	  margin: 0 auto;
+	  padding: 30px 0;
+	}
 
 </style>
 
@@ -116,23 +124,23 @@
 
 </div>
 </header>
-
+<div class="news-container">
 <div class="news-column">
   <div class="main-article" th:if="${newsList.size() > 0}">
-    <img th:src="${newsList[0].thumbnail}" alt="썸네일" />
+    <img th:src="${newsList[0].thumbUrl}" alt="썸네일" />
     <p class="title" th:text="${newsList[0].title}"></p>
   </div>
   <div class="sub-article" th:if="${newsList.size() > 1}">
-	<img th:src="${newsList[1].thumbnail}" alt="썸네일" />
+	<img th:src="${newsList[1].thumbUrl}" alt="썸네일" />
 	<p class="title" th:text="${newsList[1].title}"></p>
   </div>
   <div class="sub-article" th:if="${newsList.size() > 2}">
-	<img th:src="${newsList[2].thumbnail}" alt="썸네일" />
+	<img th:src="${newsList[2].thumbUrl}" alt="썸네일" />
 	<p class="title" th:text="${newsList[2].title}"></p>
   </div>
-<div th:each="nl, i : ${newsList}" th:if="${i.index >= 3}" class="title-only">
-  <p class="title" th:text="${nl.title}"></p>
-</div>
+	<div th:each="nl, i : ${newsList}" th:if="${i.index >= 3}" class="title-only">
+	  <p class="title" th:text="${nl.title}"></p>
+	</div>
 </div>
 
   <div class="news-column">
@@ -168,4 +176,3 @@
     </div>
   </div>
 </div>
-
