@@ -39,7 +39,7 @@
 	</insert>
 	
 	<!-- 카테고리 별 기사 최신 순 -->
-	<select id="selectByCategory" parameterType="string" resultType="com.ex.data.NewsDTO">
+	<select id="selectByCategory" parameterType="String" resultType="com.ex.data.NewsDTO">
 		SELECT n.num, n.title,  n.writer, r.writer_name, r.profile_img,  n.reg, n.thumbUrl, n.hot, n.category FROM news n
 	    LEFT JOIN reporter r ON n.writer = r.id WHERE n.category = #{category} ORDER BY n.reg DESC
 	</select>
@@ -54,7 +54,8 @@
 	</update>
 	
 	<select id="selectByWriter" parameterType="String" resultType="com.ex.data.NewsDTO">
-		select * from news where writer = #{writer, jdbcType=VARCHAR} order by reg desc
+		select num, title, writer, reg, readCount, hot, category, thumburl, is_breaking, content, status from news 
+		where writer = #{writer, jdbcType=VARCHAR} order by reg desc
 	</select>
   	<!--조회수 출력-->
 	<select id="newsReadCount" resultType="com.ex.data.NewsDTO">
