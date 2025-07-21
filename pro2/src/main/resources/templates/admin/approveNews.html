@@ -1,23 +1,28 @@
-<table border="1">
-  <thead>
-    <tr>
-      <th>제목</th>
-      <th>기자(ID)</th>
-      <th>작성일자</th>
-      <th>승인</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr th:each="dto : ${newsList}">
-      <td><a th:href="@{'/news/content/' + ${dto.num}}" th:text="${dto.title}">제목</a></td>
-      <td th:text="${dto.writer}"></td>
-      <td th:text="${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></td>
-      <td>
-        <form th:action="@{/admin/approveNews}" method="post">
-          <input type="hidden" name="num" th:value="${dto.num}">
-		  <button type="submit">승인하기</button>	   
-	  </form>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<link rel="stylesheet" th:href="@{/css/adminPage.css}">
+
+
+<div class="table-container">
+  <table class="member-table">
+    <thead>
+      <tr>
+        <th>제목</th>
+        <th>기자(ID)</th>
+        <th>작성일자</th>
+        <th>승인</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="dto : ${newsList}">
+        <td><a th:href="@{'/news/content/' + ${dto.num}}" th:text="${dto.title}">제목</a></td>
+        <td th:text="${dto.writer}"></td>
+        <td th:text="${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></td>
+        <td>
+          <form th:action="@{/admin/approveNews}" method="post">
+            <input type="hidden" name="num" th:value="${dto.num}">
+            <button type="submit" class="approve-btn">승인</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
