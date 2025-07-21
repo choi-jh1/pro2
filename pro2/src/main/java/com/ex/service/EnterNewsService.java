@@ -82,4 +82,8 @@ public class EnterNewsService {
 		return enterNewsMapper.getNewsByCategory(category);
 	}
 
+	public List<EnterNewsDTO> getNewsByCategoryPaged(String category, int offset, int limit) {
+	    return enterNewsMapper.getNewsByCategoryPaged(category, offset, limit);
+	}
+
 }

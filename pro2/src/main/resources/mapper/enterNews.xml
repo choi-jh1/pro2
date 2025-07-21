@@ -86,5 +86,13 @@
 		where status = 1 and category = #{category}
 		order by reg desc
 	</select>
+	
+	<!-- 카테고리별 뉴스. 무한스크롤용 -->
+	<select id="getNewsByCategoryPaged" resultType="com.ex.data.EnterNewsDTO">
+		select * from enter_news
+		where status = 1 and category = #{category}
+		order by reg desc
+		offset #{offset} rows fetch next #{limit} rows only
+	</select>
 
 </mapper>

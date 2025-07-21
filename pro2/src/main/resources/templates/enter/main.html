@@ -231,11 +231,58 @@
 
 	</div>
 
-	<!--
-<script>
-  // 무한스크롤 자바스크립트 이후에 여기에 작성
-</script>
--->
+	<div id="loading" style="text-align: center; margin: 20px; display: none;">Loading...</div>
+	
+	<script>
+		let offset = 9;
+		const limit = 9;
+		let loading = false;
+
+		$(window).on('scroll', function () {
+			if (loading) return;
+
+			if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
+				loading = true;
+				$('#loading').show(); // 로딩중 표시
+
+				$.ajax({
+					url: '/enter/loadMore',
+					method: 'GET',
+					data: { offset: offset, limit: limit },
+					success: function (data) {
+						if (data.length === 0) {
+							$('#loading').text('더 이상 뉴스가 없습니다.');
+							return;
+						}
+
+						data.forEach(function (news) {
+							const html = `
+								<div class="news-item">
+									<a href="/enter/detail?num=${news.num}">
+										<img src="${news.thumbnail}" alt="썸네일" />
+										<div class="info">
+											<h3>${news.title}</h3>
+										</div>
+									</a>
+								</div>
+							`;
+							$('#newsContainer').append(html);
+						});
+
+						offset += limit;
+						loading = false;
+						$('#loading').hide(); // 로딩 완료 후 숨김
+					},
+					error: function () {
+						console.error('뉴스 로드 실패');
+						$('#loading').text('뉴스를 불러오지 못했습니다.');
+						loading = false;
+					}
+				});
+			}
+		});
+	</script>
+
 </body>
 
 </html>

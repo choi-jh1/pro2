@@ -26,4 +26,7 @@ public interface EnterNewsMapper {
 	public int updateEnterNews(EnterNewsDTO dto);
 	
 	public List<EnterNewsDTO> getNewsByCategory(@Param("category") String category);
+	
+	public List<EnterNewsDTO> getNewsByCategoryPaged(@Param("category") String category, @Param("offset") int offset, @Param("limit") int limit);
+
 }

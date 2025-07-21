@@ -146,15 +146,23 @@ public class EnterNewsController {
 	@GetMapping("loadMore")
 	@ResponseBody
 	public List<EnterNewsDTO> loadMoreEnterNews(@RequestParam int offset, @RequestParam int limit) {
-	    return enterNewsService.getPagedEnterNews(offset, limit);
+		return enterNewsService.getPagedEnterNews(offset, limit);
 	}
 
 	@GetMapping("category")
 	public String categoryNews(@RequestParam("category") String category, Model model) {
-	    List<EnterNewsDTO> categoryNews = enterNewsService.getNewsByCategory(category);
-	    model.addAttribute("categoryNews", categoryNews);
-	    model.addAttribute("type", category);
-	    return "enter/category";
+		List<EnterNewsDTO> categoryNews = enterNewsService.getNewsByCategory(category);
+		model.addAttribute("categoryNews", categoryNews);
+		model.addAttribute("category", category);
+		return "enter/category";
+	}
+
+	@GetMapping("/category/loadMore")
+	@ResponseBody
+	public List<EnterNewsDTO> getNewsByCategoryPaged(@RequestParam("category") String category,
+			@RequestParam("offset") int offset, @RequestParam("limit") int limit) {
+
+		return enterNewsService.getNewsByCategoryPaged(category, offset, limit);
 	}
 
 }
