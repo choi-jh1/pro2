@@ -9,20 +9,16 @@
     <table border="1">
         <thead>
             <tr>
-                <th>제보 번호</th>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>상태</th>
                 <th>작성일</th>
                 <th>상세보기</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="report : ${assignedReports}">
-                <td th:text="${report.report_id}"></td>
                 <td th:text="${report.title}"></td>
                 <td th:text="${report.writer_id}"></td>
-                <td th:text="${report.status}"></td>
                 <td th:text="${#temporals.format(report.reg, 'yyyy-MM-dd HH:mm')}"></td>
                 <td><a th:href="@{/report/content(report_id=${report.report_id}, pageNum=1)}">보기</a></td>
             </tr>
