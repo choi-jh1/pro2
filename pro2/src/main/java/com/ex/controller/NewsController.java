@@ -39,7 +39,7 @@ public class NewsController {
     	List<NewsDTO> societyTop5 = newsService.getTop5ByCategory("society");
         model.addAttribute("politicsTop5", politicsTop5);
         model.addAttribute("economyTop5", economyTop5);
-        model.addAttribute("secietyTop5", societyTop5);
+        model.addAttribute("societyTop5", societyTop5);
         
         // 속보 3개
         List<NewsDTO> breakingNews = newsService.getBreakingNews();
@@ -61,6 +61,7 @@ public class NewsController {
     // 기사 작성 처리
     @PostMapping("writePro")
     public String writePro(@ModelAttribute NewsDTO dto, HttpSession session) {
+    	System.out.println("category = "+dto.getCategory());
     	String role = (String) session.getAttribute("role");
     	if(!"reporter".equals(role)) {
     		return "redirect:/user/main";
