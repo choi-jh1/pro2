@@ -24,13 +24,13 @@ public class ReporterService {
 
    // 회원가입
    public boolean isIdAvailable(String id) {
-	   return usersMapper.findById(id) == null;
+      return usersMapper.findById(id) == null;
    }
    @Transactional
    public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
-	   if(!isIdAvailable(user.getId())) {
-		   throw new RuntimeException("이미 존재하는 아이디입니다.");
-	   }
+      if(!isIdAvailable(user.getId())) {
+         throw new RuntimeException("이미 존재하는 아이디입니다.");
+      }
       user.setRole("reporter");
       usersMapper.userInsert(user);
       reporter.setId(user.getId());
@@ -42,33 +42,33 @@ public class ReporterService {
    }
    
    public ReporterDTO getReporterById(String reporterId) {
-	return reporterMapper.findById(reporterId);
+   return reporterMapper.findById(reporterId);
    }
    
    public UsersDTO getUserById(String id) {
-	   return usersMapper.findById(id);
+      return usersMapper.findById(id);
    }
    
    // 기자 정보 조회/수정 (기자 마이페이지)
    public Map<String, Object> getReporterInfo(String id){
-	   UsersDTO user = usersMapper.findById(id);
-	   ReporterDTO reporter = reporterMapper.findById(id);
-	   Map<String, Object> result = new HashMap<>();
-	   result.put("user", user);
-	   result.put("reporter", reporter);
-	   return result;
+      UsersDTO user = usersMapper.findById(id);
+      ReporterDTO reporter = reporterMapper.findById(id);
+      Map<String, Object> result = new HashMap<>();
+      result.put("user", user);
+      result.put("reporter", reporter);
+      return result;
    }
    
    public void updateReporter(ReporterDTO reporter) {
-	   reporterMapper.update(reporter);
+      reporterMapper.update(reporter);
    }
    
    public void updateUser(UsersDTO user) {
-	   usersMapper.update(user);
+      usersMapper.update(user);
    }
    
    public List<ReportBoardDTO> getAssignedReports(String reporterId){
-	   return reporterMapper.getAssignedReports(reporterId);
+      return reporterMapper.getAssignedReports(reporterId);
    }
    
 

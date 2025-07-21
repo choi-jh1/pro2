@@ -12,7 +12,7 @@
 		from enter_news enter
 		join enter_read_log log on enter.num = log.news_id
 		where to_char(log.read_date, 'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')
-		and enter.status = 1
+		and enter.status = 'approve'
 		group by
 			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 4000, 1), enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
 		order by count(1) desc
@@ -24,15 +24,15 @@
 		select
 			num, title, content, writer_id, null as writerNickname, null as	writerEmail, reg, readcount, category, hot
 		from enter_news
-		where status = 1 order by reg desc
+		where status = 'approve' order by reg desc
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>
 
 	<!-- 연예 기사 생성 -->
 	<insert id="insertNews" parameterType="com.ex.data.EnterNewsDTO">
 
-		INSERT INTO enter_news (num, title, content, writer_id, reg, readcount, category, hot, status, thumbnail, status) 
-		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writerId}, SYSDATE, 0, #{category}, 0, 1, #{thumbnail}, 'wait')
+		INSERT INTO enter_news (num, title, content, writer_id, reg, readcount, category, hot, thumbnail, status) 
+		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id}, SYSDATE, 0, #{category}, 0, #{thumbnail, jdbcType=VARCHAR}, 'wait')
 
 	</insert>
 
@@ -53,7 +53,7 @@
 		from
 			enter_news enter
 		join users on enter.writer_id = users.id
-		where enter.num = #{num} and enter.status = 1
+		where enter.num = #{num} and enter.status = 'approve'
 	</select>
 
 	<insert id="insertReadLog">
@@ -64,7 +64,7 @@
 	<!-- 기사 삭제(softDelete) -->
 	<update id="softDelete" parameterType="int">
 		update enter_news
-		set status = 0
+		set status = 'delete'
 		where num = #{num}
 	</update>
 
@@ -84,14 +84,14 @@
 			null as writerNickname, null as writerEmail,
 			reg, readcount, category, hot, thumbnail
 		from enter_news
-		where status = 1 and category = #{category}
+		where status = 'approve' and category = #{category}
 		order by reg desc
 	</select>
 	
 	<!-- 카테고리별 뉴스. 무한스크롤용 -->
 	<select id="getNewsByCategoryPaged" resultType="com.ex.data.EnterNewsDTO">
 		select * from enter_news
-		where status = 1 and category = #{category}
+		where status = 'approve' and category = #{category}
 		order by reg desc
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>

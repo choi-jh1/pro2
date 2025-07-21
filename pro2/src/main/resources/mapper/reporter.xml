@@ -30,7 +30,7 @@
   	</update>
   	
   	<select id="findById" parameterType="string" resultType="com.ex.data.ReporterDTO">
-  		select id, writer_name, profile_img, category, intro from reporter where id = #{id}
+  		select id, profile_img, category, intro from reporter where id = #{id}
   	</select>
   	
   	<update id="update" parameterType="com.ex.data.ReporterDTO">
