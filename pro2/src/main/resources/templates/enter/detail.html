@@ -84,6 +84,48 @@
 
 		</div>
 
+		<!-- 댓글 영역 시작 -->
+		<div class="comment-section" style="margin-top: 50px;">
+			<h2>댓글</h2>
+
+			<!-- 댓글이 없을 경우 -->
+			<div th:if="${commentList.size() == 0}">
+				<p>아직 댓글이 없습니다.</p>
+			</div>
+
+			<!-- 댓글 리스트 반복 -->
+			<div th:each="comment : ${commentList}" class="comment-box" style="border-top: 1px solid #ccc; padding: 10px 0;">
+				<div>
+					<strong th:text="${comment.writer}">작성자</strong>
+					<span th:text="${#dates.format(comment.reg, 'yyyy-MM-dd HH:mm')}">날짜</span>
+				</div>
+				<p th:text="${comment.content}">내용</p>
+
+				<!-- 삭제 버튼: 작성자 or 관리자 -->
+				<form th:if="${sid == comment.writer or role == 'admin'}"
+				      th:action="@{/comment/delete}" method="post" style="display:inline">
+					<input type="hidden" name="com_num" th:value="${comment.com_num}" />
+					<input type="hidden" name="num" th:value="${dto.num}" />
+					<button type="submit">삭제</button>
+				</form>
+			</div>
+
+			<!-- 댓글 작성 폼 -->
+			<div class="comment-form" style="margin-top: 20px;" th:if="${sid != null}">
+				<form th:action="@{/comment/insert}" method="post">
+					<input type="hidden" name="num" th:value="${dto.num}" />
+					<input type="hidden" name="writer" th:value="${sid}" />
+					<textarea name="content" placeholder="댓글을 입력하세요" rows="3" style="width: 100%;" required></textarea>
+					<button type="submit" style="margin-top: 5px;">댓글 작성</button>
+				</form>
+			</div>
+
+			<div th:if="${sid == null}">
+				<p>댓글을 작성하려면 <a th:href="@{/user/login}">로그인</a>하세요.</p>
+			</div>
+		</div>
+		<!-- 댓글 영역 끝 -->
+		
 	</div>
 </body>
 

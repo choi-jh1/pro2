@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ex.data.CommentDTO;
 import com.ex.data.EnterNewsDTO;
 import com.ex.data.UsersDTO;
+import com.ex.service.CommentService;
 import com.ex.service.EnterNewsService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +30,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/enter/*")
 public class EnterNewsController {
 	private final EnterNewsService enterNewsService;
+	private final CommentService commentService;
+
 	
 	@GetMapping("main")
 	public String enterMain(Model model, HttpSession session) {
@@ -99,22 +103,32 @@ public class EnterNewsController {
 	}
 
 	@GetMapping("detail")
-	public String newsDetail(@RequestParam("num") int num, HttpServletRequest request, Model model) {
-	    // 클라이언트 IP 얻기
-	    String ip = request.getRemoteAddr();
+	public String newsDetail(@RequestParam("num") int num, HttpServletRequest request, HttpSession session, Model model) {
 
 	    // 1. 조회수 증가
 	    enterNewsService.increaseReadCount(num);
 
-	    // 2. 읽기 로그 기록
+	    // 2. 클라이언트 IP 얻기
+	    String ip = request.getRemoteAddr();
+
+	    // 3. 읽기 로그 기록
 	    enterNewsService.insertReadLog(num, ip);
 
-	    // 3. 뉴스 상세 조회
+	    // 4. 뉴스 상세 조회
 	    EnterNewsDTO dto = enterNewsService.readEnterNews(num);
 	    model.addAttribute("dto", dto);
 
+	    // 5. 댓글 목록 조회
+	    List<CommentDTO> commentList = commentService.getComments(num);
+	    model.addAttribute("commentList", commentList);
+
+	    // 6. 세션 정보 모델에 담기
+	    model.addAttribute("sid", session.getAttribute("sid"));
+	    model.addAttribute("role", session.getAttribute("role"));
+
 	    return "enter/detail";
 	}
+
 
 	@PostMapping("/deletePro")
 	public String deletePro(@RequestParam("num") int num, RedirectAttributes ra) {
