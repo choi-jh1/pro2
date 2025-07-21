@@ -45,7 +45,7 @@
 	</select>
 	
 	<select id="selectByNum" parameterType="int" resultType="com.ex.data.NewsDTO">
-		SELECT n.num, n.title, n.content, n.writer, r.writer_name, r.profile_img, n.reg, n.hot, n.thumbUrl 
+		SELECT n.num, n.title, n.content, n.writer, r.writer_name as writerName, r.profile_img as profile_img, n.reg, n.hot, n.thumbUrl 
 	    FROM news n LEFT JOIN reporter r ON n.writer = r.id WHERE n.num = #{num}
 	</select>
 	

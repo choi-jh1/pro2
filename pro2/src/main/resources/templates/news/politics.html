@@ -52,15 +52,16 @@
     </div>
   </div>
 <body>
-
-<h1>정치 뉴스 목록</h1>
-
-<div th:each="news : ${newsList}">
-  <a th:href="@{/news/content/{num}(num=${news.num})}">
-    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br/>
-    <span th:text="${news.title}">뉴스 제목</span>
-  </a><br/>
+<div class="container">
+<h2>뉴스 -> 정치</h2>
+<div class="news-list">
+  <div class="news-item" th:each="news : ${newsList}">
+    <a th:href="@{/news/content/{num}(num=${news.num})}">
+      <img th:src="${news.thumbUrl}" alt="썸네일" class="thumb" />
+      <div class="title" th:text="${news.title}">뉴스 제목</div>
+    </a>
+  </div>
 </div>
-
+</div>
 </body>
 </html>

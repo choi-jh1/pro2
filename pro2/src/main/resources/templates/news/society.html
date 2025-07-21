@@ -6,8 +6,7 @@
   <link rel="stylesheet" th:href="@{/css/main.css}">
   <link rel="stylesheet" th:href="@{/css/newsList.css}">
 </head>
-<body>
-	<!-- 헤더 -->
+<!-- 헤더 -->
 	  <div class="site-header">
 	    <div class="container">
 	      <div class="logo">로고</div>
@@ -52,14 +51,17 @@
 	      </nav>
 	    </div>
 	  </div>
-<h1>사회 뉴스 목록</h1>
-
-<div th:each="news : ${newsList}">
-  <a th:href="@{/news/content/{num}(num=${news.num})}">
-    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br/>
-    <span th:text="${news.title}">뉴스 제목</span>
-  </a><br/>
-</div>
-
+<body>
+	<div class="container">
+	<h2>뉴스 -> 사회</h2>
+	<div class="news-list">
+	  <div class="news-item" th:each="news : ${newsList}">
+	    <a th:href="@{/news/content/{num}(num=${news.num})}">
+	      <img th:src="${news.thumbUrl}" alt="썸네일" class="thumb" />
+	      <div class="title" th:text="${news.title}">뉴스 제목</div>
+	    </a>
+	  </div>
+	</div>
+	</div>
 </body>
 </html>
