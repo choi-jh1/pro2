@@ -10,7 +10,7 @@
   <tbody>
     <tr th:each="dto : ${entList}">
       <td><a th:href="@{'/enter/boardContent/' + ${dto.num}}" th:text="${dto.title}">제목</a></td>
-      <td th:text="${dto.writer}"></td>
+      <td th:text="${dto.writer_id}"></td>
       <td th:text="${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></td>
       <td>
         <form th:action="@{/admin/approveNews}" method="post">
@@ -21,7 +21,7 @@
 		  	<option value="wait" th:selected="${dto.status == 'wait'}">미승인</option>
 		  </select>
 		  
-          <button type="submit">승인</button>
+
         </form>
       </td>
     </tr>

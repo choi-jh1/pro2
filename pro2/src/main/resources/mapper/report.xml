@@ -26,12 +26,11 @@
 		select * from report_board where report_id=#{report_id}
 	</select> 
 
-	
 	<!-- 제보글 담당기자 배정 -->
 	<update id="assignReporter">
 		update report_board set assigned = #{assigned}, status='배정완료' where report_id = #{report_id}
 	</update>
-	
+
 	<!--제보글 익명일 떄 비밀번호 확인-->
 	<select id="checkPw" resultType="com.ex.data.ReportBoardDTO">
 		select * from report_board where report_id=#{report_id} and writer_pw=#{password}
@@ -46,5 +45,4 @@
 	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
 		select * from report_board where assigned = #{reporterId} order by report_id desc
 	</select>
-		
 </mapper>
