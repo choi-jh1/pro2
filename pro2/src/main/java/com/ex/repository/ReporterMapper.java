@@ -17,11 +17,9 @@ public interface ReporterMapper {
 	// 기자리스트(제보)
 	public List<ReporterDTO> getReporterListWithStatus();
 	
-	public void updateReporter(ReporterDTO dto);
-
+	// 기자 정보 업데이트
 	ReporterDTO findById(String id);
-
-	void update(ReporterDTO reporter);
+	public void update(ReporterDTO reporter);
 	
 	public List<UsersDTO> reporterList();
 }
