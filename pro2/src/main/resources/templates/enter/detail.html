@@ -112,7 +112,7 @@
 
 			<!-- 댓글 작성 폼 -->
 			<div class="comment-form" style="margin-top: 20px;" th:if="${sid != null}">
-				<form th:action="@{/comment/insert}" method="post">
+				<form th:action="@{/comment/add}" method="post">
 					<input type="hidden" name="num" th:value="${dto.num}" />
 					<input type="hidden" name="writer" th:value="${sid}" />
 					<textarea name="content" placeholder="댓글을 입력하세요" rows="3" style="width: 100%;" required></textarea>
