@@ -30,8 +30,8 @@
 
 	<!-- 연예 기사 생성 -->
 	<insert id="insertNews" parameterType="com.ex.data.EnterNewsDTO">
-		INSERT INTO enter_news (num, title, content, writer_id, reg, readcount, category, hot, status, thumbnail, status) 
-		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writerId}, SYSDATE, 0, #{category}, 0, 1, #{thumbnail}, 'wait')
+		INSERT INTO enter_news (num, title, content, writer_id, reg, readcount, category, hot, thumbnail, status) 
+		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id}, SYSDATE, 0, #{category}, 0, #{thumbnail}, 'wait')
 	</insert>
 
 	<!-- 조회수 증가 -->
