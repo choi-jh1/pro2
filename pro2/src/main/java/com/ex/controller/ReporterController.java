@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import com.ex.data.NewsDTO;
+import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
 import com.ex.data.UsersDTO;
 import com.ex.service.NewsService;
@@ -120,4 +121,17 @@ public class ReporterController {
 		
 		return "reporter/myArticles";
 	}
+	
+	// 내 제보 관리 페이지 요청
+	@GetMapping("myReports")
+	public String myReports(HttpSession session, Model model) {
+		String reporterId = (String) session.getAttribute("sid");
+		if(reporterId == null) {
+			return "redirect:/user/login";
+		}
+		List<ReportBoardDTO> assignedReports = reporterService.getAssignedReports(reporterId);
+		model.addAttribute("assignedReports", assignedReports);
+		return "reporter/myReports";
+	}
+	
 }
