@@ -35,4 +35,7 @@
   	<update id="update" parameterType="com.ex.data.ReporterDTO">
   		update reporter set writer_name = #{writer_name, jdbcType=VARCHAR}, profile_img = #{profile_img, jdbcType=VARCHAR}, category = #{category, jdbcType=VARCHAR}, intro = #{intro, jdbcType=VARCHAR} where id = #{id, jdbcType=VARCHAR}
   	</update>
+
   </mapper>
+
+

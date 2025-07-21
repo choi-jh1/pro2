@@ -15,6 +15,8 @@ public interface UsersMapper {
 	public void userInsert(UsersDTO dto);
 	// 로그인
 	public UsersDTO loginCheck(UsersDTO dto);
+	// 회원탈퇴
+	public int userDelete(@Param("id") String id, @Param("pw") String pw);
 	// 유저목록
 	public List<UsersDTO> userList();
 	// 유저상태변경

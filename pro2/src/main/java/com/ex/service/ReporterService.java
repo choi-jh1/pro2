@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
-
    private final ReporterMapper reporterMapper;
    private final UsersMapper usersMapper;
 
@@ -68,15 +66,5 @@ public class ReporterService {
    }
 
 
-
-	// 기자 목록 조회
-	public List<UsersDTO> reporterList() {
-		return reporterMapper.reporterList();
-	}
-	
-	// 기자 정보 조회
-	public ReporterDTO reporterInfo(String id) {
-		return reporterMapper.reporterInfo(id);
-	}
 
 }

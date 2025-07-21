@@ -24,7 +24,7 @@
   
   <div class="form-group" th:if="${session.role}==null">
     <label for="writerPw">비밀번호 *</label>
-    <input type="password" id="writerPw" name="writerPw" placeholder="비밀번호를 입력해주세요" required />
+    <input type="password" id="writerPw" name="writer_Pw" placeholder="비밀번호를 입력해주세요" required />
   </div>
   
   <div class="form-group">
@@ -35,7 +35,8 @@
   
 
   <div class="form-buttons">
-    <button type="reset">취소</button>
+	<button th:onclick="|window.location='@{/report/list}'|">제보 목록</button>
+    <button th:onclick="|window.location='@{/user/main}'|">취소</button>
     <button type="submit">제보하기</button>
   </div>
 </form>
