@@ -47,7 +47,7 @@
   <!-- 5. 기사 INSERT -->
 <insert id="insertNews" parameterType="com.ex.data.NewsDTO">
   INSERT INTO news
-    (num, title, writer, reg, readCount, hot, category, thumbUrl, is_breaking, content)
+    (num, title, writer, reg, readCount, hot, category, thumbUrl, is_breaking, content, status)
   VALUES
     (news_seq.NEXTVAL,
      #{title},
@@ -58,7 +58,8 @@
      #{category},
      #{thumbUrl},
      0,
-     #{content,jdbcType=CLOB})
+     #{content,jdbcType=CLOB}),
+     'wait'
 </insert>
 	
 	<!-- 카테고리 별 기사 최신 순 -->

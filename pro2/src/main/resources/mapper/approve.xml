@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ex.repository.ApproveMapper">
+	<!-- 각 테이블의 미승인 기사 목록 조회하기-->
+	<select id="getWaitNews" resultType="com.ex.data.NewsDTO">
+		select * from news where status = 'wait' 
+	</select>
+	<select id="getWaitEnterNews" resultType="com.ex.data.EnterNewsDTO">
+		select * from enter_news where status = 'wait'
+	</select>
+	<select id="getSportsNews" resultType="com.ex.data.SportsDTO">
+		select * from sports where status = 'wait'
+	</select>
+	
+	<!-- 승인 처리하기 -->
+	<update id="approveNews">
+		update news set status ='approve' where num = #{num}
+	</update>
+	<update id="approveEnterNews">
+		update enter_news status = 'approve' where num = #{num}
+	</update>
+	<update id="approveSportsNews">
+		update sports status = 'approve' where num = #{num}
+	</update>
+	
+	
+</mapper>

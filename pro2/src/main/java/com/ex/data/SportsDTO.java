@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Data;
 @Data
 public class SportsDTO {
-	private int boardNum;
+	private int num;
 	private String title;
 	private String content;
 	private String writer;

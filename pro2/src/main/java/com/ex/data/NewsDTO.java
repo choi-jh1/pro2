@@ -16,7 +16,7 @@ public class NewsDTO {
 	private String category;	// 카테고리 (politics / economy / society)
 	private String thumbUrl;	// 썸네일 이미지 URL
 	private int is_breaking;	// 속보
-	
+	private String status;
 	
 	
 	private String writerName;
