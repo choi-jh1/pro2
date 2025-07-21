@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>기자 정보 수정</title>
+	<link rel="stylesheet" th:href="@{/css/reporter.css}" />
 </head>
 <body>
     <h2>기자 정보 수정</h2>
@@ -32,13 +33,18 @@
             <input type="hidden" th:value="${reporter.id}" name="reporter.id" />
 
 
-            <label>카테고리 : </label>
-			<select name="category" required>
+            <label>상위 카테고리 : </label>
+			<select name="mainCategory" required>
 				  <option value="">선택</option>
-				  <option value="politics">정치</option>
-				  <option value="economy">경제</option>
-				  <option value="society">사회</option>
-				</select><br>
+				  <option value="news">뉴스</option>
+				  <option value="sports">스포츠</option>
+				  <option value="enter">엔터</option>
+			</select><br>
+			
+			<label>하위 카테고리 : </label>
+			<select name="subCategory" id="subCategory" required>
+				<option value="">선택</option>
+			</select> <br>
             <label>소개 : </label>
             <textarea name="intro" rows="4" cols="30" th:text="${reporter.intro}"></textarea><br>
         </div>
@@ -67,6 +73,34 @@
 	            });
 	        });
 	    </script>
+		<script>
+		    document.addEventListener('DOMContentLoaded', function () {
+		        const mainCategory = document.getElementById('mainCategory');
+		        const subCategory = document.getElementById('subCategory');
+
+		        const categoryMap = {
+		            news: ['정치', '경제', '사회'],
+		            sports: ['야구', '축구', '배구', '농구'],
+		            entertainment: ['드라마', '영화', '뮤직']
+		        };
+
+		        mainCategory.addEventListener('change', function () {
+		            const selected = this.value;
+		            const options = categoryMap[selected] || [];
+
+		            // 기존 옵션 초기화
+		            subCategory.innerHTML = '<option value="">선택</option>';
+
+		            // 새로운 옵션 추가
+		            options.forEach(function (opt) {
+		                const optionElem = document.createElement('option');
+		                optionElem.value = opt;
+		                optionElem.textContent = opt;
+		                subCategory.appendChild(optionElem);
+		            });
+		        });
+		    });
+		</script>		
 	</body>
 	</html>
 
