@@ -2,105 +2,84 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>기자 정보 수정</title>
-	<link rel="stylesheet" th:href="@{/css/reporter.css}" />
+    <title>기자 등록/수정</title>
+    <link rel="stylesheet" th:href="@{/css/reporter.css}" />
 </head>
 <body>
-    <h2>기자 정보 수정</h2>
+    <h1>기자 정보 입력</h1>
 
-    <form th:action="@{/reporter/update}" method="post">
-        <!-- 사용자 정보 -->
-        <label>아이디 : </label>
-        <input type="text" th:value="${user.id}" name="id" readonly><br>
+    <form action="/reporter/update" method="post" enctype="multipart/form-data">
+        <!-- 아이디 -->
+        <label for="id">아이디:</label>
+        <input type="text" id="id" name="id" th:value="${reporter.id}" readonly /><br><br>
 
-        <label>이름 : </label>
-        <input type="text" th:value="${user.name}" name="name"><br>
+        <!-- 기자 이름 -->
+        <label for="writer_name">기자 이름:</label>
+        <input type="text" id="writer_name" name="writer_name" th:value="${reporter.writer_name}" required /><br><br>
 
-        <label>닉네임 : </label>
-        <input type="text" th:value="${user.nick}" name="nick"><br>
+        <!-- 프로필 이미지 -->
+        <label for="profile_img">프로필 이미지:</label>
+        <input type="file" id="profile_img" name="profile_img" /><br><br>
 
-        <label>전화번호 : </label>
-        <input type="text" th:value="${user.phone}" name="phone"><br>
+        <!-- 자기소개 -->
+        <label for="intro">자기소개:</label>
+        <textarea id="intro" name="intro" required th:text="${reporter.intro}"></textarea><br><br>
 
-        <label>이메일 : </label>
-        <input type="text" th:value="${user.email}" name="email"><br>
+        <!-- 카테고리 선택 (상위 + 하위 연동) -->
+		<label for="mainCategory">카테고리:</label>
+		        <select id="mainCategory" name="mainCategory" required>
+		            <option value="">선택</option>
+		            <option value="news" th:selected="${mainCategory == 'news'}">뉴스</option>
+		            <option value="sports" th:selected="${mainCategory == 'sports'}">스포츠</option>
+		            <option value="enter" th:selected="${mainCategory == 'enter'}">연예</option>
+		        </select>
 
-        <!-- 기자 정보 -->
-        <div th:if="${reporter != null}">
-            <h3>기자 상세 정보</h3>
+		        <label for="subCategory">세부 카테고리:</label>
+		        <select id="subCategory" name="category" required data-current="${reporter.category}">
+		            <option value="">선택</option>
+		        </select>
 
-            <!-- ID는 UsersDTO와 ReporterDTO 양쪽에 존재 -->
-            <input type="hidden" th:value="${reporter.id}" name="reporter.id" />
-
-
-            <label>상위 카테고리 : </label>
-			<select name="mainCategory" required>
-				  <option value="">선택</option>
-				  <option value="news">뉴스</option>
-				  <option value="sports">스포츠</option>
-				  <option value="enter">엔터</option>
-			</select><br>
-			
-			<label>하위 카테고리 : </label>
-			<select name="subCategory" id="subCategory" required>
-				<option value="">선택</option>
-			</select> <br>
-            <label>소개 : </label>
-            <textarea name="intro" rows="4" cols="30" th:text="${reporter.intro}"></textarea><br>
-        </div>
-
-        <button type="submit">수정하기</button>
+        <br><br>
+        <input type="submit" value="저장" />
     </form>
 
-	<div id="result-message"></div>
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	    const mainCategory = document.getElementById('mainCategory');
+	    const subCategory = document.getElementById('subCategory');
 
-	    <script>
-	        $(document).ready(function () {
-	            $('#updateForm').on('submit', function (e) {
-	                e.preventDefault(); // 폼 기본 제출 방지
+	    const categoryMap = {
+	        news: ['정치', '경제', '사회'],
+	        sports: ['야구', '축구', '배구', '농구'],
+	        enter: ['드라마', '영화', '뮤직']
+	    };
 
-	                $.ajax({
-	                    url: '/reporter/update',
-	                    type: 'POST',
-	                    data: $(this).serialize(),
-	                    success: function (response) {
-	                        $('#content-area').html(response); // 수정된 정보 보여주기
-	                    },
-	                    error: function () {
-	                        $('#result-message').html('<p style="color:red;">수정 실패</p>');
-	                    }
-	                });
-	            });
+	    function updateSubCategory(main, selected) {
+	        subCategory.innerHTML = '<option value="">선택</option>';
+	        if (!main || !categoryMap[main]) return;
+
+	        categoryMap[main].forEach(opt => {
+	            const optionElem = document.createElement('option');
+	            optionElem.value = opt;
+	            optionElem.textContent = opt;
+	            if (opt === selected) {
+	                optionElem.selected = true;
+	            }
+	            subCategory.appendChild(optionElem);
 	        });
-	    </script>
-		<script>
-		    document.addEventListener('DOMContentLoaded', function () {
-		        const mainCategory = document.getElementById('mainCategory');
-		        const subCategory = document.getElementById('subCategory');
+	    }
 
-		        const categoryMap = {
-		            news: ['정치', '경제', '사회'],
-		            sports: ['야구', '축구', '배구', '농구'],
-		            entertainment: ['드라마', '영화', '뮤직']
-		        };
+	    // 초기값 세팅
+	    const currentMain = mainCategory.value;  // <--- 여기 수정
+	    const currentSub = subCategory.getAttribute('data-current');
 
-		        mainCategory.addEventListener('change', function () {
-		            const selected = this.value;
-		            const options = categoryMap[selected] || [];
+	    updateSubCategory(currentMain, currentSub);
 
-		            // 기존 옵션 초기화
-		            subCategory.innerHTML = '<option value="">선택</option>';
-
-		            // 새로운 옵션 추가
-		            options.forEach(function (opt) {
-		                const optionElem = document.createElement('option');
-		                optionElem.value = opt;
-		                optionElem.textContent = opt;
-		                subCategory.appendChild(optionElem);
-		            });
-		        });
-		    });
-		</script>		
-	</body>
-	</html>
-
+	    // 메인 카테고리 변경시 하위 카테고리 변경
+	    mainCategory.addEventListener('change', function () {
+	        updateSubCategory(this.value, null);
+	    });
+	});
+	</script>
+</body>
+</html>

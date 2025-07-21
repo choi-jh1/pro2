@@ -22,10 +22,11 @@ public class ReporterService {
    private final ReporterMapper reporterMapper;
    private final UsersMapper usersMapper;
 
-   // 회원가입
+   // 아이디 사용 가능 여부 확인
    public boolean isIdAvailable(String id) {
 	   return usersMapper.findById(id) == null;
    }
+   // 회원가입 (Users + Reporter 동시 처리)
    @Transactional
    public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
 	   if(!isIdAvailable(user.getId())) {
@@ -36,15 +37,16 @@ public class ReporterService {
       reporter.setId(user.getId());
       reporterMapper.reporterInsert(reporter);
    }
+   
    // 기자리스트(제보)
    public List<ReporterDTO> getReporterListWithStatus(){
       return reporterMapper.getReporterListWithStatus();
    }
-   
+   // 단일 기자 조회
    public ReporterDTO getReporterById(String reporterId) {
 	return reporterMapper.findById(reporterId);
    }
-   
+   // 단일 유저 조회
    public UsersDTO getUserById(String id) {
 	   return usersMapper.findById(id);
    }
@@ -59,20 +61,21 @@ public class ReporterService {
 	   return result;
    }
    
+   // 기자 정보 업데이트
    public void updateReporter(ReporterDTO reporter) {
 	   reporterMapper.update(reporter);
    }
-   
+   // 유저 정보 업데이트
    public void updateUser(UsersDTO user) {
 	   usersMapper.update(user);
    }
    
+   // 기자가 담당한 제보 목록 조회
    public List<ReportBoardDTO> getAssignedReports(String reporterId){
 	   return reporterMapper.getAssignedReports(reporterId);
    }
    
-
-
+   // 스포츠에서 쓰는거임 (지우지 말 것)
    public ReporterDTO reporterInfo(String id) {
 	   return reporterMapper.reporterInfo(id);
    }

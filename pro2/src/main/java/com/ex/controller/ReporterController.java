@@ -81,10 +81,23 @@ public class ReporterController {
 		if(info.get("reporter") == null) {
 		    throw new RuntimeException("해당 기자 정보가 존재하지 않습니다: " + id);
 		}
+		ReporterDTO reporter = (ReporterDTO) info.get("reporter");
 
+		String mainCategory = "";
+		if(reporter != null && reporter.getCategory() != null) {
+			String cat = reporter.getCategory();
+			if(cat.startsWith("정치") || cat.startsWith("경제") || cat.startsWith("사회")) {
+				mainCategory = "news";
+			}else if(cat.startsWith("야구") || cat.startsWith("축구") || cat.startsWith("배구") || cat.startsWith("농구")) {
+				mainCategory = "sports";
+			}else if(cat.startsWith("드라마") || cat.startsWith("영화") || cat.startsWith("뮤직")) {
+				mainCategory = "enter";
+			}
+		}
 		
 		model.addAttribute("user", info.get("user"));
-		model.addAttribute("reporter", info.get("reporter"));
+		model.addAttribute("reporter", reporter);
+		model.addAttribute("mainCategory", mainCategory);
 		
 		return "reporter/update";
 	}
