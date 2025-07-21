@@ -17,4 +17,5 @@ public class UsersDTO {
 	private String role;
 	private LocalDateTime reg;
 	private String category;
+	private String assignedEmail;
 }

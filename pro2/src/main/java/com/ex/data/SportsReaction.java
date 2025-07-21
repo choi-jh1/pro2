@@ -11,4 +11,3 @@ public class SportsReaction {
 	private String emotion_type;
 	private LocalDateTime reg;
 	private int count;
-}
