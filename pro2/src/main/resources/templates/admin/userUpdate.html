@@ -4,7 +4,6 @@
   <table class="member-table">
 	<thead>
 		<tr>
-		   <th>회원 목록</th>
 		   <th>회원 ID</th>
 		   <th>이름</th>
 		   <th>가입일</th>
@@ -14,7 +13,6 @@
 	</thead>
 	<tbody>
 		<tr th:each="user : ${list}"> 
-			<td><input input type="checkbox" class="row-check" value="${user.id}"></td>
 			<td th:text="${user.id}"></td>
 			<td th:text="${user.name}"></td>
 			<td th:text="${#temporals.format(user.reg, 'yy-MM-dd HH:mm')}"></td>

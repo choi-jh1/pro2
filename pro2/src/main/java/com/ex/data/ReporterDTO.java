@@ -10,4 +10,5 @@ public class ReporterDTO {
 	private String intro;
 	private String name;
 	private String email;
+	private String assigned;
 }

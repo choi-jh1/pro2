@@ -26,4 +26,11 @@ public interface ReportMapper {
     
     // 익명일때 비번받고 제보내용
     public ReportBoardDTO checkPw(@Param("report_id") String reportId, @Param("password") String password);
+
+    // 메일 전송용(익명 and 회원)
+    ReportBoardDTO getReporterInfo(@Param("report_id") int report_Id);
+
+
+
+
 }
