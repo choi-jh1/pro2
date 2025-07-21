@@ -37,10 +37,10 @@
     <header class="site-header">
 		<div class="container">
 			    <div class="logo">
-					<a th:href="@{/user/main}">로고</a>
+		<div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
 				</div>
 			    <div class="top-bar">
-			      <div class="date">2025.07.03</div>
+			      <div class="date" th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')}"></div>
 			      <div class="user-menu">
 			        <span th:if="${session.sid == null}">
 			          <a th:href="@{/user/login}">로그인</a>

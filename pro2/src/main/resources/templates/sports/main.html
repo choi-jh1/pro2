@@ -1,85 +1,104 @@
 <style>
-.main-news-wrap {
-  display: flex;
-  gap: 20px;
-  max-width: 1000px;   /* 최대 너비 설정 */
-  margin: 0 auto;      /* 좌우 자동 여백 → 수평 중앙 정렬 */
-  padding: 20px 0;
-  font-family: 'Noto Sans KR', sans-serif;
-  
-}
+	.main-news-wrap {
+	  display: flex;
+	  gap: 20px;
+	  max-width: 1000px;
+	  margin: 0 auto;
+	  padding: 20px 0;
+	  font-family: 'Noto Sans KR', sans-serif;
+	}
 
-/* 왼쪽 대표 기사 */
-.main-feature {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-}
+	/* 왼쪽 대표 기사 */
+	.main-feature {
+	  flex: 2;
+	  display: flex;
+	  flex-direction: column;
+	}
 
-.main-feature img {
-  width: 100%;
-  max-width: 600px;
-  height: 400px;
-  border-radius: 10px;
-}
+	.main-feature img {
+	  width: 100%;
+	  max-width: 600px;
+	  height: 400px;
+	  border-radius: 10px;
+	}
 
-.main-feature .title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 10px 0 5px;
-}
+	.main-feature .title {
+	  font-size: 1.2rem;
+	  font-weight: bold;
+	  margin: 10px 0 5px;
+	  line-height: 1.4;
+	}
 
-.main-feature .writer {
-  color: #888;
-  font-size: 0.9rem;
-}
+	.main-feature .writer {
+	  color: #888;
+	  font-size: 0.9rem;
+	}
 
-/* 오른쪽 리스트 */
-.news-list {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top:50px;
-}
+	/* 오른쪽 리스트 */
+	.news-list {
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  gap: 15px;
+	  margin-top: 50px;
+	}
 
-.news-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+	.news-item {
+	  display: flex;
+	  align-items: flex-start;
+	  gap: 10px;
+	}
 
-.news-item img {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 5px;
-}
+	.news-item img {
+	  width: 70px;
+	  height: 70px;
+	  object-fit: cover;
+	  border-radius: 5px;
+	  flex-shrink: 0;
+	}
 
-.news-item .news-title {
-  font-size: 0.95rem;
-  font-weight: 500;
-  line-height: 1.3;
-}
+	.text-wrap {
+	  flex: 1 1 auto;
+	  display: -webkit-box;
+	  -webkit-line-clamp: 2;
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	}
 
-.news-item .writer {
-  font-size: 0.75rem;
-  color: #999;
-}
-.section-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+	.news-title {
+	  font-size: 0.95rem;
+	  font-weight: 500;
+	  line-height: 1.3;
+	  margin-bottom: 4px;
+	  display: -webkit-box;
+	  -webkit-line-clamp: 2; /* 최대 2줄 */
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  max-height: calc(1.3em * 2); /* 두 줄로 제한 */
+	}
 
-.section-title .now {
-  color: #1e90ff;  /* 파란색 강조 */
-  font-weight: 700;
-}
-a {
-  text-decoration: none;
-  color: inherit; /* 기본 글자색도 상속받게 */
-}
+	.writer {
+	  font-size: 0.75rem;
+	  color: #999;
+	  line-height: 1;
+	}
+
+	.section-title {
+	  font-size: 1.3rem;
+	  font-weight: bold;
+	  margin-bottom: 10px;
+	}
+
+	.section-title .now {
+	  color: #1e90ff;
+	  font-weight: 700;
+	}
+
+	a {
+	  text-decoration: none;
+	  color: inherit;
+	}
 </style>
 
 <link rel="stylesheet" th:href="@{/css/main.css}">
@@ -87,10 +106,10 @@ a {
 
 <div class="site-header">
 	<div class="container">
-  <div class="logo">로고</div>
+		<div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
 
   <div class="top-bar">
-    <div class="date">2025.07.03</div>
+    <div class="date" th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')}"></div>
     <div class="user-menu">
 		<a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
 		<span th:if="${session.sid == null}">
@@ -141,24 +160,24 @@ a {
 <div class="main-news-wrap">
   <!-- 왼쪽: 대표기사 -->
   <div class="main-feature">
-	<h2 class="section-title">종합 <span class="now">NOW</span></h2>
-    <img src="/upload/대표기사.jpg" alt="대표 이미지">
-    <p class="title">'GOOD BYE' 양만혁 정말 고마웠어! ...</p>
-    <p class="writer">강우진 기자</p>
+	<h2 class="section-title">반응 <span class="now">HOT</span></h2>
+    <div  th:if="${list.size() > 0}">
+		<img th:src="${list[0].thumbnail}" alt="대표 이미지">
+	    <p class="title" th:text="${list[0].title}"></p>
+	    <p class="writer" th:text="${list[0].name}+' 기자'"></p>
+	</div>
   </div>
 
   <!-- 오른쪽: 기사 리스트 -->
   <div class="news-list">
-    <div class="news-item">
-      <img src="/upload/썸네일1.jpg" alt="썸네일">
-      <p class="news-title">Here we go!…353경기 201골...</p>
-      <p class="writer">이종찬 기자</p>
+    <div class="news-item"  th:each="list,i:${list}" th:if="${i.index >= 1 and i.index<=5}">
+      <img th:src="${list.thumbnail}" alt="썸네일">
+	  <div class="text-wrap">
+	    <p class="news-title" th:text="${list.title}"></p>
+	    <p class="writer" th:text="${list.name}+' 기자'"></p>
+	  </div>
     </div>
-    <div class="news-item">
-      <img src="/upload/썸네일2.jpg" alt="썸네일">
-      <p class="news-title">美 중계진, 이정후 극찬...</p>
-      <p class="writer">윤준석 기자</p>
-    </div>
+
     <!-- 추가 기사들 -->
   </div>
 </div>

@@ -70,7 +70,7 @@ public class SportsController {
 	// 스포츠 메인
 	@GetMapping("main")
 	public String main(Model model) {
-		model.addAttribute("list",sportsService.sportsList());
+		model.addAttribute("list",sportsService.sportsReaction());
 		return "sports/main";
 	}
 	

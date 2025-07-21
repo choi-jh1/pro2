@@ -69,4 +69,11 @@
 			select * from (select * from sports order by readCount desc) where rownum <= 10
 		]]>
 	</select>
+	<!--리액션 많은순-->
+	<select id="sportsReaction" resultType="com.ex.data.SportsDTO">
+		SELECT s.num,s.title,s.thumbnail,u.name AS name,COUNT(r.reaction_id) AS count FROM sports s 
+		LEFT JOIN users u ON s.writer = u.id LEFT JOIN sportsReaction r ON s.num = r.sports_id
+			GROUP BY s.num, s.title, s.thumbnail, u.name
+				ORDER BY count DESC
+	</select>
 </mapper>
