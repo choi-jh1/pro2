@@ -76,9 +76,15 @@ public class NewsService {
 	}
 	
 	
+	// 조회수 +1
+	public void newsReadCountUp(int num) {
+		mapper.newsReadCountUp(num);
+	}
 	
-	
-	
+	// 조회순
+	public List<NewsDTO> newsReadCount(){
+		return mapper.newsReadCount();
+	}
 	
 	
 	

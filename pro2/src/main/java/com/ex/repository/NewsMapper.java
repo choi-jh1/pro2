@@ -29,8 +29,10 @@ public interface NewsMapper {
     // 기자 마이페이지 <내가 쓴 기사 조회>
     List<NewsDTO> selectByWriter(String writer);
     
-    
-    
+    // 조회수 +1
+    public void newsReadCountUp(int num);
+    // 조회순
+    public List<NewsDTO> newsReadCount();
     
     
     

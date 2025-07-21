@@ -127,6 +127,7 @@ public class NewsController {
     // 뉴스 상세 페이지 -> 뉴스 페이지에서 기사 제목 클릭 시 기사 내용 페이지
     @GetMapping("content/{num}")
     public String content(@PathVariable("num") int num, Model model) {
+    	newsService.newsReadCountUp(num);
         NewsDTO news = newsService.getNewsByNum(num);
         List<CommentDTO> commentList = commentService.getComments(num);
         model.addAttribute("news", news);

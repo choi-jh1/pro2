@@ -1,6 +1,78 @@
 
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<style>
+	.news-container {
+	  display: flex;
+	  justify-content: space-between;
+	  gap: 20px;
+	  max-width: 1200px;
+	  margin: 0 auto;
+	  padding: 30px 0;
+	}
 
+	.news-column {
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  gap: 20px;
+	  border-left: 1px solid #ccc;
+	  padding: 0 15px;
+	}
+
+	.news-column:first-child {
+	  border-left: none;
+	}
+
+	.main-article {
+	  text-align: center;
+	}
+
+	.main-article img {
+	  width: 100%;
+	  height: 200px;
+	  object-fit: cover;
+	}
+
+	.sub-article {
+	  display: flex;
+	  align-items: center;
+	  gap: 10px;
+	}
+
+	.sub-article img {
+	  width: 100px;
+	  height: 60px;
+	  object-fit: cover;
+	  display: block;      /* ✅ inline 특성 제거 */
+	  flex-shrink: 0;      /* ✅ 이미지가 줄어들지 않게 방지 */
+	}
+
+	.title {
+	  font-weight: bold;
+	  font-size: 16px;
+	  margin: 0;
+	  display: -webkit-box;
+	  -webkit-line-clamp: 2;   /* ✅ 최대 2줄 */
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  line-height: 1.4;         /* 줄 높이 (원하는 스타일로 조절) */
+	  max-height: calc(1.4em * 2); /* 2줄 높이 제한 */
+	}
+	.sub-article .title,
+	.title-only .title {
+	  font-weight: normal;
+	  font-size: 15px;
+	  color: #666; /* 회색, 연한 느낌 */
+	  line-height: 1.4;
+	  display: -webkit-box;
+	  -webkit-line-clamp: 2;
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+
+</style>
 
 <header class="site-header">
 	<div class="container">
@@ -42,15 +114,58 @@
     </div>
   </nav>
 
-  <nav class="sub-nav">
-    <ul>
-
-      <li><a href="#">종합1</a></li>
-      <li><a href="#">야구2</a></li>
-      <li><a href="#">축구3</a></li>
-      <li><a href="#">배구4</a></li>
-      <li><a href="#">농구</a></li>
-    </ul>
-  </nav>
 </div>
 </header>
+
+<div class="news-column">
+  <div class="main-article" th:if="${newsList.size() > 0}">
+    <img th:src="${newsList[0].thumbnail}" alt="썸네일" />
+    <p class="title" th:text="${newsList[0].title}"></p>
+  </div>
+  <div class="sub-article" th:if="${newsList.size() > 1}">
+	<img th:src="${newsList[1].thumbnail}" alt="썸네일" />
+	<p class="title" th:text="${newsList[1].title}"></p>
+  </div>
+  <div class="sub-article" th:if="${newsList.size() > 2}">
+	<img th:src="${newsList[2].thumbnail}" alt="썸네일" />
+	<p class="title" th:text="${newsList[2].title}"></p>
+  </div>
+<div th:each="nl, i : ${newsList}" th:if="${i.index >= 3}" class="title-only">
+  <p class="title" th:text="${nl.title}"></p>
+</div>
+</div>
+
+  <div class="news-column">
+    <div class="main-article" th:if="${sportsList.size() > 0}">
+      <img th:src="${sportsList[0].thumbnail}" alt="썸네일" />
+      <p class="title" th:text="${sportsList[0].title}"></p>
+    </div>
+    <div class="sub-article" th:if="${sportsList.size() > 1}">
+		<img th:src="${sportsList[1].thumbnail}" alt="썸네일" />
+		<p class="title" th:text="${sportsList[1].title}"></p>
+    </div>
+    <div class="sub-article" th:if="${sportsList.size() > 2}">
+		<img th:src="${sportsList[2].thumbnail}" alt="썸네일" />
+		<p class="title" th:text="${sportsList[2].title}"></p>
+    </div>
+	<div th:each="sl, i : ${sportsList}" th:if="${i.index >= 3}" class="title-only">
+	  <p class="title" th:text="${sl.title}"></p>
+	</div>
+  </div>
+
+  <div class="news-column">
+    <div class="main-article">
+      <img src="/images/thumb.jpg" alt="썸네일" />
+      <p class="title">제목제목제목</p>
+    </div>
+    <div class="sub-article">
+      <img src="/images/thumb.jpg" alt="썸네일" />
+      <p class="title">제목제목제목</p>
+    </div>
+    <div class="sub-article">
+      <img src="/images/thumb.jpg" alt="썸네일" />
+      <p class="title">제목제목제목</p>
+    </div>
+  </div>
+</div>
+
