@@ -126,6 +126,7 @@
 </header>
 <div class="news-container">
 <div class="news-column">
+	<h3><center>일반 뉴스</center></h3>
   <div class="main-article" th:if="${newsList.size() > 0}">
     <img th:src="${newsList[0].thumbUrl}" alt="썸네일" />
     <p class="title" th:text="${newsList[0].title}"></p>
@@ -144,6 +145,7 @@
 </div>
 
   <div class="news-column">
+	<h3><center>스포츠</center></h3>
     <div class="main-article" th:if="${sportsList.size() > 0}">
       <img th:src="${sportsList[0].thumbnail}" alt="썸네일" />
       <p class="title" th:text="${sportsList[0].title}"></p>
@@ -162,6 +164,7 @@
   </div>
 
   <div class="news-column">
+	<h3><center>엔터</center></h3>
     <div class="main-article">
       <img src="/images/thumb.jpg" alt="썸네일" />
       <p class="title">제목제목제목</p>

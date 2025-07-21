@@ -120,6 +120,10 @@ public class SportsService {
     public List<SportsDTO> sportsReadCount(){
     	return sportsMapper.sportsReadCount();
     }
+    // 스포츠기사 반응순
+    public List<SportsDTO> sportsReaction(){
+    	return sportsMapper.sportsReaction();
+    }
 }
 
 
