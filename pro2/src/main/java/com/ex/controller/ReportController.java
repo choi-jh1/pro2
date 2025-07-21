@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.ex.data.ReportBoardDTO;
 import com.ex.service.ReportService;
 
 import jakarta.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller

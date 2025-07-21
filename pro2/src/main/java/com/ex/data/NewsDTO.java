@@ -18,9 +18,6 @@ public class NewsDTO {
 	private int is_breaking;	// 속보
 	
 	
-	
-	private String writerName;
-	private String writerPhoto;
-	private LocalDateTime mod;	// 수정 일시
-	
+	private String writerName;		// 기자 이름
+	private String profile_img;		// 프로필 사진
 }

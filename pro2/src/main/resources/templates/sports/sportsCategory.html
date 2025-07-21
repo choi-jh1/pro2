@@ -1,0 +1,314 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+	.container_main {
+	  display: flex;
+	  gap: 30px;
+	  max-width: 1200px;
+	  margin: 0 auto;
+	}
+	
+	.main-content {
+	  flex: 1;
+	}
+	.sidebar {
+	  width: 250px;
+	  background: #f8f8f8;
+	  padding: 15px;
+	  border-radius: 8px;
+	  font-family: 'Noto Sans KR', sans-serif;
+	  font-size: 0.95rem;
+	}
+
+	.sidebar h3 {
+	  font-size: 1.1rem;
+	  margin-bottom: 10px;
+	  border-bottom: 1px solid #ccc;
+	  padding-bottom: 5px;
+	}
+
+	.sidebar ul {
+	  list-style: none;
+	  padding: 0;
+	}
+
+	.sidebar li {
+	  padding: 6px 0;
+	  color: #444;
+	}
+
+	/* 메인 콘텐츠 영역 */
+	.main-content {
+	  flex: 1;
+	}
+
+	.sports-tabs {
+	  margin-bottom: 20px;
+	}
+
+	.tab-btn {
+	  padding: 8px 16px;
+	  border: none;
+	  background-color: #eee;
+	  margin-right: 10px;
+	  border-radius: 5px;
+	  cursor: pointer;
+	}
+
+	.tab-btn.active {
+	  background-color: #1e90ff;
+	  color: white;
+	}
+	.container_body {
+	  display: flex;
+	  gap: 30px;
+	  max-width: 1200px;
+	  margin: 0 auto;
+	}
+	.article-list {
+	  flex: 1; /* 가능한 공간 다 차지 */
+	  display: flex;
+	  flex-direction: column;
+	  gap: 20px;
+	  padding: 10px;
+	}
+
+	.article-card {
+	  display: flex;
+	  gap: 16px;
+	  padding: 15px;
+	  background: #ffffff;
+	  border-radius: 8px;
+	  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+	  transition: transform 0.2s ease;
+	}
+
+	.article-card:hover {
+	  transform: translateY(-3px);
+	}
+
+	.article-card img {
+	  width: 150px;
+	  height: 100px;
+	  object-fit: cover;
+	  border-radius: 6px;
+	}
+
+	.article-info {
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: space-between;
+	}
+
+	.article-title {
+	  font-size: 1.05rem;
+	  margin: 0;
+	  color: #333;
+	  font-weight: 600;
+	}
+
+	.article-summary {
+	  font-size: 0.9rem;
+	  color: #666;
+	  margin: 6px 0;
+	}
+
+	.article-date {
+	  font-size: 0.8rem;
+	  color: #aaa;
+	}
+	.sidebar {
+	  width: 250px;
+	  background: #f8f8f8;
+	  padding: 15px;
+	  border-radius: 8px;
+	  font-family: 'Noto Sans KR', sans-serif;
+	  font-size: 0.95rem;
+	  /* 기존 스타일 유지 */
+	}
+	.sidebar h3 {
+	  font-size: 1.1rem;
+	  margin-bottom: 10px;
+	  border-bottom: 1px solid #ccc;
+	  padding-bottom: 5px;
+	}
+
+	.sidebar ul {
+	  list-style: none;
+	  padding: 0;
+	}
+
+	.sidebar li {
+	  padding: 6px 0;
+	  color: #444;
+	}
+	a {
+	  text-decoration: none;
+	  color: inherit; /* 기본 글자색도 상속받게 */
+	}
+	.article-summary {
+	  display: -webkit-box;
+	  -webkit-line-clamp: 2;         /* 최대 2줄 표시 */
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  height: 3em;                   /* line-height * 줄 수 */
+	  line-height: 1.5em;
+	  margin-top: 5px;
+	}
+	.more-button {
+	  display: block;
+	  margin: 20px auto;
+	  padding: 10px 20px;
+	  background-color: #f2f2f2;
+	  border: none;
+	  font-size: 14px;
+	  font-weight: bold;
+	  color: #111;
+	  cursor: pointer;
+	  transition: background-color 0.3s, color 0.3s;
+	}
+
+	.more-button:hover {
+	  background-color: #ddd;
+	  color: #000;
+	}
+</style>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+
+
+<div class="site-header">
+	<div class="container">
+  <div class="logo">로고</div>
+
+  <div class="top-bar">
+    <div class="date">2025.07.03</div>
+    <div class="user-menu">
+		<a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
+		<span th:if="${session.sid == null}">
+		    <a th:href="@{/user/login}">로그인</a>
+		    <a th:href="@{/user/insert}">회원가입</a>
+		</span>
+		<span th:if="${session.sid != null and session.role == 'admin'}">
+			  <a th:href="@{/user/logout}">로그아웃</a>
+			  <a th:href="@{/admin/adminPage}">관리자 페이지</a>
+		</span>
+	  <span th:if="${session.sid != null and session.role != 'admin'}">
+
+			  <a th:href="@{/user/myPage}">마이페이지</a>
+			      <a th:href="@{/user/logout}">로그아웃</a>
+		</span>
+		<span th:if="${session.sid != null and session.role == 'reporter'}">
+			  <a th:href="@{/user/myPage}">마이페이지(기자)</a>
+		  	  <a th:href="@{/user/logout}">로그아웃</a>
+		</span>
+	</div>
+  </div>
+
+  <nav class="main-nav">
+    <ul>
+      <li><a href="#">뉴스</a></li>
+      <li><a href="/sports/main">스포츠</a></li>
+      <li><a href="#">엔터</a></li>
+    </ul>
+    <div class="search">
+      <input type="text" placeholder="검색" />
+    </div>
+  </nav>
+
+  <nav class="sub-nav">
+    <ul>
+
+		<li><a href="/sports/main">종합</a></li>
+		<li><a href="/sports/football">축구</a></li>
+		<li><a href="/sports/baseball">야구</a></li>
+		<li><a href="/sports/basketball">농구</a></li>
+		<li><a href="/sports/volleyball">배구</a></li>
+    </ul>
+  </nav>
+</div>
+</div>
+
+<div class="container_body">
+<div class="article-list"  id="article-list">
+	<div><span style="font-size: 24px; font-weight: 500;"> 스포츠 </span><span th:text="' > '+${catename}"></span></div>
+  <div class="article-card" th:each="dto:${list}" >
+	<a th:href="@{|/sports/content/${dto.boardNum}|}">
+    <img th:src="${dto.thumbnail}" alt="썸네일">
+	</a>
+    <div class="article-info">
+		<a th:href="@{|/sports/content/${dto.boardNum}|}">
+      <h3 class="article-title">[[${dto.title}]]</h3>
+	  </a>
+      <p class="article-summary">[[${dto.cleanContent}]]</p>
+      <span class="article-date">[[${#temporals.format(dto.reg,'yyyy-MM-dd HH:mm')}]]</span>
+	  <span class="article-date">[[${dto.name}]] 기자</span>
+    </div>
+  </div>
+
+
+</div>
+  <!-- 사이드바는 오른쪽으로 이동 -->
+  <aside class="sidebar">
+    <h3>많이 본 뉴스</h3>
+    <ul>
+      <li>1. 인기 기사</li>
+      <li>2. 실시간 뉴스</li>
+      ...
+    </ul>
+  </aside>
+</div>
+
+
+<button id="load-more-btn" th:data-category="${cate}" class="more-button">더보기 ▼</button>
+
+
+
+<script>
+	$('#load-more-btn').click(function () {
+		const num = 1;
+	  const btn = $(this);
+	  const pageNum = num +1;
+	  const category = btn.data('category');
+	
+	  $.ajax({
+	    url: '/sports/more',
+	    method: 'GET',
+	    data: {
+	      category: category,
+	      pageNum: pageNum
+	    },
+	    success: function (articles) {
+	      if (articles.length < 5) {
+	        btn.hide(); // 더 이상 로딩할 게 없으면 버튼 숨김
+
+	      }
+
+	      articles.forEach(article => {
+	        const html = `
+	          <div class="article-card">
+				<a href="/sports/content?boardNum=${article.boardNum}&id=${dto.writer}">
+	            <img src="${article.thumbnail}" alt="썸네일">
+				</a>
+	            <div class="article-info">
+					<a href="/sports/content?boardNum=${article.boardNum}&id=${dto.writer}">
+	              <h3 class="article-title">${article.title}</h3>
+				  </a>
+	              <p class="article-summary">${article.cleanContent}</p>
+	              <span class="article-date">${article.reg}</span>
+				  <span class="article-date">${article.writer}</span>
+	            </div>
+	          </div>
+	        `;
+	        $('#article-list').append(html);
+	      });
+
+	      btn.data('pageNum', pageNum); // 다음 페이지 준비
+	    },
+	    error: function () {
+	      alert('더보기 실패');
+	    }
+	  });
+	});
+	
+</script>

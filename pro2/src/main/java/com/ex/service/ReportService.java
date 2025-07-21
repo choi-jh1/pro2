@@ -64,4 +64,9 @@ public class ReportService {
     	return dto;
     }
     
+    // 제보 글 담당기자에게
+    public void assignReporter(int report_id, String assigned) {
+        reportMapper.assignReporter(report_id, assigned);
+    }
+    
 }

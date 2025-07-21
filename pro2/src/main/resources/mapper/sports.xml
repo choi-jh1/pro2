@@ -11,16 +11,60 @@
 	<select id="cate" resultType="com.ex.data.SportsCateDTO">
 		select * from sportsCate
 	</select>
+	<!--스포츠 카테고리 이름 조회-->
+	<select id="catename" resultType="String">
+		select name from sportsCate where cateId=#{cateId}
+	</select>
 	<!--스포츠기사 전체 목록-->
 	<select id="sportsList" resultType="com.ex.data.SportsDTO">
 		select * from sports
 	</select>
 	<!--카테고리별 목록-->
 	<select id="sportsCateList" resultType="com.ex.data.SportsDTO">
-		select * from sports where cateId=#{cateId} order by boardNum desc offset #{offset} rows fetch next #{pageSize} rows only
+		select s.*,u.name from sports s join users u on s.writer=u.id where s.cateId=#{cateId} order by boardNum desc offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 	<!--내용만 출력(이미지 제외)-->
 	<select id="content" resultType="String">
 		select content from sports
+	</select>
+	<!--스포츠기사 내용 출력-->
+	<select id="sportsContent" resultType="com.ex.data.SportsDTO">
+		select * from sports where boardNum=#{boardNum}
+	</select>
+	<!--스포츠기사 조회수 +1-->
+	<update id="sportsReadCount">
+		update sports set readCount = readCount+1 where boardNum=#{boardNum}
+	</update>
+	<!--스포츠기사 좋아요-->
+	<insert id="reactionInsert">
+		insert into sportsReaction values(sportsReaction_seq.nextval,#{sports_id},#{user_id},#{emotion_type},sysdate)
+	</insert>
+	<!--스포츠기사 좋아요 아이디체크-->
+	<select id="idCheck" resultType="String">
+		select emotion_Type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
+	</select>
+	<!--좋아요 취소-->
+	<delete id="removeReaction">
+		delete from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id} and emotion_type=#{emotion_type}
+	</delete>
+	<!-- 기존 반응 삭제 -->
+	<delete id="deleteReaction">
+	    DELETE FROM sportsReaction 
+	    WHERE sports_id = #{sports_id} AND user_id = #{user_id}
+	</delete>
+	<!--좋아요 개수-->
+	<select id="reactionCount1" resultType="com.ex.data.ReactionCountDTO">
+		  SELECT emotion_type AS emotionType, COUNT(*) AS count
+		  FROM sportsReaction
+		  WHERE sports_id = #{sports_id}
+		  GROUP BY emotion_type
+	</select>
+	<!--아이디가 좋아요 누른 타입-->
+	<select id="userReaction" resultType="String">
+		select emotion_type from sportsReaction where sports_id=#{sports_id} and user_id=#{user_id}
+	</select>
+	<!--게시글 좋아요 총 개수-->
+	<select id="reactionAllCount" resultType="int">
+		select count(*) from sportsReaction where sports_id=#{sports_id}
 	</select>
 </mapper>

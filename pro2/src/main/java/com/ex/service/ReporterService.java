@@ -15,18 +15,36 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
-	private final ReporterMapper repoterMapper;
-	@Autowired
-	private UsersMapper userMapper;
-	// 회원가입
-	public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
-		user.setRole("reporter");
-		userMapper.userInsert(user);
-		repoterMapper.reporterInsert(reporter);
-		
-	}
+
+   private final ReporterMapper repoterMapper;
+   @Autowired
+   private UsersMapper userMapper;
+   // 회원가입
+   public void reporterInsert(UsersDTO user, ReporterDTO reporter) {
+      user.setRole("reporter");
+      userMapper.userInsert(user);
+      repoterMapper.reporterInsert(reporter);
+   }
+   // 기자리스트(제보)
+   public List<ReporterDTO> getReporterListWithStatus(){
+      return repoterMapper.getReporterListWithStatus();
+   }
+   public ReporterDTO getReporterById(String reporterId) {
+	// TODO Auto-generated method stub
+	return null;
+   }
+
+
+	private final ReporterMapper reporterMapper;
+
 	// 기자 목록 조회
 	public List<UsersDTO> reporterList() {
-		return repoterMapper.reporterList();
+		return reporterMapper.reporterList();
 	}
+	
+	// 기자 정보 조회
+	public ReporterDTO reporterInfo(String id) {
+		return reporterMapper.reporterInfo(id);
+	}
+
 }

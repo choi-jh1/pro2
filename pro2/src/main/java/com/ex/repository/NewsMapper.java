@@ -26,7 +26,8 @@ public interface NewsMapper {
     // 추천 수 : 기사 상세 페이지 content
     void increaseHot(int num);
 
-
+    // 기자 마이페이지 <내가 쓴 기사 조회>
+    List<NewsDTO> selectByWriter(String writer);
     
     
     

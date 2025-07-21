@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ex.data.ReportBoardDTO;
@@ -49,7 +52,7 @@ public class AdminController {
 	// 기자 관리
 	@GetMapping("reporterUpdate")
 	public String reportUpdate(Model model) {
-		model.addAttribute("list",reporterService.reporterList());
+		model.addAttribute("list",usersService.reporterList());
 		return "admin/reporterUpdate";
 	}
 	
@@ -61,8 +64,9 @@ public class AdminController {
         int start = (currentPage - 1)*pageSize+1;
         int end = currentPage * pageSize;
         int reportCount = reportService.reportCount();
-        
         List<ReportBoardDTO> list = null;
+        List<UsersDTO> reportList = usersService.reporterList();
+        model.addAttribute("reporterList", reportList);
     	if(reportCount > 0 ) {
     		list = reportService.reportList(start, end);
     	}else {
@@ -85,6 +89,7 @@ public class AdminController {
     	model.addAttribute("end",end);
     	model.addAttribute("reportCount",reportCount);
     	model.addAttribute("list",list);
+    
     	
 		return "admin/reportManagement";
 	} 
@@ -96,7 +101,26 @@ public class AdminController {
 		return "admin/userUpdate";
 	}
 	// 유저 상태변경
-
+	@PostMapping("updateStatus")
+	public ResponseEntity<String> updateStatus(@RequestParam("userId") String userId, @RequestParam("status") String status) {
+		int result = usersService.updateStatus(userId, status);
+		if(result > 0) {
+			return ResponseEntity.ok("success");
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+		}
+	}
+	
+	// 기자 카테고리 변경
+	@PostMapping("updateCategory")
+	public ResponseEntity<String> updateCategory(@RequestParam("id") String id, @RequestParam("category") String category){
+		int reselt = usersService.updateCategory(id, category);
+		if(reselt > 0) {
+			return ResponseEntity.ok("success");
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+		}
+	}
 	
 	@GetMapping("articleCheck")
 	public String articleCheck() {
@@ -110,7 +134,7 @@ public class AdminController {
 	                               @RequestParam("profile") MultipartFile profileFile) {
 
 	    // 실제 저장 디렉토리
-	    String uploadDir = "C:/upload/profile/";
+	    String uploadDir = "C:/profile/upload";
 	    File uploadPath = new File(uploadDir);
 
 	    if (!uploadPath.exists()) {
@@ -139,7 +163,7 @@ public class AdminController {
 	        profileFile.transferTo(saveFile);
 
 	        // DB에는 상대 경로만 저장
-	        reporterDTO.setProfile_img("profile/" + newFileName);
+	        reporterDTO.setProfile_img("/upload/" + newFileName);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return "error";
@@ -152,6 +176,23 @@ public class AdminController {
 	    reporterService.reporterInsert(userDTO, reporterDTO);
 
 	    return "redirect:/admin/adminPage";
+	}
+	// 기자리스트(제보)
+	@GetMapping("/admin/reporterList")
+	@ResponseBody
+	public List<ReporterDTO> reporterListJson(){
+		return reporterService.getReporterListWithStatus();
+	}
+	// 제보게시판 기자배정
+	@PostMapping("assign")
+	public ResponseEntity<String> assignReporter(@RequestParam("report_id") int report_id, @RequestParam("assigned") String assigned) {
+		reportService.assignReporter(report_id, assigned);
+		 try {
+		        reportService.assignReporter(report_id, assigned);
+		        return ResponseEntity.ok("success");
+		    } catch (Exception e) {
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+		    }
 	}
 	
 }

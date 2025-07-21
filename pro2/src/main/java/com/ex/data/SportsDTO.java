@@ -15,4 +15,5 @@ public class SportsDTO {
 	private String status;
 	private String cleanContent;
 	private LocalDateTime reg;
+	private String name;
 }
