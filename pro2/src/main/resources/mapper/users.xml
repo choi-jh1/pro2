@@ -11,7 +11,13 @@
 	<!--로그인-->
 	<select id="loginCheck" resultType="com.ex.data.UsersDTO" parameterType="com.ex.data.UsersDTO">
 		select * from users where id=#{id} and pw=#{pw}
+		select * from users where id=#{id} and pw=#{pw} and status='active'
 	</select>
+	
+	<!--회원 탈퇴-->
+	<delete id="userDelete">
+		delete from users where id=#{id} and pw=#{pw}
+	</delete>
 	<!--유저 목록-->
 	<select id="userList" resultType="com.ex.data.UsersDTO">
 		select * from users where role='user'
@@ -20,6 +26,7 @@
 	<update id="updateStatus">
 		update users set status=#{status} where id=#{userId}
 	</update>
+
 	<!--기자 조회-->
 	<select id="reporterList" resultType="com.ex.data.UsersDTO">
 		select u.id, u.name, u.reg, u.role, r.category from users u
@@ -29,6 +36,7 @@
 	<update id="updateCategory">
 		update reporter set category=#{category} where id=#{id}
 	</update>
+
 	
 	<select id="findById" parameterType="string" resultType="com.ex.data.UsersDTO">
 		select id, pw, nick, name, birth, phone, email, status, role, reg from users where id = #{id}
@@ -37,4 +45,5 @@
 	<update id="update" parameterType="com.ex.data.UsersDTO">
 		update users set nick = #{nick, jdbcType=VARCHAR}, name = #{name, jdbcType=VARCHAR}, phone = #{phone, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}, status = #{status, jdbcType=VARCHAR}, role = #{role, jdbcType=VARCHAR} where id = #{id}
 	</update>
+
 </mapper>

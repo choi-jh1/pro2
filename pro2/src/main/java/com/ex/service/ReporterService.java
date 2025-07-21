@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class ReporterService {
    private final ReporterMapper reporterMapper;
    private final UsersMapper usersMapper;
+
    // 회원가입
    public boolean isIdAvailable(String id) {
 	   return usersMapper.findById(id) == null;
@@ -64,6 +65,8 @@ public class ReporterService {
 	   usersMapper.update(user);
    }
    
+
+
 
 
 }

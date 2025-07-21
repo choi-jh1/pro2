@@ -156,6 +156,23 @@
 	  line-height: 1.5em;
 	  margin-top: 5px;
 	}
+	.more-button {
+	  display: block;
+	  margin: 20px auto;
+	  padding: 10px 20px;
+	  background-color: #f2f2f2;
+	  border: none;
+	  font-size: 14px;
+	  font-weight: bold;
+	  color: #111;
+	  cursor: pointer;
+	  transition: background-color 0.3s, color 0.3s;
+	}
+
+	.more-button:hover {
+	  background-color: #ddd;
+	  color: #000;
+	}
 </style>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 
@@ -216,16 +233,16 @@
 <div class="article-list"  id="article-list">
 	<div><span style="font-size: 24px; font-weight: 500;"> 스포츠 </span><span th:text="' > '+${catename}"></span></div>
   <div class="article-card" th:each="dto:${list}" >
-	<a th:href="@{|/sports/content?boardNum=${dto.boardNum}|}">
+	<a th:href="@{|/sports/content/${dto.boardNum}|}">
     <img th:src="${dto.thumbnail}" alt="썸네일">
 	</a>
     <div class="article-info">
-		<a th:href="@{|/sports/content?boardNum=${dto.boardNum}|}">
+		<a th:href="@{|/sports/content/${dto.boardNum}|}">
       <h3 class="article-title">[[${dto.title}]]</h3>
 	  </a>
       <p class="article-summary">[[${dto.cleanContent}]]</p>
       <span class="article-date">[[${#temporals.format(dto.reg,'yyyy-MM-dd HH:mm')}]]</span>
-	  <span class="article-date">[[${dto.writer}]]</span>
+	  <span class="article-date">[[${dto.name}]] 기자</span>
     </div>
   </div>
 
@@ -243,7 +260,7 @@
 </div>
 
 
-<button id="load-more-btn" th:data-category="${cate}">더보기</button>
+<button id="load-more-btn" th:data-category="${cate}" class="more-button">더보기 ▼</button>
 
 
 
@@ -270,11 +287,11 @@
 	      articles.forEach(article => {
 	        const html = `
 	          <div class="article-card">
-				<a href="/sports/content?boardNum=${article.boardNum}">
+				<a href="/sports/content?boardNum=${article.boardNum}&id=${dto.writer}">
 	            <img src="${article.thumbnail}" alt="썸네일">
 				</a>
 	            <div class="article-info">
-					<a href="/sports/content?boardNum=${article.boardNum}">
+					<a href="/sports/content?boardNum=${article.boardNum}&id=${dto.writer}">
 	              <h3 class="article-title">${article.title}</h3>
 				  </a>
 	              <p class="article-summary">${article.cleanContent}</p>

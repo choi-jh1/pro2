@@ -1,12 +1,15 @@
 package com.ex.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
+import com.ex.data.ReactionCountDTO;
 import com.ex.data.SportsCateDTO;
 import com.ex.data.SportsDTO;
 import com.ex.repository.SportsMapper;
@@ -72,4 +75,51 @@ public class SportsService {
     public SportsDTO sportsContent(int boardNum) {
     	return sportsMapper.sportsContent(boardNum);
     }
+    // 스포츠기사 조회수 +1
+    public void sportsReadCount(int boardNum) {
+    	sportsMapper.sportsReadCount(boardNum);
+    }
+
+    // 스포츠기사 좋아요
+    public void reactionInsert(int num,String id,String type) {
+    	// 먼저 기존 반응 삭제
+    	String idCheck = sportsMapper.idCheck(num, id);
+        if(idCheck != null) {
+    		sportsMapper.deleteReaction(num, id);
+        }
+    		sportsMapper.reactionInsert(num,id,type);
+    	
+    }
+    // 스포츠기사 좋아요 취소
+    public void removeReaction(int num,String id,String type) {
+    	sportsMapper.removeReaction(num,id,type);
+    }
+    // 스포츠기사 좋아요 개수
+    public Map<String, Integer> reactionCount1(int num){
+    	
+        List<ReactionCountDTO> list = sportsMapper.reactionCount1(num);
+
+        Map<String, Integer> result = new HashMap<>();
+        for (ReactionCountDTO dto : list) {
+            result.put(dto.getEmotionType(), dto.getCount());
+        }
+
+        return result;
+   
+    }
+    
+    // 유저가 좋아요 누른 타입
+    public String userReaction(int num,String id) {
+    	return sportsMapper.userReaction(num, id);
+    }
+    //id 중복 체크
+    public String reactionType(int num,String id) {
+    	return sportsMapper.idCheck(num, id);
+    }
+    // 게시글 좋아요 총 개수
+    public int reactionAllCount(int num) {
+    	return sportsMapper.reactionAllCount(num);
+    }
 }
+
+

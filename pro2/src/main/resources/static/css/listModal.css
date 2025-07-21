@@ -1,0 +1,54 @@
+
+.modal-background {
+  display: flex;              /* 중앙 배치의 핵심 */
+  justify-content: center;    /* 가로 중앙 */
+  align-items: center;        /* 세로 중앙 */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+
+/* 중앙 카드 스타일 - 폭 줄임 */
+.modal-content {
+  background: white;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 300px;
+}
+
+/* 입력창 */
+.modal-input {
+  width: 100%;
+  padding: 7px;
+  margin: 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* 버튼 그룹 */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* 버튼 */
+.modal-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+.modal-btn:hover {
+  background-color: #357ab8;
+}
+
