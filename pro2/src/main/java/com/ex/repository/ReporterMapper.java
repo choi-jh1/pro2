@@ -22,4 +22,6 @@ public interface ReporterMapper {
 	public void update(ReporterDTO reporter);
 	
 	public List<UsersDTO> reporterList();
+	
+	public void updateReporter(UsersDTO user);
 }
