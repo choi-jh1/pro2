@@ -84,10 +84,10 @@
 
 <header class="site-header">
 	<div class="container">
-  <div class="logo">로고</div>
+  <div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
 
   <div class="top-bar">
-    <div class="date">2025.07.03</div>
+    <div class="date" th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')}"></div>
     <div class="user-menu">
       <a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
 	  <span th:if="${session.sid == null}">
@@ -126,6 +126,7 @@
 </header>
 <div class="news-container">
 <div class="news-column">
+	<h3><center>일반 뉴스</center></h3>
   <div class="main-article" th:if="${newsList.size() > 0}">
     <img th:src="${newsList[0].thumbUrl}" alt="썸네일" />
     <p class="title" th:text="${newsList[0].title}"></p>
@@ -144,6 +145,7 @@
 </div>
 
   <div class="news-column">
+	<h3><center>스포츠</center></h3>
     <div class="main-article" th:if="${sportsList.size() > 0}">
       <img th:src="${sportsList[0].thumbnail}" alt="썸네일" />
       <p class="title" th:text="${sportsList[0].title}"></p>
@@ -162,6 +164,7 @@
   </div>
 
   <div class="news-column">
+	<h3><center>엔터</center></h3>
     <div class="main-article">
       <img src="/images/thumb.jpg" alt="썸네일" />
       <p class="title">제목제목제목</p>
