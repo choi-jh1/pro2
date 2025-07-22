@@ -86,4 +86,6 @@ public class EnterNewsService {
 	    return enterNewsMapper.getNewsByCategoryPaged(category, offset, limit);
 	}
 
+
+
 }

@@ -37,4 +37,13 @@ public interface UsersMapper {
 	// 기자 정보 업데이트
 	public UsersDTO findById(String id);
 	public void update(UsersDTO user);
+	
+	// 회원 정보 수정
+	public int userUpdate(UsersDTO dto);
+	// 회원 정보
+	public UsersDTO userInfo(String id);
+	// 비밀번호 변경
+	public void pwChange(@Param("pw1") String pw1,@Param("id") String id);
+	// 비밀번호 확인
+	public int pwCheck(UsersDTO dto);
 }

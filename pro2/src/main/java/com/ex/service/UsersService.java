@@ -72,5 +72,21 @@ public class UsersService {
 	public void updateUser(UsersDTO user) {
 		usersMapper.update(user);
 	}
-		
+	
+	// 회원 정보
+	public UsersDTO userInfo(String id) {
+		return usersMapper.userInfo(id);
+	}
+	// 회원 정보 수정
+	public int userUpdate(UsersDTO dto) {
+		return usersMapper.userUpdate(dto);
+	}
+	// 비밀번호 변경
+	public void pwChange(String pw1,String id) {
+		usersMapper.pwChange(pw1,id);
+	}
+	// 비밀번호 확인
+	public int pwCheck(UsersDTO dto) {
+		return usersMapper.pwCheck(dto);
+	}
 }

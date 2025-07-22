@@ -2,32 +2,26 @@ package com.ex.controller;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
 import com.ex.data.NewsDTO;
 import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
 import com.ex.data.UsersDTO;
 import com.ex.service.NewsService;
 import com.ex.service.ReporterService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-
 
 @Controller
 @RequestMapping("/reporter/*")
 @RequiredArgsConstructor
 public class ReporterController {
-
 	private final ReporterService reporterService;
 	private final NewsService newsService;
 	
@@ -61,6 +55,7 @@ public class ReporterController {
 	@GetMapping("detail")
 	public String detail(HttpSession session, Model model) {
 		String id = (String) session.getAttribute("sid");
+		
 		Map<String, Object> info = reporterService.getReporterInfo(id);
 		
 		model.addAttribute("user", info.get("user"));
@@ -94,7 +89,6 @@ public class ReporterController {
 				mainCategory = "enter";
 			}
 		}
-		
 		model.addAttribute("user", info.get("user"));
 		model.addAttribute("reporter", reporter);
 		model.addAttribute("mainCategory", mainCategory);
@@ -146,5 +140,4 @@ public class ReporterController {
 		model.addAttribute("assignedReports", assignedReports);
 		return "reporter/myReports";
 	}
-	
 }
