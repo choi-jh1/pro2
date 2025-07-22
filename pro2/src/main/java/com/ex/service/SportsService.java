@@ -124,6 +124,10 @@ public class SportsService {
     public List<SportsDTO> sportsReaction(){
     	return sportsMapper.sportsReaction();
     }
+    // 기자가 쓴 스포츠기사 2개
+    public List<SportsDTO> sportsReporter(String id){
+    	return sportsMapper.sportsReporter(id);
+    }
 }
 
 
