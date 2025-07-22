@@ -3,22 +3,18 @@ package com.ex.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
 import com.ex.data.UsersDTO;
 import com.ex.repository.ReporterMapper;
 import com.ex.repository.UsersMapper;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ReporterService {
-
    private final ReporterMapper reporterMapper;
    private final UsersMapper usersMapper;
 
@@ -79,5 +75,4 @@ public class ReporterService {
    public ReporterDTO reporterInfo(String id) {
 	   return reporterMapper.reporterInfo(id);
    }
-
 }

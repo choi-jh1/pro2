@@ -30,35 +30,36 @@ public class NewsController {
     private final NewsService newsService;
     private final CommentService commentService;
 
-    // 메인 홈 페이지 (카테고리 별 상위 5개 , 속보 3개 출력)
+    // 뉴스 메인 페이지
+    // 각 카테고리별 상위 5개 기사
+    // 속보 3개 기사
     @GetMapping("home")
     public String home(Model model) {
-    	// 카테고리 별 조회수 상위 5개 뉴스
     	List<NewsDTO> politicsTop5 = newsService.getTop5ByCategory("politics");
     	List<NewsDTO> economyTop5 = newsService.getTop5ByCategory("economy");
     	List<NewsDTO> societyTop5 = newsService.getTop5ByCategory("society");
+    	List<NewsDTO> breakingNews = newsService.getBreakingNews();
         model.addAttribute("politicsTop5", politicsTop5);
         model.addAttribute("economyTop5", economyTop5);
         model.addAttribute("societyTop5", societyTop5);
-        
-        // 속보 3개
-        List<NewsDTO> breakingNews = newsService.getBreakingNews();
         model.addAttribute("breakingNews", breakingNews);
         
         return "news/home"; // news/home.html로 이동
     }
     
-    
-    // 기사 작성 폼 페이지 반환
+    // 기사 작성 폼 반환
+    // 기자가 아닌 경우 메인으로 리다이렉트
     @GetMapping("write")
     public String writeForm(HttpSession session) {
     	String role = (String) session.getAttribute("role");
     	if(!"reporter".equals(role)) {
     		return "redirect:/user/main";
     	}
-    	return "news/write";	// news/write.html 이동 
+    	return "news/write";
     }
+    
     // 기사 작성 처리
+    // 본문에서 첫 이미지 추출하여 썸네일 지정
     @PostMapping("writePro")
     public String writePro(@ModelAttribute NewsDTO dto, HttpSession session) {
     	System.out.println("category = "+dto.getCategory());
@@ -93,7 +94,6 @@ public class NewsController {
     	return img != null ? img.attr("src") : null; // src 반환
     }
     
-    
     // 정치 카테고리 뉴스 목록 페이지 반환
     @GetMapping("politics")
     public String politicsPage(Model model) {
@@ -108,6 +108,7 @@ public class NewsController {
     	model.addAttribute("newsList", economyList);
     	return "news/economy";
     }
+    
     // 사회 카테고리 뉴스 목록 페이지 반환
     @GetMapping("society")
     public String societyPage(Model model) {
@@ -116,16 +117,18 @@ public class NewsController {
     	return "news/society";
     }
     
-    
-    // 최신 뉴스 페이징 API (AJAX 등에서 호출)
+    // 최신 뉴스 페이징 처리 (AJAX 요청 API)
+    // @Param page : 요청한 페이지 번호
+    // @return : 해당 페이지의 뉴스 목록
     @GetMapping("latestPage")
     @ResponseBody
     public List<NewsDTO> latestPate(@RequestParam("page") int page){
     	return newsService.latestPage(page);
     }
     
-    
-    // 뉴스 상세 페이지 -> 뉴스 페이지에서 기사 제목 클릭 시 기사 내용 페이지
+    // 뉴스 상세 페이지 반환
+    // 기사 정보와 해당 댓글 목록 포함
+    // @Param num : 뉴스 번호
     @GetMapping("content/{num}")
     public String content(@PathVariable("num") int num, Model model) {
     	newsService.newsReadCountUp(num);
@@ -136,31 +139,10 @@ public class NewsController {
         return "news/content";
     }
 
-    // 추천 수 증가
+    // 뉴스 추천 수 증가 처리
     @PostMapping("hot")
     public String increaseHot(@RequestParam("num") int num) {
     	newsService.increaseHot(num);
     	return "redirect:/news/content/" + num;
     }
-    
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
