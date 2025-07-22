@@ -13,6 +13,8 @@ public interface EnterNewsMapper {
 	
 	public List<EnterNewsDTO> getPagedEnterNews(@Param("offset") int offset, @Param("limit") int limit);
 	
+	public List<EnterNewsDTO> getMostReadNews(@Param("limit") int limit);
+	
 	public int insertNews(EnterNewsDTO dto);
 	
 	public void increaseReadCount(int num);

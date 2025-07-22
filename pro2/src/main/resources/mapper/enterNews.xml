@@ -25,11 +25,29 @@
 	<!-- 2. 최신 뉴스 목록 (무한스크롤용, 페이징) -->
 	<select id="getPagedEnterNews" resultType="com.ex.data.EnterNewsDTO">
 		select
-			num, title, content, thumbnail, writer_id, null as writerNickname, null as	writerEmail, reg, readcount, category, hot
-		from enter_news
-		where status = 'approve' order by reg desc
+			num, title, content, thumbnail, writer_id, 
+			null as writerNickname, null as writerEmail, 
+			reg, readcount, category, hot
+		from 
+			enter_news
+		where 
+			status = 'approve' order by reg desc
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>
+
+	<!-- 연예뉴스 인기순(총조회수 순) -->
+	<select id="getMostReadNews" resultType="com.ex.data.EnterNewsDTO">
+		select 
+			num, title, thumbnail, readcount
+		from 
+			enter_news
+		where 
+			status = 'approved'
+		order by 
+			readcount desc
+		fetch first #{limit} rows only
+	</select>
+
 
 	<!-- 연예 기사 생성 -->
 	<insert id="insertNews" parameterType="com.ex.data.EnterNewsDTO">

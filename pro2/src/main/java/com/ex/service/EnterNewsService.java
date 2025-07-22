@@ -24,6 +24,11 @@ public class EnterNewsService {
 		return list;
 	}
 
+	public List<EnterNewsDTO> getMostReadNews(int limit){
+		List<EnterNewsDTO> list = enterNewsMapper.getMostReadNews(limit);
+		return list;
+	}
+	
 	// HTML에서 <img src="..."> 중 첫 번째 이미지의 src 추출
 	private String extractThumbnail(String content) {
 		if (content == null)

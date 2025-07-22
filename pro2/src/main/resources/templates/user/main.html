@@ -169,18 +169,33 @@
   </div>
 
   <div class="news-column">
-	<h3><center>엔터</center></h3>
-    <div class="main-article">
-      <img src="/images/thumb.jpg" alt="썸네일" />
-      <p class="title">제목제목제목</p>
+    <h3><center>엔터</center></h3>
+
+    <div class="main-article" th:if="${enterList.size() > 0}">
+      <a th:href="@{|/enter/detail?num=${enterList[0].num}|}">
+        <img th:src="${enterList[0].thumbnail}" alt="썸네일" />
+        <p class="title" th:text="${enterList[0].title}"></p>
+      </a>
     </div>
-    <div class="sub-article">
-      <img src="/images/thumb.jpg" alt="썸네일" />
-      <p class="title">제목제목제목</p>
+
+    <div class="sub-article" th:if="${enterList.size() > 1}">
+      <a th:href="@{|/enter/detail?num=${enterList[1].num}|}">
+        <img th:src="${enterList[1].thumbnail}" alt="썸네일" />
+        <p class="title" th:text="${enterList[1].title}"></p>
+      </a>
     </div>
-    <div class="sub-article">
-      <img src="/images/thumb.jpg" alt="썸네일" />
-      <p class="title">제목제목제목</p>
+
+    <div class="sub-article" th:if="${enterList.size() > 2}">
+      <a th:href="@{|/enter/detail?num=${enterList[2].num}|}">
+        <img th:src="${enterList[2].thumbnail}" alt="썸네일" />
+        <p class="title" th:text="${enterList[2].title}"></p>
+      </a>
+    </div>
+
+    <div th:each="el, i : ${enterList}" th:if="${i.index >= 3}" class="title-only">
+      <a th:href="@{|/enter/detail?num=${el.num}|}">
+        <p class="title" th:text="${el.title}"></p>
+      </a>
     </div>
   </div>
 </div>
