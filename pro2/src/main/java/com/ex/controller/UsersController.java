@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ex.data.EnterNewsDTO;
 import com.ex.data.NewsDTO;
 import com.ex.data.SportsDTO;
 import com.ex.data.UsersDTO;
+import com.ex.service.EnterNewsService;
 import com.ex.service.NewsService;
 import com.ex.service.SportsService;
 import com.ex.service.UsersService;
@@ -27,15 +30,19 @@ public class UsersController {
 	private final UsersService usersService;
 	private final SportsService sportsService;
 	private final NewsService newsService;
+	private final EnterNewsService enterNewsService;
 	
 	// 메인화면
 	@GetMapping("main")
 	public String main(Model model) {
 		List<NewsDTO> newsList = newsService.newsReadCount();
 		List<SportsDTO> sportsList = sportsService.sportsReadCount();
+		List<EnterNewsDTO> enterList = enterNewsService.getMostReadNews(10);
 		
 		model.addAttribute("sportsList",sportsList);
 		model.addAttribute("newsList",newsList);
+		model.addAttribute("enterList", enterList);
+		
 		return "user/main";
 	}
 	
@@ -147,10 +154,19 @@ public class UsersController {
 		return "user/myPage";	// 일반 회원 마이페이지 이동
 	}
 	
-	// 회원 정보 수정
+	// 회원 정보 수정 페이지
 	@GetMapping("update")
-	public String update() {
+	public String update(Model model,HttpSession session) {
+		String sid = (String)session.getAttribute("sid");
+		model.addAttribute("dto",usersService.userInfo(sid));
 		return "user/update";
+	}
+	// 회원 정보 수정 DB
+	@PostMapping("update")
+	public String update(UsersDTO dto,RedirectAttributes rttr) {
+		int result = usersService.userUpdate(dto);
+		rttr.addFlashAttribute("msg", "회원 정보가 수정되었습니다.");
+		return "redirect:/user/myPage";
 	}
 	
 	// 회원 탈퇴
@@ -167,5 +183,24 @@ public class UsersController {
 			session.invalidate();
 		}
 		return "redirect:/user/main";
+	}
+	// 비밀번호 변경 url
+	@GetMapping("pwChange")
+	public String pwChange(Model model, HttpSession session) {
+		String sid = (String)session.getAttribute("sid");
+		model.addAttribute("dto",usersService.userInfo(sid));
+		return "user/pwChange";
+	}
+	// 비밀번호 변경 DB
+	@PostMapping("pwChange")
+	public String pwChange(UsersDTO dto,@RequestParam("pw1") String pw1,RedirectAttributes rttr) {
+		int result = usersService.pwCheck(dto);
+		if(result==1) {
+			usersService.pwChange(pw1, dto.getId());
+			rttr.addFlashAttribute("msg", "비밀번호가 수정되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "비밀번호를 확인해주세요.");
+		}
+		return "redirect:/user/myPage";
 	}
 }

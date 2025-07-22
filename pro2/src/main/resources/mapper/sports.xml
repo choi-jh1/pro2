@@ -5,7 +5,7 @@
 <mapper namespace="com.ex.repository.SportsMapper">
 	<!--스포츠기사 글쓰기-->
 	<insert id="boardWrite">
-		insert into sports(num,title,writer,cateId,thumbnail,status,content) values(sports_seq.nextval,#{title},#{writer},#{cateId},#{thumbnail, jdbcType=VARCHAR},'wait',#{content})
+		insert into sports(num,title,writer,cateId,thumbnail,status,content) values(sports_seq.nextval,#{title},#{writer},#{cateId},#{thumbnail, jdbcType=VARCHAR},'approve',#{content})
 	</insert>
 	<!--스포츠 카테고리 조회-->
 	<select id="cate" resultType="com.ex.data.SportsCateDTO">
@@ -75,5 +75,8 @@
 		LEFT JOIN users u ON s.writer = u.id LEFT JOIN sportsReaction r ON s.num = r.sports_id
 			GROUP BY s.num, s.title, s.thumbnail, u.name
 				ORDER BY count DESC
+	</select>
+	<select id="sportsReporter" resultType="com.ex.data.SportsDTO">
+		select s.title,s.num from sports s join reporter r on s.writer = r.id where r.id=#{id} order by s.num desc fetch first 2 rows only
 	</select>
 </mapper>

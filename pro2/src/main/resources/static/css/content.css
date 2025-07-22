@@ -1,69 +1,168 @@
-/* ✅ 전체 기사 내용 wrapper - 가운데 정렬 */
+/* ========== 공통 스타일 ========== */
+
+/* 기본 글꼴 및 배경, 텍스트 색상 지정 */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #fdfdfd;
+  color: #333;
+}
+
+/* ========== 기사 전체 컨테이너 ========== */
+
+/* 기사 전체를 감싸는 박스: 너비 제한, 가운데 정렬, 배경 흰색 */
 .article-wrapper {
   max-width: 800px;
   margin: 40px auto;
-  padding: 0 16px;
+  padding: 0 20px;
+  background-color: white;
 }
 
-/* ✅ 제목, 작성일, 기자 정보 왼쪽 정렬 */
-.article-meta {
-  text-align: left;
+/* 기사 제목 스타일 */
+.article-wrapper h1 {
+  font-size: 28px;
   margin-bottom: 20px;
+  border-bottom: 2px solid #222;
+  padding-bottom: 10px;
 }
 
-/* 기자 정보 */
+/* ========== 작성자 및 날짜 정보 ========== */
+
+/* 기사 메타 정보 (기자 이름, 날짜 등) */
+.article-meta {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 기자 정보 영역 (프로필 사진 + 이름) */
 .reporter-info {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  gap: 10px;
 }
 
+/* 기자 프로필 사진 */
 .reporter-info img {
   border-radius: 50%;
-  margin-right: 12px;
+  object-fit: cover;
 }
 
-/* 기사 본문 */
+/* ========== 본문 영역 ========== */
+
+/* 기사 본문 콘텐츠 */
 .news-content {
-  text-align: center !important;
-  line-height: 1.6;
-  margin-top: 20px;
-  font-size: 18px;
-}
-
-/* 추천 버튼 영역 */
-.recommendation {
-  text-align: center;
+  font-size: 17px;
   margin-top: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  white-space: pre-line; /* 줄바꿈(\n) 처리 */
 }
 
-/* 댓글 작성 폼 */
+/* ========== 추천 영역 ========== */
+
+/* 추천 버튼이 있는 영역 */
+.recommendation {
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+/* 추천 버튼 기본 스타일 */
+.recommendation button {
+  background-color: #ff4d4f;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 추천 버튼 호버 시 색상 변화 */
+.recommendation button:hover {
+  background-color: #e04345;
+}
+
+/* ========== 댓글 작성 폼 ========== */
+
+/* 댓글 작성 영역 전체 */
 .comment-form {
   margin-top: 40px;
-  text-align: center;
 }
 
+/* 댓글 입력창 (textarea) */
 .comment-form textarea {
   width: 100%;
-  max-width: 600px;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
 }
 
-/* 댓글 목록 */
+/* 댓글 등록 버튼 */
+.comment-form button {
+  margin-top: 10px;
+  background-color: rgb(128, 128, 128);
+  color: white;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 등록 버튼 호버 시 색상 */
+.comment-form button:hover {
+  background-color: #0072a3;
+}
+
+/* ========== 댓글 리스트 ========== */
+
+/* "댓글 3개" 같은 카운트 텍스트 */
 .comment-count {
-  text-align: center;
-  margin-top: 40px;
+  margin-top: 30px;
   font-weight: bold;
 }
 
+/* 댓글 목록 전체 (ul) */
 #commentUl {
   list-style: none;
   padding: 0;
-  max-width: 600px;
-  margin: 0 auto 60px auto;
+  margin-top: 10px;
 }
 
+/* 각 댓글(li) 스타일 */
 #commentUl li {
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+/* 댓글 작성자 이름 강조 */
+#commentUl strong {
+  color: #2b6cb0;
+}
+
+/* 댓글 안의 수정/삭제 폼 */
+#commentUl form {
+  display: inline;
+  margin-left: 10px;
+}
+
+/* 수정/삭제 버튼 기본 스타일 */
+#commentUl button {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+}
+
+/* 버튼 호버 시 색상 강조 */
+#commentUl button:hover {
+  color: #e53935;
 }

@@ -1,44 +1,95 @@
-/* 정치, 경제, 사회 3개 카테고리 가로 3열 배치 */
+/* 정치, 경제, 사회 3개 카테고리 가로 3열 배치 컨테이너 */
 .category-container {
-  display: flex;
-  gap: 30px;
-  padding: 0 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;                /* 가로 배치 (플렉스박스) */
+  gap: 30px;                   /* 각 카테고리 사이 간격 */
+  padding: 0 20px;             /* 좌우 여백 */
+  max-width: 1200px;           /* 최대 넓이 제한 */
+  margin: 0 auto;              /* 가운데 정렬 */
 }
 
+/* 각 카테고리 섹션별 설정 */
 .category-container > section {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
+  flex: 1;                    /* 동일 비율로 넓이 분배 */
+  min-width: 0;               /* 최소 너비 설정 (오버플로우 방지) */
+  text-align: center;         /* 텍스트 중앙 정렬 */
 }
 
 /* 카테고리 제목 스타일 */
 .category-title {
-  font-size: 22px;
-  font-weight: bold;
-  margin: 30px 0 10px 0;
-  color: #0056b3;
-  text-align: center;
-  margin-left: auto;
+  font-size: 22px;            /* 제목 글자 크기 */
+  font-weight: bold;          /* 진하게 */
+  margin: 30px 0 10px 0;      /* 위, 아래 여백 조절 */
+  color: #0056b3;             /* 제목 색상 */
+  text-align: center;         /* 중앙 정렬 */
+  margin-left: auto;          /* 가로 중앙 정렬 위한 자동 마진 */
   margin-right: auto;
-  max-width: fit-content;
+  max-width: fit-content;     /* 콘텐츠 너비만큼 최대 폭 */
 }
 
-/* 각 카테고리 안 뉴스 카드 그리드 (가로 정렬 + 줄바꿈) */
+/* 각 카테고리 안 뉴스 카드 리스트 그리드 */
+/* flex-wrap: wrap 으로 줄바꿈 지원, justify-content: center 중앙 정렬 */
 .news-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  display: flex;              
+  flex-wrap: wrap;            
+  gap: 15px;                  /* 뉴스 카드 사이 간격 */
+  justify-content: center;    
+  max-width: 1200px;          /* 최대 넓이 */
+  margin: 0 auto;             /* 가운데 정렬 */
+  padding: 0 20px;            /* 좌우 여백 */
 }
 
-/* 뉴스 카드 공통 스타일 */
+/* 뉴스 카드 기본 스타일 */
 .news-card {
-  width: 100%;
+  width: 100%;                /* 각 카드 너비(부모 컨테이너에 따라 변경) */
+  background: white;          /* 배경색 */
+  border-radius: 10px;        /* 둥근 모서리 */
+  overflow: hidden;           /* 자식 요소 넘침 숨김 */
+  box-shadow: 0 0 10px rgba(0,0,0,0.08); /* 그림자 효과 */
+  text-align: center;         /* 텍스트 중앙 정렬 */
+  transition: transform 0.2s; /* 마우스 오버 시 애니메이션 */
+  cursor: pointer;            /* 마우스 포인터 변경 */
+}
+
+/* 뉴스 카드 마우스 오버 효과 - 살짝 위로 떠오르기 */
+.news-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 뉴스 카드 썸네일 이미지 스타일 */
+.news-card img {
+  width: 100%;               /* 가로 100% 채우기 */
+  height: 120px;             /* 고정 높이 */
+  object-fit: contain;       /* 이미지 비율 유지하면서 꽉 채우기 */
+  background-color: #f9f9f9; /* 배경색 */
+  border-radius: 8px 8px 0 0; /* 상단 둥근 모서리 */
+}
+
+/* 뉴스 카드 제목 텍스트 스타일 */
+.news-card-title {
+  padding: 10px;             /* 내부 여백 */
+  font-weight: bold;         
+  font-size: 15px;           
+  color: #222;               
+  display: block;            
+  text-decoration: none;     /* 링크 밑줄 제거 */
+}
+
+/* ======================== 속보 뉴스 ======================== */
+
+/* 속보 뉴스 컨테이너 - 가로 정렬(플렉스), 3열 배치 */
+.breaking-news {
+  max-width: 600px;          /* 최대 너비 (필요시 변경) */
+  margin: 0 auto;            /* 가운데 정렬 */
+  padding: 10px 20px;        /* 내부 여백 */
+  display: flex;             /* 가로 플렉스 */
+  flex-wrap: wrap;           /* 줄바꿈 가능 */
+  gap: 20px;                 /* 카드 사이 간격 */
+  justify-content: center;   /* 가운데 정렬 */
+}
+
+/* 속보 뉴스 카드 - 3열 너비 계산 */
+.breaking-news .news-card {
+  width: calc(33.333% - 20px); /* 3개씩 가로 배치, 간격 제외한 너비 */
   background: white;
   border-radius: 10px;
   overflow: hidden;
@@ -48,18 +99,22 @@
   cursor: pointer;
 }
 
-.news-card:hover {
+/* 속보 뉴스 카드 마우스 오버 */
+.breaking-news .news-card:hover {
   transform: translateY(-5px);
 }
 
-.news-card img {
+/* 속보 뉴스 썸네일 이미지 */
+.breaking-news .news-card img {
   width: 100%;
-  height: 120px;
-  object-fit: cover;
+  height: 160px;             /* 높이 키움 */
+  object-fit: contain;
+  background-color: #f9f9f9;
   border-radius: 8px 8px 0 0;
 }
 
-.news-card-title {
+/* 속보 뉴스 제목 텍스트 */
+.breaking-news .news-card .news-card-title {
   padding: 10px;
   font-weight: bold;
   font-size: 15px;
@@ -68,42 +123,24 @@
   text-decoration: none;
 }
 
-/* 속보 뉴스 - 1행에 3개 고정 배치 */
-.breaking-news {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 20px;
+/* ======================== 최신 뉴스 리스트 ======================== */
 
-  display: flex;
-  gap: 20px;
-  overflow-x: visible;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-
-.breaking-news .news-card {
-  flex: 1;
-  max-width: 32%;
-  min-width: 0;
-}
-
-/* 최신 뉴스 리스트 - 세로 정렬 */
+/* 최신 뉴스 리스트 컨테이너 - 세로 정렬 */
 #latest-news-list {
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 20px;
-
   display: flex;
-  flex-direction: column; /* 세로 정렬 */
-  gap: 15px;
+  flex-direction: column;    /* 세로 방향 */
+  gap: 15px;                 /* 카드 사이 간격 */
   justify-content: flex-start;
 }
 
-/* 최신 뉴스 카드 내부 썸네일 왼쪽, 제목 오른쪽 가로 정렬 */
+/* 최신 뉴스 각 카드 안 링크 - 썸네일과 텍스트 가로 정렬 */
 #latest-news-list .news-card a {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 15px;                 /* 이미지와 텍스트 간격 */
   text-decoration: none;
   color: inherit;
   padding: 10px;
@@ -112,27 +149,33 @@
   transition: background-color 0.2s;
 }
 
+/* 최신 뉴스 카드 호버 시 배경색 변화 */
 #latest-news-list .news-card a:hover {
   background-color: #f0f8ff;
 }
 
+/* 최신 뉴스 썸네일 이미지 스타일 */
 #latest-news-list .news-card img {
-  width: 100px;  /* 작게 조절 */
+  width: 100px;
   height: 70px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #f9f9f9;
   border-radius: 6px;
-  flex-shrink: 0;
+  flex-shrink: 0;            /* 축소 방지 */
 }
 
+/* 최신 뉴스 텍스트 스타일 */
 #latest-news-list .news-card p {
   margin: 0;
   font-weight: 600;
   font-size: 16px;
   color: #222;
-  flex-grow: 1;
+  flex-grow: 1;              /* 남은 공간 모두 차지 */
 }
 
-/* 더보기 버튼 */
+/* ======================== 더보기 버튼 ======================== */
+
+/* 더보기 버튼 스타일 */
 #loadMoreBtn {
   display: block;
   margin: 30px auto 50px;
@@ -146,6 +189,7 @@
   transition: background-color 0.2s;
 }
 
+/* 더보기 버튼 호버 시 색상 변경 */
 #loadMoreBtn:hover {
   background-color: #004099;
 }

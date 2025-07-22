@@ -28,9 +28,15 @@
 		background-color: #f9f9f9;
 		border: 1px solid #ddd;
 		border-radius: 10px;
-		height: 800px;
+		height: 600px;
 		padding: 15px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+	}
+	.sidebar a {
+	  display: block;           /* 줄바꿈 처리 */
+	  margin: 8px 0;            /* 위아래 8px 간격 */
+	  text-decoration: none;    /* 밑줄 제거 (선택) */
+	  color: #333;              /* 링크 색상 (선택) */
 	}
 	.ellipsis {
 	  display: block;
@@ -135,6 +141,11 @@
 		color: #222;
 		line-height: 1.4;
 		cursor: pointer;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		display: block;
+		width: 100%;
 	}
 
 
@@ -220,7 +231,7 @@
 <div class="container_body">
 	<!-- 좌측 메인 기사 영역 -->
 	<div class="main-content">
-		<div class="category-label">스포츠조선</div>
+		<div class="category-label">스포츠더펙트</div>
 
 		<h2 class="article-title">
 			[[${dto.title}]]
@@ -246,9 +257,9 @@
 					<div class="reporter-stats">[[${repo.category}]]뉴스를 담당하고 있습니다.</div>
 				</div>
 			</div>
-
-			<div class="reporter-board">K리그 MVP-득점왕 말컹, 6년 만의 복귀… 울산 HD와 계약 "한국 복귀 당연했다"[공식발표]</div>
-			<div class="reporter-board">"눈부신 업적 남긴 조타" 울버햄튼, 명예의 전당 헌액 결정… "망장일치로 즉각 결정"</div>
+			<div th:each="spList:${spList}">
+				<div class="reporter-board" ><a th:text="${spList.title}" th:href="@{|/sports/content/${spList.num}|}"></a></div>
+			</div>
 
 		</div>
 		<hr class="reaction-hr">
@@ -297,6 +308,14 @@
 
 	</div>
 </div>
+<footer class="footer">
+  <div class="footer-logo">THE FACT</div>
+  <div class="footer-info">
+    (주)더팩트 | 등록번호: 0000 | 등록·발행일자: 2025.07.22 | 제호: 더팩트 | 발행인: 더펙트 | 편집인: 더펙트 | 전화번호: 02-6020-0055<br>
+    주소: 서울시 관악구 남부순환로 1820 (에그옐로우 14층) | 한국기자협회, 한국사진기자협회, 한국인터넷신문협회 회원사<br>
+    Copyright ⓒ 더팩트(tf.co.kr) THE FACT의 모든 콘텐츠는 지적 재산권법의 보호를 받는 바, 무단 복사, 전재, 배포 등은 법적 제재를 받을 수 있습니다.
+  </div>
+</footer>
 
 <script>
 	$(document).ready(function () {
@@ -305,7 +324,7 @@
 		if (!currentReaction || currentReaction === 'null' || currentReaction.trim() === '') {
 			currentReaction = null;
 		}
-		console.log('초기 currentReaction:', currentReaction);
+
 		const boardNum = "[[${dto.num}]]";
 		const id = "[[${session.sid}]]"
 

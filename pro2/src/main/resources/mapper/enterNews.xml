@@ -6,32 +6,53 @@
 	<!-- 1. 일간 조회수 TOP10 뉴스 (상단 슬라이드용) -->
 	<select id="getTop10DailyNews" resultType="com.ex.data.EnterNewsDTO">
 		select
-			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 4000, 1) as content, enter.thumbnail as thumbnail, enter.writer_id,
-			null as writerNickname, null as writerEmail,
-			enter.reg, enter.readcount, enter.category, enter.hot
-		from enter_news enter
-		join enter_read_log log on enter.num = log.news_id
-		where to_char(log.read_date, 'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')
-		and enter.status = 'approve'
+			enter.num, enter.title, enter.thumbnail, enter.writer_id,
+			null as writernickname, null as writeremail, 
+			enter.reg, enter.readcount, enter.category, enter.hot 
+		from 
+			enter_news enter
+		join 
+			enter_read_log log on enter.num = log.news_id
+		where 
+			to_char(log.read_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and enter.status = 'approve'
 		group by
-			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 4000, 1), enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
-		order by count(1) desc
+			enter.num, enter.title, enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
+		order by 
+			count(*) desc
 		fetch first 10 rows only
 	</select>
 
 	<!-- 2. 최신 뉴스 목록 (무한스크롤용, 페이징) -->
 	<select id="getPagedEnterNews" resultType="com.ex.data.EnterNewsDTO">
 		select
-			num, title, content, writer_id, null as writerNickname, null as	writerEmail, reg, readcount, category, hot
-		from enter_news
-		where status = 'approve' order by reg desc
+			num, title, content, thumbnail, writer_id, 
+			null as writerNickname, null as writerEmail, 
+			reg, readcount, category, hot
+		from 
+			enter_news
+		where 
+			status = 'approve' order by reg desc
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>
+
+	<!-- 연예뉴스 인기순(총조회수 순) -->
+	<select id="getMostReadNews" resultType="com.ex.data.EnterNewsDTO">
+		select 
+			num, title, thumbnail, readcount
+		from 
+			enter_news
+		where 
+			status = 'approve'
+		order by 
+			readcount desc
+		fetch first #{limit} rows only
+	</select>
+
 
 	<!-- 연예 기사 생성 -->
 	<insert id="insertNews" parameterType="com.ex.data.EnterNewsDTO">
 		INSERT INTO enter_news (num, title, content, writer_id, reg, readcount, category, hot, thumbnail, status) 
-		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id}, SYSDATE, 0, #{category}, 0, #{thumbnail, jdbcType=VARCHAR}, 'wait')
+		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id}, SYSDATE, 0, #{category}, 0, #{thumbnail, jdbcType=VARCHAR}, 'approve')
 
 	</insert>
 
@@ -52,7 +73,7 @@
 		from
 			enter_news enter
 		join users on enter.writer_id = users.id
-		where enter.num = #{num} and enter.status = 'approve'
+		where enter.num = #{num}
 	</select>
 
 	<insert id="insertReadLog">
@@ -67,31 +88,32 @@
 		where num = #{num}
 	</update>
 
-	<!-- 기사 수정 -->
-	<update id="updateEnterNews" parameterType="com.ex.data.EnterNewsDTO">
-		update enter_news
-		set
-			title = #{title}, content = #{content}, category = #{category}, thumbnail = #{thumbnail}
-		where
-			num = #{num}
-	</update>
-	
 	<!-- 카테고리별 뉴스 목록 -->
 	<select id="getNewsByCategory" parameterType="string" resultType="com.ex.data.EnterNewsDTO">
 		select
-			num, title, DBMS_LOB.SUBSTR(content, 4000, 1) as content, writer_id,
+			num, title, writer_id,
 			null as writerNickname, null as writerEmail,
 			reg, readcount, category, hot, thumbnail
-		from enter_news
-		where status = 'approve' and category = #{category}
-		order by reg desc
+		from 
+			enter_news
+		where 
+			status = 'approve' and category = #{category}
+		order by 
+			reg desc
 	</select>
-	
+
 	<!-- 카테고리별 뉴스. 무한스크롤용 -->
 	<select id="getNewsByCategoryPaged" resultType="com.ex.data.EnterNewsDTO">
-		select * from enter_news
-		where status = 'approve' and category = #{category}
-		order by reg desc
+		select
+			num, title, writer_id,
+			null as writerNickname, null as writerEmail,
+			reg, readcount, category, hot, thumbnail
+		from 
+			enter_news
+		where 
+			status = 'approve' and category = #{category}
+		order by 
+			reg desc
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>
 

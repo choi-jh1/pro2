@@ -51,6 +51,7 @@ public interface SportsMapper {
 	public List<SportsDTO> sportsReadCount();
 	// 스포츠기사 반응순
 	public List<SportsDTO> sportsReaction();
-
+	// 기자가 쓴 스포츠기사
+	public List<SportsDTO> sportsReporter(String id);
 }
 

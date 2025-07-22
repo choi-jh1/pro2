@@ -28,6 +28,10 @@
 	  padding: 20px;
 	  min-height: 400px;
 	}
+	a {
+	  text-decoration: none;
+	  color: inherit;
+	}
 </style>
 
 <header class="site-header">
@@ -42,7 +46,7 @@
 	      <a th:href="@{/user/login}">로그인</a>
 	      <a th:href="@{/user/insert}">회원가입</a>
 	  </span>
-	  <span th:if="${session.sid != null}">
+	  <span th:if="${session.role == 'user'}">
 	  	      <a th:href="@{/user/logout}">로그아웃</a>
 			  <a th:href="@{/user/myPage}">마이페이지</a>
 	  </span>
@@ -68,6 +72,7 @@
   <div class="sidebar">
     <ul>
       <li class="menu-item" data-url="/user/update">회원 정보 수정</li>
+	  <li class="menu-item" data-url="/user/pwChange">비밀번호 변경</li>
       <li class="menu-item" data-url="/user/delete">회원 탈퇴</li>
     </ul>
   </div>
@@ -98,4 +103,8 @@
 	    });
 	  });
 	});
+</script>
+<script th:if="${msg != null}" >
+	const message = '[[${msg}]]';
+    alert(message);
 </script>
