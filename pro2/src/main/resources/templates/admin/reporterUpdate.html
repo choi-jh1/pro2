@@ -18,8 +18,8 @@
 			<td th:text="${#temporals.format(user.reg, 'yy-MM-dd HH:mm')}"></td>
 			<td>
 				<select class="category-select" th:data-id="${user.id}">
-					<option value="일반뉴스" th:selected="${user.category == '일반뉴스'}">일반뉴스</option>
-					<option value="연애" th:selected="${user.category == '연예'}">연예</option>
+					<option value="일반" th:selected="${user.category == '일반'}">일반</option>
+					<option value="연예" th:selected="${user.category == '연예'}">연예</option>
 					<option value="스포츠" th:selected="${user.category == '스포츠'}">스포츠</option>
 				</select>
 			</td>
