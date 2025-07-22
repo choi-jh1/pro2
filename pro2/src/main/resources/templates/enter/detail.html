@@ -97,22 +97,35 @@
 			<div th:each="comment : ${commentList}" class="comment-box" style="border-top: 1px solid #ccc; padding: 10px 0;">
 				<div>
 					<strong th:text="${comment.writer}">작성자</strong>
-					<span th:text="${#dates.format(comment.reg, 'yyyy-MM-dd HH:mm')}">날짜</span>
+					<span th:text="${#temporals.format(comment.reg, 'yyyy-MM-dd HH:mm')}">날짜</span>
 				</div>
 				<p th:text="${comment.content}">내용</p>
 
 				<!-- 삭제 버튼: 작성자 or 관리자 -->
 				<form th:if="${sid == comment.writer or role == 'admin'}"
-				      th:action="@{/comment/delete}" method="post" style="display:inline">
+				      th:action="@{/enter/commentdelete}" method="post" style="display:inline">
 					<input type="hidden" name="com_num" th:value="${comment.com_num}" />
 					<input type="hidden" name="num" th:value="${dto.num}" />
 					<button type="submit">삭제</button>
 				</form>
+				
+				<!-- 대댓글 작성 폼 -->
+				<div th:if="${sid != null}" style="margin-left: 30px; margin-top: 10px;">
+					<form th:action="@{/enter/reply}" method="post">
+						<input type="hidden" name="num" th:value="${dto.num}" />
+						<input type="hidden" name="writer" th:value="${sid}" />
+						<input type="hidden" name="ref" th:value="${comment.ref}" />
+						<input type="hidden" name="re_level" th:value="${comment.re_level + 1}" />
+						<input type="hidden" name="re_step" th:value="${comment.re_step + 1}" />
+						<textarea name="content" rows="2" placeholder="답글을 입력하세요" style="width: 100%;" required></textarea>
+						<button type="submit" style="margin-top: 5px;">답글 작성</button>
+					</form>
+				</div>
 			</div>
 
 			<!-- 댓글 작성 폼 -->
 			<div class="comment-form" style="margin-top: 20px;" th:if="${sid != null}">
-				<form th:action="@{/comment/insert}" method="post">
+				<form th:action="@{/enter/comment}" method="post">
 					<input type="hidden" name="num" th:value="${dto.num}" />
 					<input type="hidden" name="writer" th:value="${sid}" />
 					<textarea name="content" placeholder="댓글을 입력하세요" rows="3" style="width: 100%;" required></textarea>
