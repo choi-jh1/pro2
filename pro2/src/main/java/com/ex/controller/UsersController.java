@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ex.data.EnterNewsDTO;
 import com.ex.data.NewsDTO;
 import com.ex.data.SportsDTO;
 import com.ex.data.UsersDTO;
+import com.ex.service.EnterNewsService;
 import com.ex.service.NewsService;
 import com.ex.service.SportsService;
 import com.ex.service.UsersService;
@@ -28,15 +30,19 @@ public class UsersController {
 	private final UsersService usersService;
 	private final SportsService sportsService;
 	private final NewsService newsService;
+	private final EnterNewsService enterNewsService;
 	
 	// 메인화면
 	@GetMapping("main")
 	public String main(Model model) {
 		List<NewsDTO> newsList = newsService.newsReadCount();
 		List<SportsDTO> sportsList = sportsService.sportsReadCount();
+		List<EnterNewsDTO> enterList = enterNewsService.getMostReadNews(10);
 		
 		model.addAttribute("sportsList",sportsList);
 		model.addAttribute("newsList",newsList);
+		model.addAttribute("enterList", enterList);
+		
 		return "user/main";
 	}
 	
