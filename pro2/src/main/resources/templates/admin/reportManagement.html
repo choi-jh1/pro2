@@ -1,27 +1,6 @@
-<!-- 스타일 -->
-<style>
-.modal {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex; justify-content: center; align-items: center;
-}
-.modal-content {
-  background: white; padding: 20px; border-radius: 5px; width: 700px;
-  max-height: 80vh; overflow-y: auto;
-}
-#reporterTable {
-  width: 100%; border-collapse: collapse; margin-top: 10px;
-}
-#reporterTable th, #reporterTable td {
-  border: 1px solid #ccc; padding: 8px;
-}
-#reporterTable tbody tr:hover {
-  background-color: #f0f8ff;
-}
-</style>
+<link rel="stylesheet" th:href="@{/css/reportManagement.css}">
 
 <!-- 본문 -->
-<center><h1>제보 글 목록</h1></center>
 <div th:if="${reportCount==0}">
   <table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
     <tr align="center">

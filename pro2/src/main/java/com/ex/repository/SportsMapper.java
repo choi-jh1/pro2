@@ -39,7 +39,6 @@ public interface SportsMapper {
 	public void deleteReaction(@Param("sports_id") int num,@Param("user_id") String id);
 	
 	// 좋아요 개수
-
 	List<ReactionCountDTO> reactionCount1(int num);
 
 	
@@ -50,6 +49,8 @@ public interface SportsMapper {
 	public List<Map<String,Object>> reactionCount(int num);
 	// 스포츠기사 조회순
 	public List<SportsDTO> sportsReadCount();
+	// 스포츠기사 반응순
+	public List<SportsDTO> sportsReaction();
 
 }
 

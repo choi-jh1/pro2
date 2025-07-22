@@ -2,7 +2,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <div class="container">
-  <h1 class="logo">더펙트</h1>
+		<div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
   <h2 class="title">회원가입</h2>
   <form th:action="@{/user/insert}" method="post" class="form-box" name="userInput" onsubmit="return memCheck();" id="username">
     <label>아이디 <input type="text" name="id" id="id" required/></label>

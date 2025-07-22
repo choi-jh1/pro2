@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>내 정보 조회</title>
+	<link rel="stylesheet" th:href="@{/css/reporter.css}" />
 </head>
 <body>
     <h2>내 정보 조회</h2>
@@ -15,7 +16,6 @@
 
     <div th:if="${reporter != null}">
         <h3>기자 상세 정보</h3>
-        <p>기자 이름: <span th:text="${reporter.writer_name}"></span></p>
         <p>카테고리: <span th:text="${reporter.category}"></span></p>
         <p>소개: <span th:text="${reporter.intro}"></span></p>
     </div>

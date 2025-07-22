@@ -116,9 +116,13 @@ public class SportsService {
     public int reactionAllCount(int num) {
     	return sportsMapper.reactionAllCount(num);
     }
-    // 스포츠기사 조회순
+    // 스포츠기사 조회순 10개
     public List<SportsDTO> sportsReadCount(){
     	return sportsMapper.sportsReadCount();
+    }
+    // 스포츠기사 반응순
+    public List<SportsDTO> sportsReaction(){
+    	return sportsMapper.sportsReaction();
     }
 }
 

@@ -1,0 +1,41 @@
+/* newsList.css */
+
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+.news-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.news-item a {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+
+.news-item .thumb {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.news-item .title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  flex-grow: 1;
+  word-break: break-word;
+}

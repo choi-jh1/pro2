@@ -39,13 +39,13 @@
 	</insert>
 	
 	<!-- 카테고리 별 기사 최신 순 -->
-	<select id="selectByCategory" parameterType="string" resultType="com.ex.data.NewsDTO">
+	<select id="selectByCategory" parameterType="String" resultType="com.ex.data.NewsDTO">
 		SELECT n.num, n.title,  n.writer, r.writer_name, r.profile_img,  n.reg, n.thumbUrl, n.hot, n.category FROM news n
 	    LEFT JOIN reporter r ON n.writer = r.id WHERE n.category = #{category} ORDER BY n.reg DESC
 	</select>
 	
 	<select id="selectByNum" parameterType="int" resultType="com.ex.data.NewsDTO">
-		SELECT n.num, n.title, n.content, n.writer, r.writer_name, r.profile_img, n.reg, n.hot, n.thumbUrl 
+		SELECT n.num, n.title, n.content, n.writer, r.writer_name as writerName, r.profile_img as profile_img, n.reg, n.hot, n.thumbUrl 
 	    FROM news n LEFT JOIN reporter r ON n.writer = r.id WHERE n.num = #{num}
 	</select>
 	
@@ -54,9 +54,17 @@
 	</update>
 	
 	<select id="selectByWriter" parameterType="String" resultType="com.ex.data.NewsDTO">
-		select * from news where writer = #{writer, jdbcType=VARCHAR} order by reg desc
+		select num, title, writer, reg, readCount, hot, category, thumburl, is_breaking, content, status from news 
+		where writer = #{writer, jdbcType=VARCHAR} order by reg desc
 	</select>
-  
-	
+  	<!--조회수 출력-->
+	<select id="newsReadCount" resultType="com.ex.data.NewsDTO">
+		<![CDATA[
+			select * from (select * from news order by readCount desc) where rownum <= 10
+		]]>
+	</select>
+	<update id="newsReadCountUp">
+		update news set readCount = readCount+1 where num = #{num}
+	</update>
 
 </mapper>

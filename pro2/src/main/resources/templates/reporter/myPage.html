@@ -37,10 +37,10 @@
     <header class="site-header">
 		<div class="container">
 			    <div class="logo">
-					<a th:href="@{/user/main}">로고</a>
+		<div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
 				</div>
 			    <div class="top-bar">
-			      <div class="date">2025.07.03</div>
+			      <div class="date" th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')}"></div>
 			      <div class="user-menu">
 			        <span th:if="${session.sid == null}">
 			          <a th:href="@{/user/login}">로그인</a>
@@ -63,22 +63,14 @@
 			    <nav class="main-nav">
 			      <ul>
 			        <li><a th:href="@{/news/home}">뉴스</a></li>
-			        <li><a th:href="@{/sports/list}">스포츠</a></li>
+			        <li><a th:href="@{/sports/main}">스포츠</a></li>
 			        <li><a th:href="@{/enter/main}">엔터</a></li>
 			      </ul>
 			      <div class="search">
 			        <input type="text" placeholder="검색" />
 			      </div>
 			    </nav>
-			    <nav class="sub-nav">
-			      <ul>
-			        <li><a href="#">종합1</a></li>
-			        <li><a href="#">야구2</a></li>
-			        <li><a href="#">축구3</a></li>
-			        <li><a href="#">배구4</a></li>
-			        <li><a href="#">농구</a></li>
-			      </ul>
-			    </nav>
+
 		</div>
     </header>
 

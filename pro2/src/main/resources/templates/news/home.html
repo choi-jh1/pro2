@@ -3,100 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <title>뉴스 홈</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link rel="stylesheet" th:href="@{/css/newsHome.css}">
 </head>
-	<body>
-		<h1>헤더 넣어야 함</h1>
-		<h1>언론사 정보 해야 함</h1>
-	</body>
-	<body>
-		<nav>
-		<h2>카테고리</h2>
-		 	<a th:href="@{/news/politics}">정치</a>
-			<a th:href="@{/news/economy}">경제</a>
-		 	<a th:href="@{/news/society}">사회</a>
-		</nav>
-	
-		<h1>최신 뉴스 (각 카테고리 별 5개)(조회수 순)</h1>
-		<h2>정치</h2>
-		<div th:each="news : ${politicsTop5}">
-		  <a th:href="@{/news/content/{num}(num=${news.num})}">
-		    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120" />
-		    <br>
-		    <span th:text="${news.title}">정치 뉴스 제목</span>
-		  </a>
-		  <br>
-		</div>
+<body>
 
-		<h2>경제</h2>
-		<div th:each="news : ${economyTop5}">
-		  <a th:href="@{/news/content/{num}(num=${news.num})}">
-		    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120" />
-		    <br>
-		    <span th:text="${news.title}">경제 뉴스 제목</span>
-		  </a>
-		  <br>
-		</div>
+  <!-- 헤더 -->
+  <div class="site-header">
+    <div class="container">
+      <div class="logo">로고</div>
 
-		<h2>사회</h2>
-		<div th:each="news : ${societyTop5}">
-		  <a th:href="@{/news/content/{num}(num=${news.num})}">
-		    <img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120" />
-		    <br>
-		    <span th:text="${news.title}">사회 뉴스 제목</span>
-		  </a>
-		  <br>
-		</div>
+      <div class="top-bar">
+        <div class="date">2025.07.03</div>
+        <div class="user-menu">
+          <span th:if="${session.sid == null}">
+            <a th:href="@{/user/login}">로그인</a>
+            <a th:href="@{/user/insert}">회원가입</a>
+          </span>
+          <span th:if="${session.sid != null and session.role == 'admin'}">
+            <a th:href="@{/user/logout}">로그아웃</a>
+            <a th:href="@{/admin/adminPage}">관리자페이지</a>
+          </span>
+          <span th:if="${session.sid != null and session.role != 'admin'}">
+            <a th:href="@{/user/myPage}">마이페이지(기자)</a>
+            <a th:href="@{/user/logout}">로그아웃</a>
+          </span>
+        </div>
+      </div>
 
-		<h2>속보 뉴스 3개[나중에 좌우로 설정해야 함]</h2>
-		<div th:each="news : ${breakingNews}">
-		 	<a th:href="@{/news/content/{num}(num=${news.num})}">
-		   		<img th:src="${news.thumbUrl}" alt="썸네일" width="200" height="120"><br>
-		    	<span th:text="${news.title}"></span>
-		 	</a>
-		</div>
-		
-		<h1>최신 뉴스 (더보기 ajax)</h1>
-		<div id="latest-news-list">
-		  <!-- 최신 뉴스 10개씩 여기 추가됨 -->
-		</div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="/news/home">뉴스</a></li>
+          <li><a href="/sports/main">스포츠</a></li>
+          <li><a href="#">엔터</a></li>
+        </ul>
+        <div class="search">
+          <input type="text" placeholder="검색" />
+        </div>
+      </nav>
 
-		<button id="loadMoreBtn">더보기</button>
+      <nav class="sub-nav">
+        <ul>
+          <li><a href="/news/home">종합</a></li>
+          <li><a href="/news/politics">정치</a></li>
+          <li><a href="/news/economy">경제</a></li>
+          <li><a href="/news/society">사회</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
-		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-		<script>
-		  let page = 1;
+  <!-- 정치, 경제, 사회 카테고리 3개를 가로로 배치하는 컨테이너 추가 -->
+  <div class="category-container">
 
-		  function loadLatestNews() {
-		    $.ajax({
-		      url: '/news/latestPage',
-		      method: 'get',
-		      data: { page: page },
-		      success: function(data) {
-		        if (data.length === 0) {
-		          $('#loadMoreBtn').hide(); // 더이상 뉴스 없으면 버튼 숨김
-		          return;
-		        }
-		        data.forEach(function(news) {
-		          $('#latest-news-list').append(`
-		            <div>
-		              <a href="/news/content/${news.num}">
-		                <img src="${news.thumbUrl}" alt="썸네일" width="200" height="120">
-		                <p>${news.title}</p>
-		              </a>
-		            </div>
-		          `);
-		        });
-		        page++;
-		      }
-		    });
-		  }
+    <section>
+      <h2 class="category-title">정치</h2>
+      <div class="news-grid" th:each="news : ${politicsTop5}">
+        <div class="news-card">
+          <a th:href="@{/news/content/{num}(num=${news.num})}">
+            <img th:src="${news.thumbUrl}" alt="썸네일">
+            <span class="news-card-title" th:text="${news.title}">정치 뉴스 제목</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-		  $('#loadMoreBtn').on('click', loadLatestNews);
+    <section>
+      <h2 class="category-title">경제</h2>
+      <div class="news-grid" th:each="news : ${economyTop5}">
+        <div class="news-card">
+          <a th:href="@{/news/content/{num}(num=${news.num})}">
+            <img th:src="${news.thumbUrl}" alt="썸네일">
+            <span class="news-card-title" th:text="${news.title}">경제 뉴스 제목</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-		  // 페이지 로드 시 1페이지 먼저 로드
-		  $(document).ready(function() {
-		    loadLatestNews();
-		  });
-		</script>
-	</body>
+    <section>
+      <h2 class="category-title">사회</h2>
+      <div class="news-grid" th:each="news : ${societyTop5}">
+        <div class="news-card">
+          <a th:href="@{/news/content/{num}(num=${news.num})}">
+            <img th:src="${news.thumbUrl}" alt="썸네일">
+            <span class="news-card-title" th:text="${news.title}">사회 뉴스 제목</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 속보 뉴스 -->
+  <h2 class="category-title">속보</h2>
+  <div class="breaking-news" th:each="news : ${breakingNews}">
+    <div class="news-card">
+      <a th:href="@{/news/content/{num}(num=${news.num})}">
+        <img th:src="${news.thumbUrl}" alt="썸네일">
+        <span class="news-card-title" th:text="${news.title}">속보 제목</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 최신 뉴스 + 더보기 -->
+  <h2 class="category-title">최신 뉴스</h2>
+  <div id="latest-news-list">
+    <!-- AJAX로 로드됨 -->
+  </div>
+  <button id="loadMoreBtn">더보기</button>
+
+  <!-- 스크립트 -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    let page = 1;
+    function loadLatestNews() {
+      $.ajax({
+        url: '/news/latestPage',
+        method: 'get',
+        data: { page: page },
+        success: function(data) {
+          if (data.length === 0) {
+            $('#loadMoreBtn').hide();
+            return;
+          }
+          data.forEach(function(news) {
+            $('#latest-news-list').append(`
+              <div class="news-card">
+                <a href="/news/content/${news.num}">
+                  <img src="${news.thumbUrl}" alt="썸네일">
+                  <p>${news.title}</p>
+                </a>
+              </div>
+            `);
+          });
+          page++;
+        }
+      });
+    }
+
+    $('#loadMoreBtn').on('click', loadLatestNews);
+    $(document).ready(function() {
+      loadLatestNews();
+    });
+  </script>
+</body>
 </html>
