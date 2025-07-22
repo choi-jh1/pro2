@@ -176,17 +176,7 @@
 	</div>
 
 
-	<!-- 뉴스 카드 목록 -->
-	<main class="news-grid" id="newsContainer">
-		<div th:each="news : ${categoryNews}" class="news-card">
-			<a th:href="@{/enter/detail(num=${news.num})}">
-				<img th:src="${news.thumbnail}" alt="썸네일" class="thumbnail">
-				<h3 th:text="${news.title}">기사 제목</h3>
-				<p th:text="${#temporals.format(news.reg, 'yyyy.MM.dd')}">작성일</p>
-			</a>
-		</div>
-	</main>
-	<div id="loading" style="text-align: center; margin: 20px; display: none;">Loading...</div>
+
 	<footer class="footer">
 	  <div class="footer-logo">THE FACT</div>
 	  <div class="footer-info">
