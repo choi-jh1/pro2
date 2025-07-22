@@ -15,7 +15,9 @@
 
 <!-- 제보 있음 -->
 <div th:unless="${reportCount==0}">
+<div th:if="${session.role != 'admin' and session.role != 'reporter'}">
   <center><a th:href="@{/report/write}">제보하기</a></center>
+</div>
   <table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
     <tr height="30">
       <th>제보 글 번호</th>
