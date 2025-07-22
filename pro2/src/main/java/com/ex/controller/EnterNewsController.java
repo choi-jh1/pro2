@@ -177,15 +177,6 @@ public class EnterNewsController {
 		return "redirect:/enter/detail?num=" + num;
 	}
 	
-	// 연예뉴스 댓글 삭제
-	@PostMapping("/commentdelete")
-	public String deleteEnterComment(@RequestParam("com_num") int com_num,
-	                                 @RequestParam("num") int num) {
-	    commentService.deleteComment(com_num);
-	    return "redirect:/enter/detail?num=" + num;
-	}
-
-	
 	// 연예뉴스 대댓글
 	@PostMapping("/reply")
 	public String replyEnterComment(@ModelAttribute CommentDTO dto) {

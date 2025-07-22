@@ -174,13 +174,6 @@
 						</div>
 						<p th:text="${comment.content}">내용</p>
 	
-						<form th:if="${sid == comment.writer or role == 'admin'}" th:action="@{/enter/commentdelete}"
-							method="post" style="display:inline">
-							<input type="hidden" name="com_num" th:value="${comment.com_num}" />
-							<input type="hidden" name="num" th:value="${dto.num}" />
-							<button type="submit">삭제</button>
-						</form>
-	
 						<!-- 대댓글 -->
 						<div th:if="${sid != null}" style="margin-left: 30px; margin-top: 10px;">
 							<form th:action="@{/enter/reply}" method="post">
