@@ -117,6 +117,10 @@ public class ReportService {
        return reportMapper.checkPw(reportId, password);
     }
     
+    // 제보글 상태변경
+    public void updateStatus(int report_id, String status) {
+    	reportMapper.updateStatus(report_id, status);
+    }
     
     
 }

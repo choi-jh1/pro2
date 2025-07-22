@@ -45,4 +45,9 @@
 	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
 		select * from report_board where assigned = #{reporterId} order by report_id desc
 	</select>
+	
+	<!--배정된 기자가 기사작성을 누르면 기사화완료-->
+	<update id="updateStatus">
+		update report_board set status = '기사화완료' where report_id = #{report_id}
+	</update>
 </mapper>

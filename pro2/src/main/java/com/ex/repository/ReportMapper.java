@@ -32,5 +32,6 @@ public interface ReportMapper {
 
     List<ReportBoardDTO> getAssignedReports(@Param("reporterId") String reporterId);
 
-
+    // 배정된 제보 상태변경
+    public void updateStatus(@Param("report_id") int report_id, @Param("status") String status);
 }

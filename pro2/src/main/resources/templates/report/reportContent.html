@@ -37,4 +37,13 @@
     <th>상태</th>
     <td><span th:text="${dto.status}"></span></td>
   </tr>
+  <tr th:if="${dto.assigned == session.sid and dto.status !='기사화완료'}">
+	<td colspan="2" align="center">
+		<form th:action="@{/report/reportWrite}" method="get">
+		<input type="hidden" name="report_id" th:value="${dto.report_id}">
+		<input type="hidden" name="category" th:value="${category}" />
+			<button type="submit" class="btn btn-primary">기사작성</button>
+		</form>
+	</td>
+  </tr>
 </table>
