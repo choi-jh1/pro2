@@ -153,7 +153,8 @@ public class SportsController {
 	    // 기사 정보
 	    SportsDTO dto = sportsService.sportsContent(boardNum);
 	    List<SportsDTO> list = sportsService.sportsReadCount();
-
+	    
+	    model.addAttribute("spList",sportsService.sportsReporter(dto.getWriter()));
 	    model.addAttribute("list", list);
 	    model.addAttribute("allReaction", sportsService.reactionAllCount(boardNum));
 	    model.addAttribute("count", count);

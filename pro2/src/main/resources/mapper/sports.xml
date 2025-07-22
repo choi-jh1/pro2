@@ -76,4 +76,7 @@
 			GROUP BY s.num, s.title, s.thumbnail, u.name
 				ORDER BY count DESC
 	</select>
+	<select id="sportsReporter" resultType="com.ex.data.SportsDTO">
+		select s.title,s.num from sports s join reporter r on s.writer = r.id where r.id=#{id} order by s.num desc fetch first 2 rows only
+	</select>
 </mapper>
