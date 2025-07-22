@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ex.data.CommentDTO;
 import com.ex.data.EnterNewsDTO;
-import com.ex.data.UsersDTO;
 import com.ex.service.CommentService;
 import com.ex.service.EnterNewsService;
 
