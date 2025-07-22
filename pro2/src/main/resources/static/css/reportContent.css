@@ -43,3 +43,9 @@
   margin-top: 8px;
   border-radius: 6px;
 }
+.no-file {
+  color: #555;
+  text-decoration: none;
+  cursor: default;
+  font-weight: normal;
+}
