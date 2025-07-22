@@ -3,130 +3,190 @@
 
 <head>
 	<meta charset="UTF-8">
+	<title th:text="${dto.title}">연예 뉴스</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<style>
+		.container_body {
+			display: flex;
+			flex-direction: row;
+			max-width: 1100px;
 
-	<!--<style>
-		.container {
-			max-width: 800px;
 			margin: 40px auto;
-			font-family: sans-serif;
+			gap: 30px;
+			font-family: 'Noto Sans KR', sans-serif;
 		}
-
-		.meta {
-			font-size: 14px;
-			color: #666;
+		.main-content {
+			flex: 1;
+			background-color: #fff;
+			padding: 25px;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+		}
+		.sidebar {
+			width: 250px;
+			background-color: #f9f9f9;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+			height: auto;
+			padding: 15px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+		}
+		.article-title {
+			font-size: 24px;
+			font-weight: bold;
+			line-height: 1.4;
 			margin-bottom: 10px;
 		}
-
-		.content {
-			border-top: 1px solid #ccc;
-			padding-top: 20px;
-			font-size: 16px;
+		.article-info {
+			font-size: 13px;
+			color: gray;
+			margin-bottom: 20px;
+		}
+		.article-body {
+			font-size: 18px;
 			line-height: 1.6;
 		}
-
+		.article-body img {
+			width: 100%;
+			max-width: 700px;
+			min-width: 700px;
+			display: block;
+			margin: 10px auto;
+		}
 		.btn-group {
-			margin-top: 30px;
+			margin-top: 40px;
+			text-align: center;
 		}
-
 		.btn-group form {
-			display: inline;
+			display: inline-block;
+			margin: 0 10px;
 		}
-
 		.btn-group button {
-			padding: 8px 14px;
-			margin-right: 10px;
-			background: #eee;
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: #fff;
 			border: none;
 			border-radius: 4px;
 			cursor: pointer;
 			font-size: 14px;
 		}
-
 		.btn-group button:hover {
-			background: #ddd;
+			background-color: #0056b3;
 		}
-	</style>-->
+		.comment-section {
+			margin-top: 50px;
+		}
+		.comment-box {
+			border-top: 1px solid #ccc;
+			padding: 10px 0;
+		}
+		.ellipsis {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: block;
+		}
+	</style>
 </head>
 
 <body>
-	<div class="container">
 
-		<h1 th:text="'제목 : ' + ${dto.title}"></h1>
+	<div class="container_body">
 
-		<div class="meta">
-			작성자: <span th:text="${dto.writerNickname}"></span> |
-			등록일: <span th:text="${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></span> |
-			조회수: <span th:text="${dto.readCount}"></span> |
-			카테고리: <span th:text="${dto.category}"></span>
-		</div>
+		<!-- 좌측 기사 본문 -->
+		<div class="main-content">
 
-		<div class="content" th:utext="${dto.content}"></div>
+			<h2 class="article-title" th:text="${dto.title}"></h2>
 
-		<div class="btn-group">
-
-			<!-- 목록 버튼: 누구나 -->
-			<form th:action="@{/enter/main}" method="get">
-				<button type="submit">목록</button>
-			</form>
-
-			<!-- 수정/삭제 버튼: 작성자 or 관리자만 -->
-			<div th:if="${session.sid == dto.writer_id or session.role == 'admin'}">
-				<form th:action="@{/enter/editForm}" method="post">
-					<input type="hidden" name="num" th:value="${dto.num}" />
-					<button type="submit">수정</button>
-				</form>
-
-				<form th:action="@{/enter/deletePro}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
-					<input type="hidden" name="num" th:value="${dto.num}" />
-					<button type="submit">삭제</button>
-				</form>
+			<div class="article-info">
+				작성자: <span th:text="${dto.writerNickname}"></span> |
+				등록일: <span th:text="${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></span> |
+				조회수: <span th:text="${dto.readCount}"></span> |
+				카테고리: <span th:text="${dto.category}"></span>
 			</div>
 
-		</div>
+			<div class="article-body" th:utext="${dto.content}"></div>
 
-		<!-- 댓글 영역 시작 -->
-		<div class="comment-section" style="margin-top: 50px;">
-			<h2>댓글</h2>
-
-			<!-- 댓글이 없을 경우 -->
-			<div th:if="${commentList.size() == 0}">
-				<p>아직 댓글이 없습니다.</p>
-			</div>
-
-			<!-- 댓글 리스트 반복 -->
-			<div th:each="comment : ${commentList}" class="comment-box" style="border-top: 1px solid #ccc; padding: 10px 0;">
-				<div>
-					<strong th:text="${comment.writer}">작성자</strong>
-					<span th:text="${#dates.format(comment.reg, 'yyyy-MM-dd HH:mm')}">날짜</span>
+			<!-- 수정/삭제/목록 -->
+			<div class="btn-group">
+				<form th:action="@{/enter/main}" method="get">
+					<button type="submit">목록</button>
+				</form>
+				<div th:if="${session.sid == dto.writer_id or session.role == 'admin'}">
+					<form th:action="@{/enter/editForm}" method="post">
+						<input type="hidden" name="num" th:value="${dto.num}" />
+						<button type="submit">수정</button>
+					</form>
+					<form th:action="@{/enter/deletePro}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+						<input type="hidden" name="num" th:value="${dto.num}" />
+						<button type="submit">삭제</button>
+					</form>
 				</div>
-				<p th:text="${comment.content}">내용</p>
-
-				<!-- 삭제 버튼: 작성자 or 관리자 -->
-				<form th:if="${sid == comment.writer or role == 'admin'}"
-				      th:action="@{/comment/delete}" method="post" style="display:inline">
-					<input type="hidden" name="com_num" th:value="${comment.com_num}" />
-					<input type="hidden" name="num" th:value="${dto.num}" />
-					<button type="submit">삭제</button>
-				</form>
 			</div>
 
-			<!-- 댓글 작성 폼 -->
-			<div class="comment-form" style="margin-top: 20px;" th:if="${sid != null}">
-				<form th:action="@{/comment/insert}" method="post">
-					<input type="hidden" name="num" th:value="${dto.num}" />
-					<input type="hidden" name="writer" th:value="${sid}" />
-					<textarea name="content" placeholder="댓글을 입력하세요" rows="3" style="width: 100%;" required></textarea>
-					<button type="submit" style="margin-top: 5px;">댓글 작성</button>
-				</form>
-			</div>
+			<!-- 댓글 영역 -->
+			<div class="comment-section">
+				<h2>댓글</h2>
 
-			<div th:if="${sid == null}">
-				<p>댓글을 작성하려면 <a th:href="@{/user/login}">로그인</a>하세요.</p>
+				<div th:if="${commentList.size() == 0}">
+					<p>아직 댓글이 없습니다.</p>
+				</div>
+
+				<div th:each="comment : ${commentList}" class="comment-box">
+					<div>
+						<strong th:text="${comment.writer}">작성자</strong>
+						<span th:text="${#temporals.format(comment.reg, 'yyyy-MM-dd HH:mm')}">날짜</span>
+					</div>
+					<p th:text="${comment.content}">내용</p>
+
+					<form th:if="${sid == comment.writer or role == 'admin'}"
+					      th:action="@{/enter/commentdelete}" method="post" style="display:inline">
+						<input type="hidden" name="com_num" th:value="${comment.com_num}" />
+						<input type="hidden" name="num" th:value="${dto.num}" />
+						<button type="submit">삭제</button>
+					</form>
+
+					<!-- 대댓글 -->
+					<div th:if="${sid != null}" style="margin-left: 30px; margin-top: 10px;">
+						<form th:action="@{/enter/reply}" method="post">
+							<input type="hidden" name="num" th:value="${dto.num}" />
+							<input type="hidden" name="writer" th:value="${sid}" />
+							<input type="hidden" name="ref" th:value="${comment.ref}" />
+							<input type="hidden" name="re_level" th:value="${comment.re_level + 1}" />
+							<input type="hidden" name="re_step" th:value="${comment.re_step + 1}" />
+							<textarea name="content" rows="2" placeholder="답글을 입력하세요" style="width: 100%;" required></textarea>
+							<button type="submit" style="margin-top: 5px;">답글 작성</button>
+						</form>
+					</div>
+				</div>
+
+				<!-- 댓글 입력 -->
+				<div class="comment-form" style="margin-top: 20px;" th:if="${sid != null}">
+					<form th:action="@{/enter/comment}" method="post">
+						<input type="hidden" name="num" th:value="${dto.num}" />
+						<input type="hidden" name="writer" th:value="${sid}" />
+						<textarea name="content" placeholder="댓글을 입력하세요" rows="3" style="width: 100%;" required></textarea>
+						<button type="submit" style="margin-top: 5px;">댓글 작성</button>
+					</form>
+				</div>
+
+				<div th:if="${sid == null}">
+					<p>댓글을 작성하려면 <a th:href="@{/user/login}">로그인</a>하세요.</p>
+				</div>
 			</div>
 		</div>
-		<!-- 댓글 영역 끝 -->
-		
-	</div>
-</body>
 
+		<!-- 우측 사이드 추천 기사 영역 -->
+		<div class="sidebar">
+			<h4>많이 본 연예 기사</h4>
+			<hr>
+			<div th:each="news, i : ${top10}">
+				<a class="ellipsis" th:text="${i.count + 1 + '. ' + news.title}" th:href="@{|/enter/detail?num=${news.num}|}"></a>
+			</div>
+		</div>
+	</div>
+
+</body>
 </html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<meta charset="UTF-8">
 	<title>연예 뉴스 작성</title>
@@ -11,64 +10,77 @@
 	<!-- Summernote -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-
-	<!-- Summernote 한글 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 
-	<!--<style>
+	<style>
 		form {
-			max-width: 700px;
-			margin: 30px auto;
-			padding: 20px;
-			border: 1px solid #ddd;
-			border-radius: 8px;
-			background-color: #fafafa;
-			box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-			font-family: 'Noto Sans KR', sans-serif;
+		  max-width: 700px;
+		  margin: 30px auto;
+		  padding: 20px;
+		  border: 1px solid #ddd;
+		  border-radius: 8px;
+		  background-color: #fafafa;
+		  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+		  font-family: 'Noto Sans KR', sans-serif;
 		}
 
 		h2 {
-			text-align: center;
-			margin-bottom: 25px;
-			color: #333;
+		  text-align: center;
+		  margin-bottom: 25px;
+		  color: #333;
 		}
 
 		label {
-			display: block;
-			margin-top: 15px;
-			margin-bottom: 8px;
-			font-weight: 600;
-			color: #555;
+		  display: block;
+		  margin-top: 15px;
+		  margin-bottom: 8px;
+		  font-weight: 600;
+		  color: #555;
 		}
 
 		input[type="text"],
 		select,
 		textarea {
-			width: 100%;
-			padding: 10px 12px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			font-size: 1rem;
-			box-sizing: border-box;
+		  width: 100%;
+		  padding: 10px 12px;
+		  border: 1px solid #ccc;
+		  border-radius: 5px;
+		  font-size: 1rem;
+		  box-sizing: border-box;
+		  transition: border-color 0.3s ease;
+		}
+
+		input[type="text"]:focus,
+		select:focus,
+		textarea:focus {
+		  border-color: #007bff;
+		  outline: none;
+		  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+		}
+
+		textarea#summernote {
+		  min-height: 300px;
+		  resize: vertical;
 		}
 
 		button.btn-primary {
-			display: block;
-			margin: 25px auto 0;
-			padding: 12px 30px;
-			background-color: #007bff;
-			color: white;
-			font-weight: 700;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			font-size: 1.1rem;
+		  display: block;
+		  margin: 25px auto 0;
+		  padding: 12px 30px;
+		  background-color: #007bff;
+		  color: white;
+		  font-weight: 700;
+		  border: none;
+		  border-radius: 5px;
+		  cursor: pointer;
+		  font-size: 1.1rem;
+		  transition: background-color 0.25s ease;
 		}
 
 		button.btn-primary:hover {
-			background-color: #0056b3;
+		  background-color: #0056b3;
 		}
-	</style>-->
+	</style>
 </head>
 
 <body>
@@ -78,11 +90,14 @@
 
 		<!-- 제목 -->
 		<label>제목</label>
-		<input type="text" name="title" required>
+		<input type="text" name="title" required class="form-control" />
+
+		<!-- 작성자 (세션으로 전달) -->
+		<input type="hidden" name="writer_id" th:value="${session.sid}" />
 
 		<!-- 카테고리 -->
 		<label>카테고리</label>
-		<select name="category" required>
+		<select name="category" required class="form-control">
 			<option value="">카테고리 선택</option>
 			<option value="drama">드라마</option>
 			<option value="movie">영화</option>
@@ -94,6 +109,7 @@
 		<label>내용</label>
 		<textarea id="summernote" name="content"></textarea>
 
+		<!-- 제출 -->
 		<button type="submit" class="btn-primary">작성 완료</button>
 	</form>
 
@@ -123,14 +139,7 @@
 					contentType: false,
 					processData: false,
 					success: function (url) {
-						const img = $('<img>').attr('src', url).css({
-							display: 'block',
-							maxWidth: '100%',
-							height: 'auto',
-							margin: '15px auto'
-						});
-						$('#summernote').summernote('insertNode', img[0]);
-						$('#summernote').summernote('insertText', '\n\n');
+						$('#summernote').summernote('insertImage', url);
 					},
 					error: function (xhr) {
 						alert("이미지 업로드 실패: " + xhr.responseText);
@@ -141,5 +150,4 @@
 	</script>
 
 </body>
-
 </html>
