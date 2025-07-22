@@ -52,7 +52,6 @@ public class CommentController {
 		return "redirect:/news/content/" + num;	// 기사 상세 페이지로 리다이렉트
 	}
 	
-	
 	// 댓글 비동기 로딩 (AJAX 요청)
 	@GetMapping("load")
 	@ResponseBody
@@ -61,6 +60,5 @@ public class CommentController {
 		int offset = (page - 1) * pageSize;		// 페이지 오프셋 계산
 		
 		return commentService.getCommentsPaged(num, offset, pageSize);	// 페이징 댓글 리스트 반환
-	}
-	
+	}	
 }
