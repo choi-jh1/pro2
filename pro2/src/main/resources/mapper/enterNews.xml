@@ -25,7 +25,7 @@
 	<!-- 2. 최신 뉴스 목록 (무한스크롤용, 페이징) -->
 	<select id="getPagedEnterNews" resultType="com.ex.data.EnterNewsDTO">
 		select
-			num, title, content, writer_id, null as writerNickname, null as	writerEmail, reg, readcount, category, hot
+			num, title, content, thumbnail, writer_id, null as writerNickname, null as	writerEmail, reg, readcount, category, hot
 		from enter_news
 		where status = 'approve' order by reg desc
 		offset #{offset} rows fetch next #{limit} rows only
@@ -82,19 +82,29 @@
 	<!-- 카테고리별 뉴스 목록 -->
 	<select id="getNewsByCategory" parameterType="string" resultType="com.ex.data.EnterNewsDTO">
 		select
-			num, title, DBMS_LOB.SUBSTR(content, 4000, 1) as content, writer_id,
+			num, title, writer_id,
 			null as writerNickname, null as writerEmail,
 			reg, readcount, category, hot, thumbnail
-		from enter_news
-		where status = 'approve' and category = #{category}
-		order by reg desc
+		from 
+			enter_news
+		where 
+			status = 'approve' and category = #{category}
+		order by 
+			reg desc
 	</select>
 
 	<!-- 카테고리별 뉴스. 무한스크롤용 -->
 	<select id="getNewsByCategoryPaged" resultType="com.ex.data.EnterNewsDTO">
-		select * from enter_news
-		where status = 'approve' and category = #{category}
-		order by reg desc
+		select
+			num, title, writer_id,
+			null as writerNickname, null as writerEmail,
+			reg, readcount, category, hot, thumbnail
+		from 
+			enter_news
+		where 
+			status = 'approve' and category = #{category}
+		order by 
+			reg desc
 		offset #{offset} rows fetch next #{limit} rows only
 	</select>
 

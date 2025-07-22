@@ -3,73 +3,113 @@
 <head>
 	<meta charset="UTF-8">
 	<title th:text="${category} + ' 뉴스 목록'">카테고리 뉴스</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<style>
+		.container_body {
+			display: flex;
+			gap: 30px;
+			max-width: 1200px;
+			margin: 40px auto;
+			padding: 0 20px;
+		}
+
+		.news-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 20px;
+			flex: 1;
+		}
+
+		.news-item {
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			overflow: hidden;
+			background: #fff;
+		}
+
+		.news-item img {
+			width: 100%;
+			height: 150px;
+			object-fit: cover;
+		}
+
+		.news-item .info {
+			padding: 10px;
+		}
+
+		.news-item .info h3 {
+			margin: 0;
+			font-size: 15px;
+			line-height: 1.3;
+		}
+
+		.sidebar {
+			width: 250px;
+			background: #f9f9f9;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			padding: 15px;
+			font-family: 'Noto Sans KR', sans-serif;
+			font-size: 14px;
+			box-shadow: 0 0 8px rgba(0,0,0,0.03);
+		}
+
+		.sidebar h3 {
+			font-size: 16px;
+			margin-bottom: 10px;
+			border-bottom: 1px solid #ccc;
+			padding-bottom: 6px;
+		}
+
+		.sidebar a {
+			display: block;
+			margin-bottom: 8px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			color: #333;
+			text-decoration: none;
+		}
+
+		#loading {
+			text-align: center;
+			margin: 20px;
+			color: #999;
+		}
+	</style>
 </head>
 <body>
-	<header class="site-header">
-		<div class="container">
-			<div class="logo">로고</div>
-	
-			<div class="top-bar">
-				<div class="date">2025.07.03</div>
-				<div class="user-menu">
-					<a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
-					<span th:if="${session.sid == null}">
-						<a th:href="@{/user/login}">로그인</a>
-						<a th:href="@{/user/insert}">회원가입</a>
-					</span>
-					<span th:if="${session.sid != null and session.role == 'admin'}">
-						<a th:href="@{/user/logout}">로그아웃</a>
-						<a th:href="@{/admin/adminPage}">관리자페이지</a>
-					</span>
-					<span th:if="${session.sid != null and session.role != 'admin'}">
-	
-						<a th:href="@{/user/myPage}">마이페이지</a>
-						<a th:href="@{/user/logout}">로그아웃</a>
-					</span>
-				</div>
+	<div class="container_body">
+		<!-- 왼쪽 기사 목록 -->
+		<div class="news-grid" id="newsContainer">
+			<h2 style="grid-column: 1 / -1;" th:text="${category} + ' 뉴스 목록'">카테고리 뉴스</h2>
+			<div th:each="news : ${categoryNews}" class="news-item">
+				<a th:href="@{/enter/detail(num=${news.num})}">
+					<img th:src="${news.thumbnail}" alt="썸네일">
+					<div class="info">
+						<h3 th:text="${news.title}">뉴스 제목</h3>
+					</div>
+				</a>
 			</div>
-			<nav class="main-nav">
-				<ul>
-					<li><a th:href="@{/news/home}">뉴스</a></li>
-					<li><a th:href="@{/sports/list}">스포츠</a></li>
-					<li><a th:href="@{main}" class="active">엔터</a></li>
-				</ul>
-				<div class="search">
-					<input type="text" placeholder="검색" />
-				</div>
-			</nav>
-			<nav class="sub-nav">
-				<ul>
-					<li><a th:href="@{/enter/main}">홈</a></li>
-					<li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
-					<li><a th:href="@{/enter/category?category=movie}" th:classappend="${category} == 'movie' ? 'active' : ''">영화</a></li>
-					<li><a th:href="@{/enter/category?category=music}" th:classappend="${category} == 'music' ? 'active' : ''">뮤직</a></li>
-					<li><a th:href="@{/enter/category?category=general}" th:classappend="${category} == 'general' ? 'active' : ''">연예일반</a></li>
-				</ul>
-			</nav>
 		</div>
-	</header>
 
+		<!-- 오른쪽 사이드바 -->
+		<aside class="sidebar">
+			<h3>많이 본 연예 뉴스</h3>
+			<div th:each="top, i : ${top10}">
+				<a th:text="${i.count + 1 + '. ' + top.title}" th:href="@{|/enter/detail?num=${top.num}|}"></a>
+			</div>
+		</aside>
+	</div>
 
-	<!-- 뉴스 카드 목록 -->
-	<main class="news-grid" id="newsContainer">
-		<div th:each="news : ${categoryNews}" class="news-card">
-			<a th:href="@{/enter/detail(num=${news.num})}">
-				<img th:src="${news.thumbnail}" alt="썸네일" class="thumbnail">
-				<h3 th:text="${news.title}">기사 제목</h3>
-				<p th:text="${#temporals.format(news.reg, 'yyyy.MM.dd')}">작성일</p>
-			</a>
-		</div>
-	</main>
-	<div id="loading" style="text-align: center; margin: 20px; display: none;">Loading...</div>
+	<div id="loading">Loading...</div>
 
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 		let offset = 10;
 		const limit = 10;
-		const category = /*[[${category}]]*/ 'general';  // Thymeleaf로 카테고리 넘김
+		const category = /*[[${category}]]*/ 'general';
 		let isLoading = false;
 
 		function loadMoreNews() {
@@ -87,16 +127,17 @@
 				},
 				success: function (data) {
 					if (data.length === 0) {
-						$("#loading").text("더 이상 기사가 없습니다");
+						$("#loading").text("더 이상 뉴스가 없습니다");
 						return;
 					}
 					data.forEach(function(news) {
 						const html = `
-							<div class="news-card">
+							<div class="news-item">
 								<a href="/enter/detail?num=${news.num}">
-									<img src="${news.thumbnail}" alt="썸네일" class="thumbnail">
-									<h3>${news.title}</h3>
-									<p>${news.reg ? news.reg.substring(0, 10) : ''}</p>
+									<img src="${news.thumbnail}" alt="썸네일">
+									<div class="info">
+										<h3>${news.title}</h3>
+									</div>
 								</a>
 							</div>
 						`;
@@ -107,7 +148,6 @@
 					$("#loading").hide();
 				},
 				error: function () {
-					$("#loading").text("불러오기에 실패했습니다");
 					isLoading = false;
 				}
 			});
@@ -120,6 +160,5 @@
 		});
 	/*]]>*/
 	</script>
-
 </body>
 </html>
