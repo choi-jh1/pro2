@@ -13,10 +13,10 @@
     <tbody>
       <tr th:each="dto : ${entList}">
         <td><a th:href="@{'/enter/content/' + ${dto.num}}" th:text="${dto.title}">제목</a></td>
-        <td th:text="${dto.writer}"></td>
+        <td th:text="${dto.writer_id}"></td>
         <td th:text="${#temporals.format(dto.reg, 'yyyy-MM-dd HH:mm')}"></td>
         <td>
-          <form th:action="@{/admin/approveEnts}" method="post">
+          <form th:action="@{/admin/approveEnt}" method="post">
             <input type="hidden" name="num" th:value="${dto.num}">
             <button type="submit" class="approve-btn">승인</button>
           </form>
