@@ -161,9 +161,9 @@
   <!-- 왼쪽: 대표기사 -->
   <div class="main-feature">
 	<h2 class="section-title">반응 <span class="now">HOT</span></h2>
-    <div  th:if="${list.size() > 0}">
-		<img th:src="${list[0].thumbnail}" alt="대표 이미지">
-	    <p class="title" th:text="${list[0].title}"></p>
+    <div th:if="${list.size() > 0}">
+		<a th:href="@{|/sports/content/${list[0].num}|}"><img th:src="${list[0].thumbnail}" alt="대표 이미지"></a>
+	    <a th:href="@{|/sports/content/${list[0].num}|}"><p class="title" th:text="${list[0].title}"></p></a>
 	    <p class="writer" th:text="${list[0].name}+' 기자'"></p>
 	</div>
   </div>
@@ -171,9 +171,9 @@
   <!-- 오른쪽: 기사 리스트 -->
   <div class="news-list">
     <div class="news-item"  th:each="list,i:${list}" th:if="${i.index >= 1 and i.index<=5}">
-      <img th:src="${list.thumbnail}" alt="썸네일">
+      <a th:href="@{|/sports/content/${list.num}|}"><img th:src="${list.thumbnail}" alt="썸네일"></a>
 	  <div class="text-wrap">
-	    <p class="news-title" th:text="${list.title}"></p>
+	    <a th:href="@{|/sports/content/${list.num}|}"><p class="news-title" th:text="${list.title}"></p></a>
 	    <p class="writer" th:text="${list.name}+' 기자'"></p>
 	  </div>
     </div>
