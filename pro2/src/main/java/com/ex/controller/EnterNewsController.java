@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ex.data.CommentDTO;
 import com.ex.data.EnterNewsDTO;
-import com.ex.data.UsersDTO;
 import com.ex.service.CommentService;
 import com.ex.service.EnterNewsService;
 
@@ -137,25 +136,6 @@ public class EnterNewsController {
 	    return "redirect:/enter/main";
 	}
 
-	@PostMapping("/enter/editForm")
-	public String showEditForm(@RequestParam("num") int num, Model model) {
-	    EnterNewsDTO dto = enterNewsService.readEnterNews(num);
-	    model.addAttribute("dto", dto);
-	    return "enter/editForm";
-	}
-
-	@PostMapping("/enter/edit")
-	public String updateNews(EnterNewsDTO dto, HttpSession session) {
-	    String sid = (String) session.getAttribute("sid");
-	    String role = (String) session.getAttribute("role");
-
-	    if (sid == null || (!sid.equals(dto.getWriter_id()) && !"admin".equals(role))) {
-	        return "redirect:/enter/main";
-	    }
-
-	    enterNewsService.updateNews(dto);
-	    return "redirect:/enter/detail?num=" + dto.getNum();
-	}
 
 	@GetMapping("loadMore")
 	@ResponseBody
@@ -177,6 +157,41 @@ public class EnterNewsController {
 			@RequestParam("offset") int offset, @RequestParam("limit") int limit) {
 
 		return enterNewsService.getNewsByCategoryPaged(category, offset, limit);
+	}
+
+	// 연예뉴스에서 댓글 등록 처리
+	@PostMapping("/comment")
+	public String insertEnterComment(@RequestParam("num") int num, @RequestParam("content") String content, HttpSession session) {
+		String writer = (String) session.getAttribute("sid");
+		if (writer == null) {
+			return "redirect:/user/login";
+		}
+		CommentDTO comment = new CommentDTO();
+		comment.setNum(num); // 뉴스 번호
+		comment.setContent(content);
+		comment.setWriter(writer);
+		comment.setRe_level(0);
+		comment.setRe_step(0);
+		commentService.addComment(comment);
+
+		return "redirect:/enter/detail?num=" + num;
+	}
+	
+	// 연예뉴스 댓글 삭제
+	@PostMapping("/commentdelete")
+	public String deleteEnterComment(@RequestParam("com_num") int com_num,
+	                                 @RequestParam("num") int num) {
+	    commentService.deleteComment(com_num);
+	    return "redirect:/enter/detail?num=" + num;
+	}
+
+	
+	// 연예뉴스 대댓글
+	@PostMapping("/reply")
+	public String replyEnterComment(@ModelAttribute CommentDTO dto) {
+		commentService.updateReStep(dto);   
+		commentService.addComment(dto);     
+		return "redirect:/enter/detail?num=" + dto.getNum();
 	}
 
 }

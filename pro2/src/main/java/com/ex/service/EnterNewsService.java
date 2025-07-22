@@ -16,20 +16,19 @@ public class EnterNewsService {
 
 	public List<EnterNewsDTO> getTop10DailyNews() {
 		List<EnterNewsDTO> list = enterNewsMapper.getTop10DailyNews();
-		for (EnterNewsDTO dto : list) {
-			dto.setThumbnail(extractThumbnail(dto.getContent()));
-		}
 		return list;
 	}
 
 	public List<EnterNewsDTO> getPagedEnterNews(int offset, int limit) {
 		List<EnterNewsDTO> list = enterNewsMapper.getPagedEnterNews(offset, limit);
-		for (EnterNewsDTO dto : list) {
-			dto.setThumbnail(extractThumbnail(dto.getContent()));
-		}
 		return list;
 	}
 
+	public List<EnterNewsDTO> getMostReadNews(int limit){
+		List<EnterNewsDTO> list = enterNewsMapper.getMostReadNews(limit);
+		return list;
+	}
+	
 	// HTML에서 <img src="..."> 중 첫 번째 이미지의 src 추출
 	private String extractThumbnail(String content) {
 		if (content == null)
@@ -51,9 +50,9 @@ public class EnterNewsService {
 	}
 	
 	public int insertNews(EnterNewsDTO dto) {
-		dto.setThumbnail(extractThumbnail(dto.getContent()));
-		int result=enterNewsMapper.insertNews(dto);
-		return result;
+	    String thumbnail = extractThumbnail(dto.getContent());
+	    dto.setThumbnail(thumbnail != null ? thumbnail : "/upload/default.png");
+	    return enterNewsMapper.insertNews(dto);
 	}
 	
 	public void increaseReadCount(int num) {
@@ -70,12 +69,6 @@ public class EnterNewsService {
 	
 	public void deleteNews(int num){
 	    enterNewsMapper.softDelete(num);
-	}
-
-	public int updateNews(EnterNewsDTO dto) {
-		dto.setThumbnail(extractThumbnail(dto.getContent()));
-		int result=enterNewsMapper.updateEnterNews(dto);
-		return result;
 	}
 	
 	public List<EnterNewsDTO> getNewsByCategory(String category) {
