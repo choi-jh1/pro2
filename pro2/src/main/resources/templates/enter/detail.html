@@ -131,7 +131,7 @@
 	    </nav>
 
 	    <!-- ⭐ 엔터 섹션일 때만 이게 추가됨 -->
-	    <nav class="sub-nav" th:if="${#strings.contains(#httpServletRequest.requestURI, '/enter')}">
+	    <nav class="sub-nav">
 	      <ul>
 	        <li><a th:href="@{/enter/main}">홈</a></li>
 	        <li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>

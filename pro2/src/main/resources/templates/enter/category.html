@@ -118,8 +118,7 @@
 	      </div>
 	    </nav>
 
-	    <!-- ⭐ 엔터 섹션일 때만 이게 추가됨 -->
-	    <nav class="sub-nav" th:if="${#strings.contains(#httpServletRequest.requestURI, '/enter')}">
+	    <nav class="sub-nav">
 	      <ul>
 	        <li><a th:href="@{/enter/main}">홈</a></li>
 	        <li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
@@ -134,7 +133,12 @@
 	<div class="container">
 		<div class="container_body">
 			<div class="news-grid" id="newsContainer">
-				<h2 style="grid-column: 1 / -1;" th:text="${category} + ' 뉴스 목록'">카테고리 뉴스</h2>
+				<h2 style="grid-column: 1 / -1;" th:switch="${category}">
+				  <span th:case="'drama'">드라마 뉴스 목록</span>
+				  <span th:case="'movie'">영화 뉴스 목록</span>
+				  <span th:case="'music'">뮤직 뉴스 목록</span>
+				  <span th:case="'general'">연예 일반 뉴스 목록</span>
+				</h2>
 				<div th:each="news : ${categoryNews}" class="news-item">
 					<a th:href="@{/enter/detail(num=${news.num})}">
 						<img th:src="${news.thumbnail}" alt="썸네일">
