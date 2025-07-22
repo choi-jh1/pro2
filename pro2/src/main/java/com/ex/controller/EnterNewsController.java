@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ex.data.CommentDTO;
 import com.ex.data.EnterNewsDTO;
-import com.ex.data.UsersDTO;
 import com.ex.service.CommentService;
 import com.ex.service.EnterNewsService;
 
@@ -137,25 +136,6 @@ public class EnterNewsController {
 	    return "redirect:/enter/main";
 	}
 
-	@PostMapping("/enter/editForm")
-	public String showEditForm(@RequestParam("num") int num, Model model) {
-	    EnterNewsDTO dto = enterNewsService.readEnterNews(num);
-	    model.addAttribute("dto", dto);
-	    return "enter/editForm";
-	}
-
-	@PostMapping("/enter/edit")
-	public String updateNews(EnterNewsDTO dto, HttpSession session) {
-	    String sid = (String) session.getAttribute("sid");
-	    String role = (String) session.getAttribute("role");
-
-	    if (sid == null || (!sid.equals(dto.getWriter_id()) && !"admin".equals(role))) {
-	        return "redirect:/enter/main";
-	    }
-
-	    enterNewsService.updateNews(dto);
-	    return "redirect:/enter/detail?num=" + dto.getNum();
-	}
 
 	@GetMapping("loadMore")
 	@ResponseBody

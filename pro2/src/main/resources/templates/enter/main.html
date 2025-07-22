@@ -80,10 +80,10 @@
 
 	<header class="site-header">
 		<div class="container">
-			<div class="logo">로고</div>
+			<div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
 
 			<div class="top-bar">
-				<div class="date">2025.07.03</div>
+				<div class="date" th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')}"></div>
 				<div class="user-menu">
 					<a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
 					<span th:if="${session.sid == null}">
@@ -92,42 +92,51 @@
 					</span>
 					<span th:if="${session.sid != null and session.role == 'admin'}">
 						<a th:href="@{/user/logout}">로그아웃</a>
-						<a th:href="@{/admin/adminPage}">관리자페이지</a>
+						<a th:href="@{/admin/adminPage}">관리자 페이지</a>
 					</span>
-					<span th:if="${session.sid != null and session.role != 'admin'}">
-
+					<span th:if="${session.sid != null and session.role == 'user'}">
 						<a th:href="@{/user/myPage}">마이페이지</a>
+						<a th:href="@{/user/logout}">로그아웃</a>
+					</span>
+					<span th:if="${session.sid != null and session.role == 'reporter'}">
+						<a th:href="@{/user/myPage}">기자페이지</a>
 						<a th:href="@{/user/logout}">로그아웃</a>
 					</span>
 				</div>
 			</div>
+
 			<nav class="main-nav">
 				<ul>
 					<li><a th:href="@{/news/home}">뉴스</a></li>
 					<li><a th:href="@{/sports/main}">스포츠</a></li>
-					<li><a th:href="@{main}" class="active">엔터</a></li>
+					<li><a th:href="@{/enter/main}">엔터</a></li>
 				</ul>
 				<div class="search">
 					<input type="text" placeholder="검색" />
 				</div>
 			</nav>
+			<!-- 엔터 섹션일 때만 이게 추가됨 -->
 			<nav class="sub-nav">
 				<ul>
 					<li><a th:href="@{/enter/main}">홈</a></li>
-					<li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
-					<li><a th:href="@{/enter/category?category=movie}" th:classappend="${category} == 'movie' ? 'active' : ''">영화</a></li>
-					<li><a th:href="@{/enter/category?category=music}" th:classappend="${category} == 'music' ? 'active' : ''">뮤직</a></li>
-					<li><a th:href="@{/enter/category?category=general}" th:classappend="${category} == 'general' ? 'active' : ''">연예일반</a></li>
+					<li><a th:href="@{/enter/category?category=drama}"
+							th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
+					<li><a th:href="@{/enter/category?category=movie}"
+							th:classappend="${category} == 'movie' ? 'active' : ''">영화</a></li>
+					<li><a th:href="@{/enter/category?category=music}"
+							th:classappend="${category} == 'music' ? 'active' : ''">뮤직</a></li>
+					<li><a th:href="@{/enter/category?category=general}"
+							th:classappend="${category} == 'general' ? 'active' : ''">연예일반</a></li>
 				</ul>
 			</nav>
 		</div>
 	</header>
 
 	<div class="container">
-		
+
 		<div class="top10-slide">
 			<div th:each="enter : ${top10}" class="top10-slide-item">
-				<a th:href="@{detail(num=${enter.num})}">					
+				<a th:href="@{detail(num=${enter.num})}">
 					<img th:src="${enter.thumbnail}" alt="썸네일" />
 					<h4 th:text="${enter.title}">뉴스 제목</h4>
 				</a>
@@ -136,11 +145,11 @@
 
 		<div class="news-grid" id="newsContainer">
 			<div th:each="enter : ${latestNews}" class="news-item">
-				<a th:href="@{detail(num=${enter.num})}">					
+				<a th:href="@{detail(num=${enter.num})}">
 					<img th:src="${enter.thumbnail}" alt="썸네일" />
 					<div class="info">
 						<h3 th:text="${enter.title}">뉴스 제목</h3>
-					</div>					
+					</div>
 				</a>
 			</div>
 		</div>
@@ -148,7 +157,7 @@
 	</div>
 
 	<div id="loading" style="text-align: center; margin: 20px; display: none;">Loading...</div>
-	
+
 	<script>
 		let offset = 9;
 		const limit = 9;
@@ -164,7 +173,7 @@
 				$.ajax({
 					url: '/enter/loadMore',
 					method: 'GET',
-					data: { offset: offset, limit: limit },
+					data: {offset: offset, limit: limit},
 					success: function (data) {
 						if (data.length === 0) {
 							$('#loading').text('더 이상 뉴스가 없습니다.');
