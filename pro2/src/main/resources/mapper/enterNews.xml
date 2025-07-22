@@ -6,7 +6,7 @@
 	<!-- 1. 일간 조회수 TOP10 뉴스 (상단 슬라이드용) -->
 	<select id="getTop10DailyNews" resultType="com.ex.data.EnterNewsDTO">
 		select
-			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 40000, 1) as content, enter.thumbnail as thumbnail, enter.writer_id,
+			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 400000000000, 1) as content, enter.thumbnail as thumbnail, enter.writer_id,
 			null as writerNickname, null as writerEmail,
 			enter.reg, enter.readcount, enter.category, enter.hot
 		from enter_news enter
@@ -14,7 +14,7 @@
 		where to_char(log.read_date, 'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')
 		and enter.status = 'approve'
 		group by
-			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 40000, 1), enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
+			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 400000000000, 1), enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
 		order by count(1) desc
 		fetch first 10 rows only
 	</select>
@@ -79,7 +79,7 @@
 	<!-- 카테고리별 뉴스 목록 -->
 	<select id="getNewsByCategory" parameterType="string" resultType="com.ex.data.EnterNewsDTO">
 		select
-			num, title, DBMS_LOB.SUBSTR(content, 4000, 1) as content, writer_id,
+			num, title, DBMS_LOB.SUBSTR(content, 400000000000, 1) as content, writer_id,
 			null as writerNickname, null as writerEmail,
 			reg, readcount, category, hot, thumbnail
 		from enter_news

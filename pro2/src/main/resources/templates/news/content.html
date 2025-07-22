@@ -63,7 +63,8 @@
 	         </p>
 
 	         <div class="reporter-info">
-	           <img th:src="${news.profile_img != null} ? ${news.profile_img} : '@{/images/default-profile.png}'" alt="기자 사진" width="60" height="60">
+				<img th:src="${news.profile_img != null} ? ${news.profile_img} : @{/images/default-profile.png}" 
+				     alt="기자 사진" width="60" height="60" />
 	           <p th:text="${news.writerName}">기자 이름</p>
 	         </div>
 	   </div>

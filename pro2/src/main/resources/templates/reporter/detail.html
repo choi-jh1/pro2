@@ -10,15 +10,10 @@
 
     <p>아이디: <span th:text="${user.id}"></span></p>
     <p>이름: <span th:text="${user.name}"></span></p>
-    <p>닉네임: <span th:text="${user.nick}"></span></p>
     <p>전화번호: <span th:text="${user.phone}"></span></p>
     <p>이메일: <span th:text="${user.email}"></span></p>
+    <p>소개: <span th:text="${reporter.intro}"></span></p>
 
-    <div th:if="${reporter != null}">
-        <h3>기자 상세 정보</h3>
-        <p>카테고리: <span th:text="${reporter.category}"></span></p>
-        <p>소개: <span th:text="${reporter.intro}"></span></p>
-    </div>
 
 	<button id="editBtn">정보 수정</button>
 
