@@ -37,4 +37,8 @@
 		update comments set ref = #{ref} where com_num = #{com_num}
 	</update>
 	
+	<select id="findWriterByCommentNum" resultType="String">
+		select writer from comments where com_num = #{com_num}
+	</select>
+	
  </mapper>

@@ -43,6 +43,11 @@ public class CommentController {
 		if(writer == null) {
 			return "redirect:/user/login";		// 로그인 안되어 있으면 로그인 페이지 이동
 		}
+		String commentWriter = commentService.getWriterByCommentNum(com_num);
+		// 본인이 아니라면 삭제하지 못함
+		if(!writer.equals(commentWriter)) {
+			return "redirect:/news/content/" + num + "?error=unauthorized";
+		}
 		commentService.deleteComment(com_num);	// 댓글 삭제
 		return "redirect:/news/content/" + num;	// 기사 상세 페이지로 리다이렉트
 	}
