@@ -60,5 +60,20 @@
 	<update id="update" parameterType="com.ex.data.UsersDTO">
 		update users set nick = #{nick, jdbcType=VARCHAR}, name = #{name, jdbcType=VARCHAR}, phone = #{phone, jdbcType=VARCHAR}, email = #{email, jdbcType=VARCHAR}, status = #{status, jdbcType=VARCHAR}, role = #{role, jdbcType=VARCHAR} where id = #{id}
 	</update>
-
+	<!--유저 정보 수정-->
+	<update id="userUpdate">
+		update users set nick=#{nick},name=#{name},phone=#{phone},email=#{email} where id=#{id} and pw=#{pw}
+	</update>
+	<!--유저 정보-->
+	<select id="userInfo" resultType="com.ex.data.UsersDTO">
+		select * from users where id=#{id}
+	</select>
+	<!--비밀번호 변경-->
+	<update id="pwChange">
+		update users set pw=#{pw1} where id=#{id}
+	</update>
+	<!--유저확인-->
+	<select id="pwCheck" resultType="int">
+		select count(*) from users where id=#{id} and pw=#{pw}
+	</select>
 </mapper>
