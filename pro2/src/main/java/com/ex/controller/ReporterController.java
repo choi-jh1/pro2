@@ -1,6 +1,7 @@
 package com.ex.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ex.data.EnterNewsDTO;
 import com.ex.data.NewsDTO;
 import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
+import com.ex.data.SportsDTO;
 import com.ex.data.UsersDTO;
 import com.ex.service.NewsService;
 import com.ex.service.ReporterService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -152,9 +156,18 @@ public class ReporterController {
 	@GetMapping("myArticles")
 	public String myArticles(HttpSession session, Model model) {
 		String writer = (String) session.getAttribute("sid");	// 로그인 된 기자의 ID
-
-		List<NewsDTO> list = newsService.getNewsByWriter(writer);
-		model.addAttribute("newsList", list);
+		ReporterDTO dto = reporterService.selectById(writer);
+		if((dto.getCategory()).equals("일반")) {
+			List<NewsDTO> list = newsService.getNewsByWriter(writer);
+			model.addAttribute("newsList", list);
+		}else if(dto.getCategory().equals("스포츠")) {
+			List<SportsDTO> list = reporterService.selectSports(writer);
+			model.addAttribute("newsList", list);
+		}else if(dto.getCategory().equals("연예")) {
+			List<EnterNewsDTO> list = reporterService.selectEnter(writer);
+			model.addAttribute("newsList", list);
+		}
+	
 		
 		return "reporter/myArticles";
 	}
