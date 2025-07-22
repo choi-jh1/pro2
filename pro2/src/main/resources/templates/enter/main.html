@@ -179,10 +179,10 @@
 
 	<header class="site-header">
 		<div class="container">
-			<div class="logo">로고</div>
+			<div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
 
 			<div class="top-bar">
-				<div class="date">2025.07.03</div>
+			  <div class="date" th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')}"></div>
 				<div class="user-menu">
 					<a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
 					<span th:if="${session.sid == null}">
@@ -202,9 +202,9 @@
 			</div>
 			<nav class="main-nav">
 				<ul>
-					<li><a th:href="@{/news/home}">뉴스</a></li>
-					<li><a th:href="@{/sports/list}">스포츠</a></li>
-					<li><a th:href="@{main}" class="active">엔터</a></li>
+					<li><a href="/news/home">뉴스</a></li>
+					<li><a href="/sports/main">스포츠</a></li>
+					<li><a href="/enter/main">엔터</a></li>
 				</ul>
 				<div class="search">
 					<input type="text" placeholder="검색" />

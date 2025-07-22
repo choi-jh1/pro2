@@ -1,11 +1,15 @@
 package com.ex.repository;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import com.ex.data.EnterNewsDTO;
 import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
+import com.ex.data.SportsDTO;
 import com.ex.data.UsersDTO;
 
 @Mapper
@@ -31,4 +35,8 @@ public interface ReporterMapper {
 	List<ReportBoardDTO> getAssignedReports(@Param("reporterId") String reporterId);
 	// 기자 이름 수정
 	public void reporterId(@Param("name") String name,@Param("id") String id);
+	// 내가 쓴 스포츠 기사
+	public List<SportsDTO> selectSports(String writer);
+	// 내가 쓴 엔터 기사
+	public List<EnterNewsDTO> selectEnter(String writer);
 }

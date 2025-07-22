@@ -3,13 +3,18 @@ package com.ex.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.ex.data.EnterNewsDTO;
 import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
+import com.ex.data.SportsDTO;
 import com.ex.data.UsersDTO;
 import com.ex.repository.ReporterMapper;
 import com.ex.repository.UsersMapper;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -79,5 +84,19 @@ public class ReporterService {
    // 기자 이름 수정
    public void reporterId(String name,String id) {
 	   reporterMapper.reporterId(name, id);
+   }
+   
+   // 기자 정보
+   public ReporterDTO selectById(String id) {
+	   return reporterMapper.selectById(id);
+   }
+   
+   // 내가 쓴 스포츠 기사
+   public List<SportsDTO> selectSports(String writer) {
+	   return reporterMapper.selectSports(writer);
+   }
+   // 내가 쓴 엔터 뉴스
+   public List<EnterNewsDTO> selectEnter(String writer) {
+	   return reporterMapper.selectEnter(writer);
    }
 }

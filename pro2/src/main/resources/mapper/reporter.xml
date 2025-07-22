@@ -15,7 +15,7 @@
   	</select>
  	<!-- 특정 기자 정보 조회 (reporter 테이블에서 id 기준 조회) -->
   	<select id="selectById" parameterType="string" resultType="com.ex.data.ReporterDTO">
-  		select id, profile_img, category, intro from reporter where id = #{id}
+  		select id, profile_img, category, intro,category from reporter where id = #{id}
   	</select>
   	<!-- 특정 기자 상세 정보 조회 (reporter + users 조인, name과 email 포함) -->
   	<select id="reporterInfo" resultType="com.ex.data.ReporterDTO">
@@ -45,10 +45,19 @@
 	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
 		select * from report_board where assigned = #{reporterId} order by report_id desc
 	</select>
+	
 	<update id="reporterId">
 		update users set name=#{name} where id=#{id}
 	</update>
 	
+	<!--내가 쓴 스포츠기사-->
+	<select id="selectSports" resultType="com.ex.data.SportsDTO">
+		select title,num,reg from sports where writer=#{writer} order by num desc
+	</select>
+	<!--내가 쓴 엔터기사-->
+	<select id="selectEnter" resultType="com.ex.data.EnterNewsDTO">
+		select title,num,reg from where writer_id=#{writer} order by num desc
+	</select>
   </mapper>
 
 
