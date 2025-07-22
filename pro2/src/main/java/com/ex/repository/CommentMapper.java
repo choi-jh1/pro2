@@ -22,4 +22,7 @@ public interface CommentMapper {
 	public List<CommentDTO> selectCommentsPaged(@Param("num") int num, @Param("offset") int offset, @Param("pageSize") int pageSize);
 	
 	public void updateReStep(CommentDTO dto);
+	
+	
+	public String findWriterByCommentNum(int com_num);
 }
