@@ -9,23 +9,27 @@
 <body>
 
   <!-- 헤더 -->
-  <div class="site-header">
+  <header class="site-header">
     <div class="container">
-      <div class="logo">로고</div>
-
+      <div class="logo"><a href="/user/main"><img src="/images/logo.png"></a></div>
       <div class="top-bar">
-        <div class="date">2025.07.03</div>
+        <div class="date" th:text="${#dates.format(#dates.createNow(), 'yyyy.MM.dd')}"></div>
         <div class="user-menu">
+          <a th:href="${session.role == 'admin'} ? @{/report/list} : @{/report/write}">기사제보</a>
           <span th:if="${session.sid == null}">
             <a th:href="@{/user/login}">로그인</a>
             <a th:href="@{/user/insert}">회원가입</a>
           </span>
           <span th:if="${session.sid != null and session.role == 'admin'}">
             <a th:href="@{/user/logout}">로그아웃</a>
-            <a th:href="@{/admin/adminPage}">관리자페이지</a>
+            <a th:href="@{/admin/adminPage}">관리자 페이지</a>
           </span>
-          <span th:if="${session.sid != null and session.role != 'admin'}">
-            <a th:href="@{/user/myPage}">마이페이지(기자)</a>
+          <span th:if="${session.sid != null and session.role == 'user'}">
+            <a th:href="@{/user/myPage}">마이페이지</a>
+            <a th:href="@{/user/logout}">로그아웃</a>
+          </span>
+          <span th:if="${session.sid != null and session.role == 'reporter'}">
+            <a th:href="@{/user/myPage}">기자페이지</a>
             <a th:href="@{/user/logout}">로그아웃</a>
           </span>
         </div>
@@ -35,7 +39,7 @@
         <ul>
           <li><a href="/news/home">뉴스</a></li>
           <li><a href="/sports/main">스포츠</a></li>
-          <li><a href="#">엔터</a></li>
+          <li><a href="/enter/main">엔터</a></li>
         </ul>
         <div class="search">
           <input type="text" placeholder="검색" />
@@ -51,11 +55,10 @@
         </ul>
       </nav>
     </div>
-  </div>
+  </header>
 
-  <!-- 정치, 경제, 사회 카테고리 3개를 가로로 배치하는 컨테이너 추가 -->
+  <!-- 카테고리 섹션 -->
   <div class="category-container">
-
     <section>
       <h2 class="category-title">정치</h2>
       <div class="news-grid" th:each="news : ${politicsTop5}">
@@ -93,10 +96,10 @@
     </section>
   </div>
 
-  <!-- 속보 뉴스 -->
+  <!-- 속보 -->
   <h2 class="category-title">속보</h2>
-  <div class="breaking-news" th:each="news : ${breakingNews}">
-    <div class="news-card">
+  <div class="breaking-news">
+    <div class="news-card" th:each="news : ${breakingNews}">
       <a th:href="@{/news/content/{num}(num=${news.num})}">
         <img th:src="${news.thumbUrl}" alt="썸네일">
         <span class="news-card-title" th:text="${news.title}">속보 제목</span>
@@ -104,14 +107,13 @@
     </div>
   </div>
 
-  <!-- 최신 뉴스 + 더보기 -->
+  <!-- 최신 뉴스 -->
   <h2 class="category-title">최신 뉴스</h2>
   <div id="latest-news-list">
-    <!-- AJAX로 로드됨 -->
+    <!-- AJAX 로드 -->
   </div>
   <button id="loadMoreBtn">더보기</button>
 
-  <!-- 스크립트 -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
     let page = 1;
@@ -130,7 +132,7 @@
               <div class="news-card">
                 <a href="/news/content/${news.num}">
                   <img src="${news.thumbUrl}" alt="썸네일">
-                  <p>${news.title}</p>
+                  <p class="news-card-title">${news.title}</p>
                 </a>
               </div>
             `);
