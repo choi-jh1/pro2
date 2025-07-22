@@ -179,4 +179,39 @@ public class EnterNewsController {
 		return enterNewsService.getNewsByCategoryPaged(category, offset, limit);
 	}
 
+	// 연예뉴스에서 댓글 등록 처리
+	@PostMapping("/comment")
+	public String insertEnterComment(@RequestParam("num") int num, @RequestParam("content") String content, HttpSession session) {
+		String writer = (String) session.getAttribute("sid");
+		if (writer == null) {
+			return "redirect:/user/login";
+		}
+		CommentDTO comment = new CommentDTO();
+		comment.setNum(num); // 뉴스 번호
+		comment.setContent(content);
+		comment.setWriter(writer);
+		comment.setRe_level(0);
+		comment.setRe_step(0);
+		commentService.addComment(comment);
+
+		return "redirect:/enter/detail?num=" + num;
+	}
+	
+	// 연예뉴스 댓글 삭제
+	@PostMapping("/commentdelete")
+	public String deleteEnterComment(@RequestParam("com_num") int com_num,
+	                                 @RequestParam("num") int num) {
+	    commentService.deleteComment(com_num);
+	    return "redirect:/enter/detail?num=" + num;
+	}
+
+	
+	// 연예뉴스 대댓글
+	@PostMapping("/reply")
+	public String replyEnterComment(@ModelAttribute CommentDTO dto) {
+		commentService.updateReStep(dto);   
+		commentService.addComment(dto);     
+		return "redirect:/enter/detail?num=" + dto.getNum();
+	}
+
 }
