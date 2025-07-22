@@ -19,67 +19,18 @@
 
         <!-- 프로필 이미지 -->
         <label for="profile_img">프로필 이미지:</label>
-        <input type="file" id="profile_img" name="profile_img" /><br><br>
+        <input type="file" id="profile_img" name="profile_img"/><br><br>
 
         <!-- 자기소개 -->
         <label for="intro">자기소개:</label>
         <textarea id="intro" name="intro" required th:text="${reporter.intro}"></textarea><br><br>
 
-        <!-- 카테고리 선택 (상위 + 하위 연동) -->
-		<label for="mainCategory">카테고리:</label>
-		        <select id="mainCategory" name="mainCategory" required>
-		            <option value="">선택</option>
-		            <option value="news" th:selected="${mainCategory == 'news'}">뉴스</option>
-		            <option value="sports" th:selected="${mainCategory == 'sports'}">스포츠</option>
-		            <option value="enter" th:selected="${mainCategory == 'enter'}">연예</option>
-		        </select>
 
-		        <label for="subCategory">세부 카테고리:</label>
-		        <select id="category" name="category" required data-current="${reporter.category}">
-		            <option value="">선택</option>
-		        </select>
 
         <br><br>
         <input type="submit" value="저장" />
     </form>
 
-	<script>
-	document.addEventListener('DOMContentLoaded', function () {
-	    const mainCategory = document.getElementById('mainCategory');
-	    const subCategory = document.getElementById('subCategory');
-
-	    const categoryMap = {
-	        news: ['정치', '경제', '사회'],
-	        sports: ['야구', '축구', '배구', '농구'],
-	        enter: ['드라마', '영화', '뮤직']
-	    };
-
-	    function updateSubCategory(main, selected) {
-	        subCategory.innerHTML = '<option value="">선택</option>';
-	        if (!main || !categoryMap[main]) return;
-
-	        categoryMap[main].forEach(opt => {
-	            const optionElem = document.createElement('option');
-	            optionElem.value = opt;
-	            optionElem.textContent = opt;
-	            if (opt === selected) {
-	                optionElem.selected = true;
-	            }
-	            subCategory.appendChild(optionElem);
-	        });
-	    }
-
-	    // 초기값 세팅
-	    const currentMain = mainCategory.value;  // <--- 여기 수정
-	    const currentSub = subCategory.getAttribute('data-current');
-
-	    updateSubCategory(currentMain, currentSub);
-
-	    // 메인 카테고리 변경시 하위 카테고리 변경
-	    mainCategory.addEventListener('change', function () {
-	        updateSubCategory(this.value, null);
-	    });
-	});
-	</script>
+	
 </body>
 </html>

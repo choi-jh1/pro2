@@ -1,5 +1,3 @@
-<style>
-
 .container1 {
   background-color: #ffffff;
   padding: 40px;
@@ -56,30 +54,3 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #357ABD;
 }
-</style>
-
-<div class="container1">
-  <h2 class="title">비밀번호 변경</h2>
-  <form th:action="@{/user/pwChange}" method="post" class="form-box" name="userInput" onsubmit="return memCheck();">
-    <label>아이디 <p th:text="${dto.id}"></p></label>
-	<input type="hidden" name="id" th:value="${dto.id}" />
-	<label>현재 비밀번호 <input type="password" name="pw" required/></label>
-	<label>새 비밀번호 <input type="password" name="pw1" required/></label>
-	<label>새 비밀번호 확인<input type="password" name="pw2" required/></label>
-    <button type="submit">완료</button>
-  </form>
-</div>
-
-<script>
-	function memCheck() {
-	  let check = document.userInput;
-	  let pw = check.pw.value;
-		  
-		  if (pw1 !== check.pw2.value) {
-		      alert("비밀번호를 동일하게 입력해주세요");
-		      return false;
-		  }
-	    return false; // 폼 제출 막기
-	  }
-	  return true;  // 폼 제출 허용
- </script>

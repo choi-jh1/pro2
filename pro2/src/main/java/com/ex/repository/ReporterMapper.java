@@ -29,4 +29,6 @@ public interface ReporterMapper {
 	public void updateReporter(UsersDTO user);
 	// 특정 기자에게 할당된 제보글 목록 조회
 	List<ReportBoardDTO> getAssignedReports(@Param("reporterId") String reporterId);
+	// 기자 이름 수정
+	public void reporterId(@Param("name") String name,@Param("id") String id);
 }
