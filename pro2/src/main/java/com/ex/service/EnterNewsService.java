@@ -70,12 +70,6 @@ public class EnterNewsService {
 	public void deleteNews(int num){
 	    enterNewsMapper.softDelete(num);
 	}
-
-	public int updateNews(EnterNewsDTO dto) {
-		dto.setThumbnail(extractThumbnail(dto.getContent()));
-		int result=enterNewsMapper.updateEnterNews(dto);
-		return result;
-	}
 	
 	public List<EnterNewsDTO> getNewsByCategory(String category) {
 		return enterNewsMapper.getNewsByCategory(category);

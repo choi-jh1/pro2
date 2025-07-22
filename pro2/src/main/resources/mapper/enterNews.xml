@@ -42,7 +42,7 @@
 		from 
 			enter_news
 		where 
-			status = 'approved'
+			status = 'approve'
 		order by 
 			readcount desc
 		fetch first #{limit} rows only
@@ -86,15 +86,6 @@
 		update enter_news
 		set status = 'delete'
 		where num = #{num}
-	</update>
-
-	<!-- 기사 수정 -->
-	<update id="updateEnterNews" parameterType="com.ex.data.EnterNewsDTO">
-		update enter_news
-		set
-			title = #{title}, content = #{content}, category = #{category}, thumbnail = #{thumbnail}
-		where
-			num = #{num}
 	</update>
 
 	<!-- 카테고리별 뉴스 목록 -->
