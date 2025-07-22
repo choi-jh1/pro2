@@ -1,6 +1,6 @@
 <link rel="stylesheet" th:href="@{/css/adminPage.css}">
 
-<form action="/admin/registerReporter" method="post" enctype="multipart/form-data">
+<form action="/admin/registerReporter" method="post">
   <div class="table-container"> 
     <table class="member-table">
       <thead>
@@ -36,10 +36,6 @@
         <tr>
           <th>이메일</th>
           <td><input type="email" name="email" required /></td>
-        </tr>
-        <tr>
-          <th>프로필 이미지</th>
-          <td><input type="file" name="profile" /></td>
         </tr>
         <tr>
           <th>카테고리</th>

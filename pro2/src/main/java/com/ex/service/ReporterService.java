@@ -75,4 +75,9 @@ public class ReporterService {
    public ReporterDTO reporterInfo(String id) {
 	   return reporterMapper.reporterInfo(id);
    }
+   
+   // 기자 이름 수정
+   public void reporterId(String name,String id) {
+	   reporterMapper.reporterId(name, id);
+   }
 }

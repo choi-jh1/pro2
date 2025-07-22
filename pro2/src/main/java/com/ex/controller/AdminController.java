@@ -171,54 +171,14 @@ public class AdminController {
 	
 	// 기자 회원가입
 	@PostMapping("registerReporter")
-	public String registerReporter(@ModelAttribute UsersDTO userDTO,
-	                               @ModelAttribute ReporterDTO reporterDTO,
-	                               @RequestParam("profile") MultipartFile profileFile) {
-
-	    // 실제 저장 디렉토리
-	    String uploadDir = "C:/profile/upload";
-	    File uploadPath = new File(uploadDir);
-
-	    if (!uploadPath.exists()) {
-	        uploadPath.mkdirs(); // 디렉토리 없으면 생성
-	    }
-
-	    // 원본 파일명
-	    String originalFileName = profileFile.getOriginalFilename();
-
-	    // 확장자 추출 (예: .jpg, .png)
-	    String ext = "";
-	    int dotIndex = originalFileName.lastIndexOf(".");
-	    if (dotIndex != -1) {
-	        ext = originalFileName.substring(dotIndex);
-	    }
-
-	    // UUID로 중복 방지 파일명 생성
-	    String uuid = UUID.randomUUID().toString();
-	    String newFileName = uuid + ext;
-
-	    // 저장 파일 객체 생성
-	    File saveFile = new File(uploadPath, newFileName);
-
-	    try {
-	        // 실제 파일 저장
-	        profileFile.transferTo(saveFile);
-
-	        // DB에는 상대 경로만 저장
-	        reporterDTO.setProfile_img("/upload/" + newFileName);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return "error";
-	    }
-
+	public String registerReporter(@ModelAttribute UsersDTO userDTO, @ModelAttribute ReporterDTO reporterDTO) {
 	    // reporter의 id는 user id와 동일
 	    reporterDTO.setId(userDTO.getId());
-
 	    // 서비스 계층에 전달
 	    reporterService.reporterInsert(userDTO, reporterDTO);
-
 	    return "redirect:/admin/adminPage";
 	}
+	
 	// 기자리스트(제보)
 	@GetMapping("/admin/reporterList")
 	@ResponseBody

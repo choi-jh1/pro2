@@ -1,13 +1,19 @@
 package com.ex.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ex.data.NewsDTO;
 import com.ex.data.ReportBoardDTO;
 import com.ex.data.ReporterDTO;
@@ -78,44 +84,68 @@ public class ReporterController {
 		}
 		ReporterDTO reporter = (ReporterDTO) info.get("reporter");
 
-		String mainCategory = "";
-		if(reporter != null && reporter.getCategory() != null) {
-			String cat = reporter.getCategory();
-			if(cat.startsWith("정치") || cat.startsWith("경제") || cat.startsWith("사회")) {
-				mainCategory = "news";
-			}else if(cat.startsWith("야구") || cat.startsWith("축구") || cat.startsWith("배구") || cat.startsWith("농구")) {
-				mainCategory = "sports";
-			}else if(cat.startsWith("드라마") || cat.startsWith("영화") || cat.startsWith("뮤직")) {
-				mainCategory = "enter";
-			}
-		}
+		
 		model.addAttribute("user", info.get("user"));
 		model.addAttribute("reporter", reporter);
-		model.addAttribute("mainCategory", mainCategory);
-		
+	
 		return "reporter/update";
 	}
 	
 	// 정보 수정 처리
 	@PostMapping("update")
-	public String update(@ModelAttribute UsersDTO user, @ModelAttribute ReporterDTO reporter, Model model, HttpServletRequest request) {
-		// DB에 업데이트
-		reporterService.updateUser(user);
+	public String update(@ModelAttribute UsersDTO user, Model model, @RequestParam("profile_img") MultipartFile profileFile, HttpServletRequest request) {
+		// DB에 업데이트 // 실제 저장 디렉토리
+		ReporterDTO reporter = new ReporterDTO();
+		reporter.setId(user.getId());
+	    reporter.setWriter_name(request.getParameter("writer_name"));
+		reporter.setIntro(request.getParameter("intro"));
+	    String uploadDir = "C:/profile/upload";
+	    File uploadPath = new File(uploadDir);
+	    
+	    
+	    
+	    if (!uploadPath.exists()) {
+	        uploadPath.mkdirs(); // 디렉토리 없으면 생성
+	    }
+
+	    // 원본 파일명
+	    String originalFileName = profileFile.getOriginalFilename();
+
+	    // 확장자 추출 (예: .jpg, .png)
+	    String ext = "";
+	    int dotIndex = originalFileName.lastIndexOf(".");
+	    if (dotIndex != -1) {
+	        ext = originalFileName.substring(dotIndex);
+	    }
+
+	    // UUID로 중복 방지 파일명 생성
+	    String uuid = UUID.randomUUID().toString();
+	    String newFileName = uuid + ext;
+
+	    // 저장 파일 객체 생성
+	    File saveFile = new File(uploadPath, newFileName);
+		    try {
+		    	if (profileFile == null || profileFile.isEmpty()) {
+		    	    reporter.setProfile_img("/upload/default-profile.png");
+		    	} else {
+		    	    profileFile.transferTo(saveFile);
+		    	    reporter.setProfile_img("/upload/" + newFileName);
+		    	}
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			        return "error";
+			    }
 		reporterService.updateReporter(reporter);
 		
 		Map<String, Object> info = reporterService.getReporterInfo(user.getId());
-		
+		reporterService.reporterId(reporter.getWriter_name(),reporter.getId() );
 		model.addAttribute("user", info.get("user"));
 		model.addAttribute("reporter", info.get("reporter"));
 		model.addAttribute("msg", "수정이 완료되었습니다.");
 		
-		// AJAX 요청인지 검사
-	    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-	        // AJAX 요청일 땐 detail fragment 또는 전체 detail 뷰 반환 (페이지 전환 안함)
-	        return "reporter/detail :: content-area"; // Thymeleaf fragment 지정, 없다면 그냥 "reporter/detail"
-	    }
 		
-		return "redirect:/reporter/detail";
+		
+		return "redirect:/reporter/myPage";
 	}
 
 	// 기자가 쓴 기사 목록

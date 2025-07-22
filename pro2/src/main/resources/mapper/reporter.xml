@@ -6,8 +6,8 @@
   
   	<!-- 기자 회원가입 (reporter 테이블에 삽입) -->
   	<insert id="reporterInsert" parameterType="com.ex.data.ReporterDTO">
-  		insert into reporter (id, writer_name, profile_img, intro, category)
-  		values (#{id}, #{writer_name, jdbcType=VARCHAR}, #{profile_img, jdbcType=VARCHAR}, #{intro, jdbcType=VARCHAR}, #{category, jdbcType=VARCHAR})
+  		insert into reporter (id, writer_name, intro, category)
+  		values (#{id}, #{writer_name, jdbcType=VARCHAR}, #{intro, jdbcType=VARCHAR}, #{category, jdbcType=VARCHAR})
   	</insert>
   	<!-- 기자 목록 조회 (usrers 테이블에서 role이 'reporter'인 사용자 목록 조회)-->
   	<select id="reporterList" resultType="com.ex.data.UsersDTO">
@@ -35,14 +35,19 @@
   	<select id="findById" parameterType="string" resultType="com.ex.data.ReporterDTO">
   		select id, profile_img, category, intro from reporter where id = #{id}
   	</select>
+  	
   	<!-- 기자 정보 업데이트 (reporter 테이블) -->
   	<update id="update" parameterType="com.ex.data.ReporterDTO">
-  		update reporter set writer_name = #{writer_name, jdbcType=VARCHAR}, profile_img = #{profile_img, jdbcType=VARCHAR}, category = #{category, jdbcType=VARCHAR}, intro = #{intro, jdbcType=VARCHAR} where id = #{id, jdbcType=VARCHAR}
+  		update reporter set writer_name = #{writer_name, jdbcType=VARCHAR}, profile_img = #{profile_img, jdbcType=VARCHAR}, intro = #{intro, jdbcType=VARCHAR} where id = #{id, jdbcType=VARCHAR}
   	</update>
+  	
 	<!-- 해당 기자가 담당한 제보 목록 조회 (최신순) -->
 	<select id="getAssignedReports" resultType="com.ex.data.ReportBoardDTO" parameterType="String">
 		select * from report_board where assigned = #{reporterId} order by report_id desc
 	</select>
+	<update id="reporterId">
+		update users set name=#{name} where id=#{id}
+	</update>
 	
   </mapper>
 
