@@ -6,16 +6,19 @@
 	<!-- 1. 일간 조회수 TOP10 뉴스 (상단 슬라이드용) -->
 	<select id="getTop10DailyNews" resultType="com.ex.data.EnterNewsDTO">
 		select
-			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 10000, 1) as content, enter.thumbnail as thumbnail, enter.writer_id,
-			null as writerNickname, null as writerEmail,
-			enter.reg, enter.readcount, enter.category, enter.hot
-		from enter_news enter
-		join enter_read_log log on enter.num = log.news_id
-		where to_char(log.read_date, 'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')
-		and enter.status = 'approve'
+			enter.num, enter.title, enter.thumbnail, enter.writer_id,
+			null as writernickname, null as writeremail, 
+			enter.reg, enter.readcount, enter.category, enter.hot 
+		from 
+			enter_news enter
+		join 
+			enter_read_log log on enter.num = log.news_id
+		where 
+			to_char(log.read_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and enter.status = 'approve'
 		group by
-			enter.num, enter.title, DBMS_LOB.SUBSTR(enter.content, 10000, 1), enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
-		order by count(1) desc
+			enter.num, enter.title, enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
+		order by 
+			count(*) desc
 		fetch first 10 rows only
 	</select>
 
@@ -75,18 +78,18 @@
 		where
 			num = #{num}
 	</update>
-	
+
 	<!-- 카테고리별 뉴스 목록 -->
 	<select id="getNewsByCategory" parameterType="string" resultType="com.ex.data.EnterNewsDTO">
 		select
-			num, title, DBMS_LOB.SUBSTR(content, 10000, 1) as content, writer_id,
+			num, title, DBMS_LOB.SUBSTR(content, 4000, 1) as content, writer_id,
 			null as writerNickname, null as writerEmail,
 			reg, readcount, category, hot, thumbnail
 		from enter_news
 		where status = 'approve' and category = #{category}
 		order by reg desc
 	</select>
-	
+
 	<!-- 카테고리별 뉴스. 무한스크롤용 -->
 	<select id="getNewsByCategoryPaged" resultType="com.ex.data.EnterNewsDTO">
 		select * from enter_news

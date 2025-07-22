@@ -16,17 +16,11 @@ public class EnterNewsService {
 
 	public List<EnterNewsDTO> getTop10DailyNews() {
 		List<EnterNewsDTO> list = enterNewsMapper.getTop10DailyNews();
-		for (EnterNewsDTO dto : list) {
-			dto.setThumbnail(extractThumbnail(dto.getContent()));
-		}
 		return list;
 	}
 
 	public List<EnterNewsDTO> getPagedEnterNews(int offset, int limit) {
 		List<EnterNewsDTO> list = enterNewsMapper.getPagedEnterNews(offset, limit);
-		for (EnterNewsDTO dto : list) {
-			dto.setThumbnail(extractThumbnail(dto.getContent()));
-		}
 		return list;
 	}
 
@@ -51,9 +45,9 @@ public class EnterNewsService {
 	}
 	
 	public int insertNews(EnterNewsDTO dto) {
-		dto.setThumbnail(extractThumbnail(dto.getContent()));
-		int result=enterNewsMapper.insertNews(dto);
-		return result;
+	    String thumbnail = extractThumbnail(dto.getContent());
+	    dto.setThumbnail(thumbnail != null ? thumbnail : "/upload/default.png");
+	    return enterNewsMapper.insertNews(dto);
 	}
 	
 	public void increaseReadCount(int num) {
