@@ -34,4 +34,9 @@ public class CommentService {
 	public List<CommentDTO> getCommentsPaged(int num, int offset, int pageSize){
 		return commentMapper.selectCommentsPaged(num, offset, pageSize);
 	}
+	
+	
+	public String getWriterByCommentNum(int com_num) {
+		return commentMapper.findWriterByCommentNum(com_num);
+	}
 }
