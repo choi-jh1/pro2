@@ -14,7 +14,7 @@
 		join 
 			enter_read_log log on enter.num = log.news_id
 		where 
-			to_char(log.read_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and enter.status = 'wait'
+			to_char(log.read_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and enter.status = 'approve'
 		group by
 			enter.num, enter.title, enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
 		order by 
@@ -52,7 +52,7 @@
 	<!-- 연예 기사 생성 -->
 	<insert id="insertNews" parameterType="com.ex.data.EnterNewsDTO">
 		INSERT INTO enter_news (num, title, content, writer_id, reg, readcount, category, hot, thumbnail, status) 
-		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id}, SYSDATE, 0, #{category}, 0, #{thumbnail, jdbcType=VARCHAR}, 'wait')
+		VALUES (enter_news_seq.NEXTVAL, #{title}, #{content}, #{writer_id}, SYSDATE, 0, #{category}, 0, #{thumbnail, jdbcType=VARCHAR}, 'approve')
 
 	</insert>
 
