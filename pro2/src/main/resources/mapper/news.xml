@@ -10,7 +10,7 @@
 		SELECT n.num, n.title, n.writer, r.writer_name AS writer_name,
 		r.PROFILE_IMG AS profile_img, n.readCount, n.category, n.thumbUrl,
 		n.reg, n.hot, n.is_breaking from news n LEFT JOIN reporter r ON n.writer = r.id
-		WHERE n.category = #{category} ORDER BY n.readCount DESC FETCH FIRST 5 ROWS ONLY
+		WHERE status='approve' n.category = #{category} ORDER BY n.readCount DESC FETCH FIRST 5 ROWS ONLY
 		</select>
 	<!-- '속보' 키워드 포함된 기사 3개 -->
 	<select id="selectBreakingByTitle" parameterType="int" resultType="com.ex.data.NewsDTO">
@@ -21,7 +21,7 @@
 	<!-- 최신 기사 목록 -->
 	<select id="selectLatestPage" parameterType="map" resultType="com.ex.data.NewsDTO">
 		SELECT n.num, n.title, n.thumbUrl, n.reg, n.writer, r.writer_name, r.profile_img, n.category
-	    FROM news n LEFT JOIN reporter r ON n.writer = r.id ORDER BY n.num DESC OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+	    FROM news n LEFT JOIN reporter r ON n.writer = r.id ORDER BY n.num DESC OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY where status='approve'
 	</select>
 	<!-- 전체 기사 수 -->
 	<select id="countAll" resultType="int">
@@ -35,7 +35,7 @@
 	<!-- 카테고리별 기사 목록 조회 -->
 	<select id="selectByCategory" parameterType="String" resultType="com.ex.data.NewsDTO">
 		SELECT n.num, n.title,  n.writer, r.writer_name, r.profile_img,  n.reg, n.thumbUrl, n.hot, n.category FROM news n
-	    LEFT JOIN reporter r ON n.writer = r.id WHERE n.category = #{category} ORDER BY n.reg DESC
+	    LEFT JOIN reporter r ON n.writer = r.id WHERE status='approve' and n.category = #{category} ORDER BY n.reg DESC 
 	</select>
 	<!-- 기사 번호로 기사 상세 조회 -->
 	<select id="selectByNum" parameterType="int" resultType="com.ex.data.NewsDTO">
