@@ -147,8 +147,7 @@
 	        <li><a th:href="@{/enter/main}">홈</a></li>
 	        <li><a th:href="@{/enter/category?category=drama}" th:classappend="${category} == 'drama' ? 'active' : ''">드라마</a></li>
 	        <li><a th:href="@{/enter/category?category=movie}" th:classappend="${category} == 'movie' ? 'active' : ''">영화</a></li>
-	        <li><a th:href="@{/enter/category?category=music}" th:classappend="${category} == 'music' ? 'active' : ''">뮤직</a></li>
-	        <li><a th:href="@{/enter/category?category=general}" th:classappend="${category} == 'general' ? 'active' : ''">연예일반</a></li>
+
 	      </ul>
 	    </nav>
 	  </div>
@@ -160,8 +159,7 @@
 				<h2 style="grid-column: 1 / -1;" th:switch="${category}">
 				  <span th:case="'drama'">드라마 뉴스 목록</span>
 				  <span th:case="'movie'">영화 뉴스 목록</span>
-				  <span th:case="'music'">뮤직 뉴스 목록</span>
-				  <span th:case="'general'">연예 일반 뉴스 목록</span>
+
 				</h2>
 				<div th:each="news : ${categoryNews}" class="news-item">
 					<a th:href="@{/enter/detail(num=${news.num})}">
