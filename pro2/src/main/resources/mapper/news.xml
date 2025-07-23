@@ -10,7 +10,7 @@
 		SELECT n.num, n.title, n.writer, r.writer_name AS writer_name,
 		r.PROFILE_IMG AS profile_img, n.readCount, n.category, n.thumbUrl,
 		n.reg, n.hot, n.is_breaking from news n LEFT JOIN reporter r ON n.writer = r.id
-		WHERE status='approve' n.category = #{category} ORDER BY n.readCount DESC FETCH FIRST 5 ROWS ONLY
+		WHERE status='approve' and n.category = #{category} ORDER BY n.readCount DESC FETCH FIRST 5 ROWS ONLY
 		</select>
 	<!-- '속보' 키워드 포함된 기사 3개 -->
 	<select id="selectBreakingByTitle" parameterType="int" resultType="com.ex.data.NewsDTO">
