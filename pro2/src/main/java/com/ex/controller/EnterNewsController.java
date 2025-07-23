@@ -139,7 +139,7 @@ public class EnterNewsController {
 
 	@GetMapping("loadMore")
 	@ResponseBody
-	public List<EnterNewsDTO> loadMoreEnterNews(@RequestParam int offset, @RequestParam int limit) {
+	public List<EnterNewsDTO> loadMoreEnterNews(@RequestParam("offset") int offset, @RequestParam("limit") int limit) {
 		return enterNewsService.getPagedEnterNews(offset, limit);
 	}
 
