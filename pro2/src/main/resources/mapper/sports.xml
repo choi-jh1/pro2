@@ -17,11 +17,11 @@
 	</select>
 	<!--스포츠기사 전체 목록-->
 	<select id="sportsList" resultType="com.ex.data.SportsDTO">
-		select * from sports
+		select * from sports where status='approve'
 	</select>
 	<!--카테고리별 목록-->
 	<select id="sportsCateList" resultType="com.ex.data.SportsDTO">
-		select s.*,u.name from sports s join users u on s.writer=u.id where s.cateId=#{cateId} order by num desc offset #{offset} rows fetch next #{pageSize} rows only
+		select s.*,u.name from sports s join users u on s.writer=u.id where s.cateId=#{cateId} and s.status='approve'order by num desc offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 	<!--내용만 출력(이미지 제외)-->
 	<select id="content" resultType="String">
@@ -66,13 +66,14 @@
 	<!--스포츠기사 조회순-->
 	<select id="sportsReadCount" resultType="com.ex.data.SportsDTO">
 		<![CDATA[
-			select * from (select * from sports order by readCount desc) where rownum <= 10
+			select * from (select * from sports where status='approve' order by readCount desc) where rownum <= 10
 		]]>
 	</select>
 	<!--리액션 많은순-->
 	<select id="sportsReaction" resultType="com.ex.data.SportsDTO">
 		SELECT s.num,s.title,s.thumbnail,u.name AS name,COUNT(r.reaction_id) AS count FROM sports s 
 		LEFT JOIN users u ON s.writer = u.id LEFT JOIN sportsReaction r ON s.num = r.sports_id
+		where s.status='approve'
 			GROUP BY s.num, s.title, s.thumbnail, u.name
 				ORDER BY count DESC
 	</select>
