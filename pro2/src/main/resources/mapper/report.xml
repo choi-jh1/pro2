@@ -30,7 +30,7 @@
 
 	<!-- 제보글 담당기자 배정 -->
 	<update id="assignReporter">
-		UPDATE report_board SET assigned = ( SELECT name FROM users WHERE id = #{assigned}), status = '배정완료' WHERE report_id = #{report_id}
+		 UPDATE report_board SET assigned = #{assigned}, status = '배정완료' WHERE report_id = #{report_id}
 	</update>
 
 	<!--제보글 익명일 떄 비밀번호 확인-->
@@ -53,4 +53,8 @@
 	<update id="updateStatus">
 		update report_board set status = '기사화완료' where report_id = #{report_id}
 	</update>
+	
+	
+	
+	
 </mapper>

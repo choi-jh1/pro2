@@ -30,7 +30,7 @@
 	<!-- 새 기사 등록 -->
 	<insert id="insertNews" parameterType="com.ex.data.NewsDTO">
 		INSERT INTO news (num, title, writer, reg, readCount, hot, category, thumbUrl, is_breaking, content, status)
-	    VALUES (news_seq.NEXTVAL, #{title}, #{writer}, SYSDATE,  0,  0, #{category}, #{thumbUrl}, 0, #{content,jdbcType=CLOB}, 'approve')
+	    VALUES (news_seq.NEXTVAL, #{title}, #{writer}, SYSDATE,  0,  0, #{category}, #{thumbUrl}, 0, #{content,jdbcType=CLOB}, 'wait')
 	</insert>
 	<!-- 카테고리별 기사 목록 조회 -->
 	<select id="selectByCategory" parameterType="String" resultType="com.ex.data.NewsDTO">
