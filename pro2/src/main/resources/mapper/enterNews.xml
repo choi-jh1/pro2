@@ -14,7 +14,7 @@
 		join 
 			enter_read_log log on enter.num = log.news_id
 		where 
-			to_char(log.read_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and enter.status = 'approve'
+			to_char(log.read_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and enter.status = 'wait'
 		group by
 			enter.num, enter.title, enter.thumbnail, enter.writer_id, enter.reg, enter.readcount, enter.category, enter.hot
 		order by 
