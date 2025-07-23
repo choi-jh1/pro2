@@ -21,17 +21,19 @@
  	</update>
  	<!-- 댓글 목록 -->
 	<select id="selectCommentsPaged" resultType="com.ex.data.CommentDTO" parameterType="map">
-		select * from (
-			select rownum as rn, com_num, content, writer, reg, ref, re_level, re_step, is_delete, num
-			from (
-				select com_num, content, writer, reg, ref, re_level, re_step, is_delete, num
-				from comments where num = #{num} and is_delete = 1
-				order by ref desc, re_step asc
-			)
-			where rownum &lt;= #{offset} + #{pageSize} 
-		)
-		where rn > #{offset}
-	</select>
+	select * from (
+		select /*+ FIRST_ROWS(n) */ inner.*, rownum as rn
+		from (
+			select com_num, content, writer, reg, ref, re_level, re_step, is_delete, num
+			from comments
+			where num = #{num} and is_delete = 1
+			order by ref asc, re_step asc
+		) inner
+		where rownum &lt;= #{offset} + #{pageSize}
+	)
+	where rn > #{offset}
+</select>
+
 	<!-- ref 업데이트 -->
 	<update id="updateRef" parameterType="com.ex.data.CommentDTO">
 		update comments set ref = #{ref} where com_num = #{com_num}

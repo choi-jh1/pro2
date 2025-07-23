@@ -63,7 +63,7 @@ public class NewsController {
     @PostMapping("writePro")
     public String writePro(@ModelAttribute NewsDTO dto, HttpSession session) {
     	System.out.println("category = "+dto.getCategory());
-    	String role = (String) session.getAttribute("role");
+    	String role = (String) session.getAttribute("role"); 
     	if(!"reporter".equals(role)) {
     		return "redirect:/user/main";
     	}
