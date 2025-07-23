@@ -149,12 +149,12 @@
     <a th:href="@{|/news/content/${newsList[0].num}|}"><p class="title" th:text="${newsList[0].title}"></p></a>
   </div>
   <div class="sub-article" th:if="${newsList.size() > 1}">
-	<a th:href="@{|/news/content/${newsList[0].num}|}"><img th:src="${newsList[1].thumbUrl}" alt="썸네일" /></a>
-	<a th:href="@{|/news/content/${newsList[0].num}|}"><p class="title" th:text="${newsList[1].title}"></p></a>
+	<a th:href="@{|/news/content/${newsList[1].num}|}"><img th:src="${newsList[1].thumbUrl}" alt="썸네일" /></a>
+	<a th:href="@{|/news/content/${newsList[1].num}|}"><p class="title" th:text="${newsList[1].title}"></p></a>
   </div>
   <div class="sub-article" th:if="${newsList.size() > 2}">
-	<a th:href="@{|/news/content/${newsList[0].num}|}"><img th:src="${newsList[2].thumbUrl}" alt="썸네일" /></a>
-	<a th:href="@{|/news/content/${newsList[0].num}|}"><p class="title" th:text="${newsList[2].title}"></p></a>
+	<a th:href="@{|/news/content/${newsList[2].num}|}"><img th:src="${newsList[2].thumbUrl}" alt="썸네일" /></a>
+	<a th:href="@{|/news/content/${newsList[2].num}|}"><p class="title" th:text="${newsList[2].title}"></p></a>
   </div>
 	<div th:each="nl, i : ${newsList}" th:if="${i.index >= 3}" class="title-only">
 	  <a th:href="@{|/news/content/${nl.num}|}"><p class="title" th:text="${nl.title}"></p></a>
