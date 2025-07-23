@@ -345,7 +345,6 @@
 					},
 					success: function () {
 						currentReaction = null;
-						updateUI(null);
 						location.reload()
 					},
 					error: function () {
@@ -380,7 +379,6 @@
 						},
 						success: function () {
 							currentReaction = clickedType;
-							updateUI(clickedType);
 							location.reload()
 
 						},
@@ -391,19 +389,6 @@
 				});
 			}
 		});
-
-		function updateUI(select) {
-			$('.reaction-button').each(function () {
-				const type = $(this).data('type');
-				if (type === select) {
-					$(this).addClass('select');
-				} else {
-					$(this).removeClass('select');
-				}
-			});
-		}
-
-
 	});
 
 
