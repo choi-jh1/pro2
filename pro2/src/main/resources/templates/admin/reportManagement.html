@@ -11,10 +11,10 @@
 </div>
 
 <div th:unless="${reportCount==0}">
-  <table width="500" cellspacing="0" cellpadding="0" border="1" align="center">
+  <table width="600" cellspacing="0" cellpadding="0" border="1" align="center">
     <tr height="30">
       <th>제보 글 제목</th>
-      <th>아이디</th>
+      <th width="50">아이디</th>
       <th>이메일</th>
       <th>작성일</th>
       <th>상태</th>
@@ -46,7 +46,7 @@
     <input type="text" id="reporterSearch" placeholder="기자 ID 검색">
     <select id="categoryFilter">
       <option value="">전체</option>
-      <option value="일반뉴스">일반뉴스</option>
+      <option value="일반">일반</option>
       <option value="스포츠">스포츠</option>
       <option value="연예">연예</option>
     </select>

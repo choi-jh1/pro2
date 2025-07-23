@@ -218,7 +218,7 @@
 		<nav class="sub-nav">
 			<ul>
 
-				<li><a href="/sports/main">종합</a></li>
+				<li><a href="/sports/main">메인</a></li>
 				<li><a href="/sports/football">축구</a></li>
 				<li><a href="/sports/baseball">야구</a></li>
 				<li><a href="/sports/basketball">농구</a></li>
@@ -242,7 +242,7 @@
 		</div>
 
 		<div class="article-interact">
-			<span class="likes">❤️ [[${allReaction}]]</span>
+			<span class="likes">반응 [[${allReaction}]]</span>
 			<span class="icons">🔁 📎</span>
 		</div>
 
@@ -330,89 +330,58 @@
 
 
 		$('.reaction-button').click(function () {
-			// 클릭한 리액션 타입
 			const clickedType = $(this).data('type');
-			// 로그인 안된 상태면 confirm 띄우고 로그인 페이지로 이동
+
 			if (!id || id === 'null') {
 				if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) {
 					window.location.href = '/user/login';
 				}
-				return; // 아래 코드 실행 방지
+				return;
 			}
 
-
-			if (currentReaction === clickedType) {
-				// 같은 버튼 클릭시 취소 요청
-				$.ajax({
+			// 리액션 취소 (같은 거 다시 누름 or 변경)
+			const deleteOld = currentReaction !== null
+				? $.ajax({
 					url: '/sports/reaction',
 					method: 'delete',
+					data: {
+						reactionType: currentReaction,
+						boardNum: boardNum,
+						id: id
+					}
+				})
+				: Promise.resolve(); // 없으면 바로 다음 단계
+
+			deleteOld.then(() => {
+				// 같은 걸 눌렀으면 삭제만 하고 추가는 안 함
+				if (currentReaction === clickedType) {
+					currentReaction = null;
+					location.reload();
+					return;
+				}
+
+				// 새 리액션 추가
+				$.ajax({
+					url: '/sports/reaction',
+					method: 'POST',
 					data: {
 						reactionType: clickedType,
 						boardNum: boardNum,
 						id: id
 					},
 					success: function () {
-						currentReaction = null;
-						updateUI(null);
-						location.reload()
+						currentReaction = clickedType;
+						location.reload();
 					},
 					error: function () {
-						alert("취소실패");
+						alert("리액션 등록 실패");
 					}
 				});
-			} else {
-				// 1. 기존 반응이 있다면 먼저 삭제
-				const deleteOld = currentReaction !== null
-					? $.ajax({
-						url: '/sports/reaction',
-						method: 'delete',
-						contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-						data: {
-							reactionType: currentReaction,
-							boardNum: boardNum,
-							id: id
-						}
-					})
-					: Promise.resolve(); // 없으면 즉시 성공 처리
-
-				// 2. 삭제 후 새로운 리액션 등록
-				deleteOld.then(() => {
-					$.ajax({
-						url: '/sports/reaction',
-						method: 'POST',
-						contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-						data: {
-							reactionType: clickedType,
-							boardNum: boardNum,
-							id: id
-						},
-						success: function () {
-							currentReaction = clickedType;
-							updateUI(clickedType);
-							location.reload()
-
-						},
-						error: function () {
-							alert("리액션 등록 실패");
-						}
-					});
-				});
-			}
-		});
-
-		function updateUI(select) {
-			$('.reaction-button').each(function () {
-				const type = $(this).data('type');
-				if (type === select) {
-					$(this).addClass('select');
-				} else {
-					$(this).removeClass('select');
-				}
 			});
-		}
-
-
+		});
 	});
+
+
 
 
 </script>

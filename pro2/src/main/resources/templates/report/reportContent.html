@@ -25,25 +25,48 @@
   <tr>
     <th>첨부자료</th>
     <td>
-      <div th:if="${dto.file_Mime_Type != null and #strings.startsWith(dto.file_Mime_Type, 'image')}">
+    <!-- 첨부파일이 존재할 때 -->
+      <div th:if="${dto.file_Saved_Name != null}">
+      
+      <!-- 이미지 파일이면 미리보기 -->
+      <div th:if="${#strings.startsWith(dto.file_Mime_Type, 'image')}">
         <img th:src="@{/upload/{file}(file=${dto.file_Saved_Name})}" style="max-width:300px;">
       </div>
-      <div th:unless="${dto.file_Mime_Type != null and #strings.startsWith(dto.file_Mime_Type, 'image')}">
-        <span>없음</span>
+
+      <!-- 이미지 외의 첨부파일이면 다운로드 링크 -->
+      <div th:unless="${#strings.startsWith(dto.file_Mime_Type, 'image')}">
+        <a th:href="@{/upload/{file}(file=${dto.file_Saved_Name})}" th:text="${dto.file_Original_Name}">첨부파일 다운로드</a>
       </div>
+    </div>
+
+    <!-- 첨부파일이 없을 때 -->
+    <div th:unless="${dto.file_Saved_Name != null}">
+      <span class="no-file">없음</span>
+    </div>
     </td>
   </tr>
   <tr>
     <th>상태</th>
     <td><span th:text="${dto.status}"></span></td>
   </tr>
-  <tr th:if="${dto.assigned == session.sid and dto.status !='기사화완료'}">
-	<td colspan="2" align="center">
-		<form th:action="@{/report/reportWrite}" method="get">
-		<input type="hidden" name="report_id" th:value="${dto.report_id}">
-		<input type="hidden" name="category" th:value="${category}" />
-			<button type="submit" class="btn btn-primary">기사작성</button>
-		</form>
-	</td>
-  </tr>
+<tr>
+  <th>목록</th>
+  <td>
+    <div style="display: flex; gap: 10px; align-items: center;">
+    
+      <!-- 기사작성 버튼: 조건부 노출 -->
+      <form th:if="${dto.assigned == session.sid and dto.status !='기사화완료'}"
+            th:action="@{/report/reportWrite}" method="get" style="margin: 0;">
+        <input type="hidden" name="report_id" th:value="${dto.report_id}">
+        <input type="hidden" name="category" th:value="${category}" />
+        <button type="submit" class="btn btn-primary">기사작성</button>
+      </form>
+
+      <!-- 제보 목록 버튼: 항상 노출 -->
+      <button type="button" class="btn btn-secondary"
+              onclick="location.href='/report/list'">제보 목록</button>
+
+    </div>
+  </td>
+</tr>
 </table>
