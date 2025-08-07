@@ -166,21 +166,21 @@ public class SportsController {
 	
 	
 	
-	// 스포츠기사 좋아요
-	@PostMapping("reaction")
-	public ResponseEntity<?> addReaction(@RequestParam("boardNum") int num,@RequestParam("id") String id,@RequestParam("reactionType") String type) {
-		
-		sportsService.reactionInsert(num, id, type);
-		return ResponseEntity.ok(Map.of("message","성공"));
-		
-	}
-	
 	// 반응 취소
 	@DeleteMapping("reaction")
-	public ResponseEntity<?> removeReaction(@RequestParam("boardNum") int num,@RequestParam("id") String id,@RequestParam("reactionType") String type){
+	public ResponseEntity<?> removeReaction(@RequestParam("boardNum") int num,
+			@RequestParam("id") String id,@RequestParam("reactionType") String type){
 		sportsService.removeReaction(num, id,type);
 		return ResponseEntity.ok(Map.of("message", "반응 취소 성공"));
 	}
+	// 반응 넣기
+	@PostMapping("reaction")
+	public ResponseEntity<?> addReaction(@RequestParam("boardNum") int num,
+			@RequestParam("id") String id,@RequestParam("reactionType") String type) {
+		sportsService.reactionInsert(num, id, type);
+		return ResponseEntity.ok(Map.of("message","성공"));
+	}
+	
 	
 
 }
